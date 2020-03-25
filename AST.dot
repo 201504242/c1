@@ -1,0 +1,10 @@
+graph G {
+node [shape = egg];
+node0[label="RAIZ"]
+
+node1[label = "Print"]; 
+node2[label = "Print"]; 
+node3[label = "Print"]; 
+node4[label = "Print"]; 
+"node0"--"node1""node0"--"node2""node0"--"node3""node0"--"node4"
+}

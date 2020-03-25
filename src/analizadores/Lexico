@@ -1,0 +1,107 @@
+
+
+package analizadores;
+import java_cup.runtime.Symbol; 
+import olc2.p1_201504242.Ventana;
+import olc2.p1_201504242.JError;
+%% 
+%class Lexico
+%public 
+%line 
+%char 
+%cup 
+%unicode
+%ignorecase
+
+%init{ 
+    yyline = 1; 
+    yychar = 1; 
+%init} 
+
+BLANCOS=[ \r\t]+
+D=[0-9]+
+DD=[0-9]+("."[  |0-9]+)?
+ID=([A-Za-z]|".")+[".""_"0-9A-Za-z]*
+CAD = [\"]([^\"\n]|(\\\"))*[\"]
+COMENTUNILINEA =("#".*\r\n)|("#".*\n)|("#".*\r)
+
+%%
+{COMENTUNILINEA} {
+    //System.out.println("Comentario: "+yytext().trim()+", en la linea: "+yyline+", en la columna: "+yychar);
+}
+
+";" {return new Symbol(sym.PTCOMA,yyline,yychar, yytext());} 
+"," {return new Symbol(sym.COMA,yyline,yychar, yytext());} 
+
+"(" {return new Symbol(sym.PARIZQ,yyline,yychar, yytext());} 
+")" {return new Symbol(sym.PARDER,yyline,yychar, yytext());} 
+"[" {return new Symbol(sym.CORIZQ,yyline,yychar, yytext());} 
+"]" {return new Symbol(sym.CORDER,yyline,yychar, yytext());} 
+"{" {return new Symbol(sym.LLAIZQ,yyline,yychar, yytext());}
+"}" {return new Symbol(sym.LLADER,yyline,yychar, yytext());}
+
+"+" {return new Symbol(sym.MAS,yyline,yychar, yytext());} 
+"-" {return new Symbol(sym.MENOS,yyline,yychar, yytext());} 
+"*" {return new Symbol(sym.POR,yyline,yychar, yytext());} 
+"/" {return new Symbol(sym.DIVIDIDO,yyline,yychar, yytext());} 
+"^" {return new Symbol(sym.POTENCIA,yyline,yychar, yytext());} 
+"%%" {return new Symbol(sym.MODULO,yyline,yychar, yytext());}
+
+"==" {return new Symbol(sym.IGUALDAD,yyline,yychar, yytext());}
+"!=" {return new Symbol(sym.DIFERENTE,yyline,yychar, yytext());}
+">" {return new Symbol(sym.MAYOR,yyline,yychar, yytext());}
+"<" {return new Symbol(sym.MENOR,yyline,yychar, yytext());}
+">=" {return new Symbol(sym.MAYORIGUAL,yyline,yychar, yytext());}
+"<=" {return new Symbol(sym.MENORIGUAL,yyline,yychar, yytext());}
+
+"=>" {return new Symbol(sym.asigna,yyline,yychar, yytext());}
+
+"|"   { return new Symbol(sym.Tor,yyline,yychar, yytext());}
+"&"   { return new Symbol(sym.Tand,yyline,yychar, yytext());}
+"!"   { return new Symbol(sym.Tnot,yyline,yychar, yytext());}
+"="     { return new Symbol(sym.igual,yyline,yychar, yytext());}
+"?"     { return new Symbol(sym.ternario,yyline,yychar, yytext());}
+":"     { return new Symbol(sym.dospuntos,yyline,yychar, yytext());}
+
+"null" {return new Symbol(sym.Tnull,yyline,yychar, yytext());} 
+"if" {return new Symbol(sym.Tif,yyline,yychar, yytext());} 
+"else" {return new Symbol(sym.Telse,yyline,yychar, yytext());} 
+"switch" {return new Symbol(sym.Tswitch,yyline,yychar, yytext());} 
+"case" {return new Symbol(sym.Tcase,yyline,yychar, yytext());} 
+"break" {return new Symbol(sym.Tbreak,yyline,yychar, yytext());} 
+"while" {return new Symbol(sym.Twhile,yyline,yychar, yytext());} 
+"print" {return new Symbol(sym.Tprint,yyline,yychar, yytext());} 
+"do" {return new Symbol(sym.Tdo,yyline,yychar, yytext());} 
+"for" {return new Symbol(sym.Tfor,yyline,yychar, yytext());} 
+"in" {return new Symbol(sym.Tin,yyline,yychar, yytext());} 
+"continue" {return new Symbol(sym.Tcontinue,yyline,yychar, yytext());} 
+"return" {return new Symbol(sym.Treturn,yyline,yychar, yytext());} 
+"function" {return new Symbol(sym.Tfuntion,yyline,yychar, yytext());} 
+
+"true" {return new Symbol(sym.ttrue,yyline,yychar, yytext());} 
+"false" {return new Symbol(sym.tfalse,yyline,yychar, yytext());} 
+"default" {return new Symbol(sym.tdefault,yyline,yychar, yytext());} 
+
+"pie" {return new Symbol(sym.pie,yyline,yychar, yytext());}
+"barplot" {return new Symbol(sym.barplot,yyline,yychar, yytext());}
+"plot" {return new Symbol(sym.plot,yyline,yychar, yytext());}
+"hist" {return new Symbol(sym.hist,yyline,yychar, yytext());}
+"fantasmita" {return new Symbol(sym.fantasmita,yyline,yychar, yytext());}
+
+
+
+\n {yychar=1;}
+
+{BLANCOS} {} 
+{ID} {return new Symbol(sym.ID,yyline,yychar, yytext().toLowerCase());} 
+{D} {return new Symbol(sym.ENTERO,yyline,yychar,  new Integer(yytext()) );} 
+{DD} {return new Symbol(sym.DECIMAL,yyline,yychar, new Double(yytext()) );} 
+{CAD}    {return new Symbol(sym.CAD,yyline,yychar, (yytext()).substring(1,yytext().length()-1));}
+
+. {
+    Ventana pp = (Ventana)olc2.p1_201504242.OLC2P1_201504242.ven.ggetVentana();
+    System.out.println("Este es un ERROR lexico: "+yytext()+
+    ", en la linea: "+yyline+", en la columna: "+yychar);
+
+    pp.listaError.add(new JError("Lexico",yyline, yychar, "Caracter invalido: "+yytext()));
+}

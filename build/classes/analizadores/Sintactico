@@ -1,0 +1,490 @@
+package analizadores; 
+import java_cup.runtime.*;
+import java.util.LinkedList;
+
+import ast.instrucciones.funciones.*;
+import ast.instrucciones.*;
+
+import ast.expresiones.*;
+import ast.expresiones.operaciones.Operacion.Operador;
+import ast.expresiones.operaciones.*;
+
+import entorno.Tipo;
+import entorno.Tipo.Tipos;
+
+import entorno.Var;
+import entorno.nodoExp;
+import entorno.Simbolo.*;
+import entorno.Simbolo;
+import entorno.fantasmita;
+
+import ast.Expresion;
+import ast.Instruccion;
+import ast.AST;
+import ast.NodoAST;
+import olc2.p1_201504242.Ventana;
+import olc2.p1_201504242.JError;
+
+parser code 
+{:
+public static AST arbol;
+
+
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/ 
+    public void syntax_error(Symbol s){ 
+        System.out.println("ERROR Sintáctico en la Línea " + (s.left) +
+        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+        Ventana pp = (Ventana)olc2.p1_201504242.OLC2P1_201504242.ven.ggetVentana();
+        pp.listaError.add(new JError("Sintactico",(s.left),s.right,"Identificador "+s.value  +" no reconocido."));
+    } 
+ 
+    /**
+     * Método al que se llama automáticamente ante algún error sintáctico 
+     * en el que ya no es posible una recuperación de errores.
+     **/ 
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("ERROR síntactico irrecuperable en la Línea " + 
+        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        " no reconocido."); 
+        Ventana pp = (Ventana)olc2.p1_201504242.OLC2P1_201504242.ven.ggetVentana();
+        pp.listaError.add(new JError("Sintactico No recuperado", s.left, s.right, "Identificador "+s.value  +" no reconocido."));
+    }  
+:} 
+// ************************ SIMBOLOS
+terminal String PTCOMA,PARIZQ,PARDER,CORIZQ,CORDER,LLAIZQ,LLADER,COMA,asigna;
+terminal String MAS,MENOS,POR,DIVIDIDO,POTENCIA,MODULO;
+terminal String IGUALDAD,DIFERENTE,MAYOR,MENOR,MAYORIGUAL,MENORIGUAL;
+
+// ************************ PALABRAS RESERVADAS
+terminal String pie,plot,hist,barplot,matrix;
+
+terminal String Tor,Tand,Tnot,igual,ternario,dospuntos;
+terminal String Tnull,ttrue,tfalse,tdefault,list,array;
+terminal String Tif,Telse,Tbreak,Tcase,Tswitch,Twhile,Tdo,Tfor,Tin,Tprint,Tcontinue,Tfuntion,Treturn;
+terminal fantasmita;
+
+
+// ************************ SIMBOLOS DONDE IMPORTA SU VALOR
+terminal Integer ENTERO;
+terminal Double DECIMAL;
+terminal String UMENOS;
+terminal String ID,CAD;
+
+// ************************ NO TERMINALES
+non terminal ini,S;
+non terminal LinkedList<NodoAST> instrucciones;
+non terminal NodoAST instruccion;
+non terminal LinkedList<NodoAST> BLOQUE_SENT;
+non terminal Instruccion PRINT;
+non terminal Instruccion SENTENCIA_IF;
+non terminal Instruccion SENTENCIA_WHILE;
+non terminal Instruccion SENTENCIA_DOWHILE;
+non terminal Instruccion SENTENCIA_FOR;
+non terminal Expresion SENTENCIA_RETURN;
+
+non terminal LinkedList<NodoAST> LISTA_EXP;
+non terminal Expresion EXP;
+non terminal Instruccion DECLA_FUN;
+non terminal NodoAST B;
+non terminal Instruccion ASIGNACION;
+non terminal Expresion SENTENCIA_LLAMADA;
+non terminal LinkedList<nodoExp> DIMENSION;
+non terminal nodoExp OPC_ACCESO;
+non terminal GRAFICA;
+non terminal LinkedList<Simbolo> formal_parameters;
+non terminal Simbolo formal_parameter;
+
+//********************** PRECEDENCIA DE OPERADORES
+precedence right igual;
+precedence right ternario,dospuntos;
+precedence left Tor;
+precedence left Tand;
+precedence left IGUALDAD,DIFERENTE;
+precedence left MENOR,MAYOR,MENORIGUAL,MAYORIGUAL;
+
+precedence left MAS,MENOS;
+precedence left POR,DIVIDIDO,MODULO;
+precedence right POTENCIA;
+precedence right Tnot,UMENOS; 
+
+start with S; 
+
+S ::= ini
+    {:
+        System.out.println("**************** Se creo arbol - TERMINO GRAMATICA*********************");
+    :}
+;
+
+ini ::= instrucciones:e
+    {:
+        parser.arbol = new AST(e);
+    :}
+;
+
+instrucciones ::= 
+    instrucciones:a instruccion:b
+    {:
+        RESULT = a;
+        RESULT.addLast(b);
+    :}
+    | instruccion:a
+    {:
+        RESULT = new LinkedList();
+        RESULT.addLast(a);
+    :}
+; 
+
+BLOQUE_SENT ::= 
+    LLAIZQ instrucciones:e LLADER
+    {:
+        RESULT = e;
+    :}
+    |LLAIZQ LLADER
+    {:
+        RESULT = new LinkedList();
+    :}
+;
+
+DECLA_FUN ::= 
+    ID:a igual Tfuntion PARIZQ formal_parameters:b PARDER BLOQUE_SENT:c
+    {: 
+        //String id,Rol rol,LinkedList<Simbolo> parametrosFormales, LinkedList<NodoAST> sentencias,int,int
+        RESULT  = new Funcion(a.toString()+"_"+b.size(),Rol.FUNCION,b,c,aleft,aright);
+    :}  
+    
+    |ID:a igual Tfuntion PARIZQ PARDER BLOQUE_SENT:c
+    {: 
+        //String id,Rol rol, LinkedList<NodoAST> sentencias,int,int
+        RESULT  = new Funcion(a.toString()+"_0",Rol.FUNCION,c,aleft,aright);
+    :}
+        
+;
+
+formal_parameters ::= 
+    formal_parameters:a COMA formal_parameter:b
+    {:  
+        RESULT = a;
+        RESULT.addLast(b);
+    :}
+    | formal_parameter:a
+    {:
+        RESULT = new LinkedList();
+        RESULT.addLast(a);
+    :};
+
+formal_parameter ::= 
+    ID:b
+    {:
+        RESULT = new Simbolo(b.toString(),Rol.VECTOR);
+    :}
+    | ID:b igual EXP:a
+    {:
+        RESULT = new Simbolo(b.toString(),Rol.VECTOR,a);
+    :}
+;
+
+ASIGNACION ::= 
+// ********** SIN PUNTO Y COMA    
+    ID:a igual EXP:b
+    {: 
+        RESULT =  new Asignacion(new Identificador(a.toString(),aleft,aright,true),b,bleft,bright);
+    :}
+
+    |ID:a PARIZQ LISTA_EXP:b PARDER igual EXP:c
+    {: 
+        
+    :}
+    |ID:a DIMENSION:b igual EXP:c
+    {: 
+        //ACCESO 
+        //Identificador(String val,LinkedList<nodoExp> lista,boolean isAssign,int linea,int col)
+        //Asignacion(Expresion variable, Expresion der, int linea, int col)
+        Identificador ident = new Identificador(a.toString(),b,true,aleft,aright);
+        RESULT =  new Asignacion(ident,c,cleft,cright);
+
+    :}
+
+// ********** CON PUNTO Y COMA
+    |ID:a igual EXP:b PTCOMA
+    {:
+        //RESULT = new Asignacion(new Var(a),b,aright,aleft);
+        RESULT =  new Asignacion(new Identificador(a.toString(),aleft,aright,true),b,bleft,bright);
+
+    :}
+    |ID:a PARIZQ LISTA_EXP:b PARDER igual EXP:c PTCOMA
+    
+    |ID:a DIMENSION:b igual EXP:c PTCOMA
+    {:
+        Identificador ident = new Identificador(a.toString(),b,true,aleft,aright);
+        RESULT =  new Asignacion(ident,c,cleft,cright);
+    :}
+;
+
+DIMENSION::= DIMENSION:a OPC_ACCESO:b
+    {:
+        RESULT = a;
+        RESULT.addLast(b);
+    :}
+    |OPC_ACCESO:a
+    {:
+        RESULT = new LinkedList();
+        RESULT.addLast(a);
+    :}
+;
+ 
+OPC_ACCESO ::= 
+// ******** ACCESO A LISTAS
+    CORIZQ EXP:a CORDER                     {: RESULT = new nodoExp(a,Acc.tipo1);   :}
+    |CORIZQ CORIZQ EXP:a CORDER CORDER      {: RESULT = new nodoExp(a,Acc.tipo2);   :}  
+
+// ******** ACCESO A MATRICES  
+    |CORIZQ EXP:a COMA EXP:b CORDER         {: RESULT = new nodoExp(a,b,Acc.m1);    :}
+    |CORIZQ EXP:a COMA CORDER               {: RESULT = new nodoExp(a,Acc.m2);      :}
+    |CORIZQ COMA EXP:a CORDER               {: RESULT = new nodoExp(a,Acc.m3);      :}
+;
+
+instruccion ::= 
+
+    DECLA_FUN:ins
+    {:
+        RESULT = ins;
+    :}    
+    |ASIGNACION:ins
+    {:
+        RESULT = ins;
+    :}
+    |SENTENCIA_IF:ins
+    {:
+        RESULT = ins;
+    :}    
+    |SENTENCIA_WHILE:ins
+    {:
+        RESULT = ins;
+    :}    
+    
+    |SENTENCIA_FOR:ins
+    {:
+        RESULT = ins;
+    :}    
+    
+//************* SIN PUTO Y COMA    
+    |SENTENCIA_DOWHILE:e
+        {: RESULT = e; :}
+    |PRINT:e
+        {: RESULT = e; :}
+    |Tbreak
+        {: 
+            RESULT = new Break();
+        :}
+    |Tcontinue
+        {: 
+            RESULT = new Continue();
+        :}
+    |SENTENCIA_RETURN:e
+        {: 
+            RESULT = e;
+        :}  
+    |SENTENCIA_LLAMADA:e
+        {: 
+            RESULT = e;
+        :}  
+    |GRAFICA PARIZQ LISTA_EXP:a PARDER
+        {: :}
+//************** CON PUNTO Y COMA
+    |SENTENCIA_DOWHILE:e PTCOMA
+        {: RESULT = e; :}
+    |PRINT:e PTCOMA
+        {:
+            RESULT = e;
+        :}
+    |Tbreak PTCOMA
+        {:
+            RESULT = new Break();
+        :}
+    |Tcontinue PTCOMA
+        {: 
+            RESULT = new Continue();
+        :}
+    |SENTENCIA_RETURN:e PTCOMA
+        {: 
+            RESULT = e;
+        :}   
+    |SENTENCIA_LLAMADA:e PTCOMA
+        {: 
+            RESULT = e;
+        :}  
+    |GRAFICA PARIZQ LISTA_EXP:a PARDER PTCOMA
+        {: :}
+    |fantasmita
+        {: 
+            RESULT = new fantasmita();
+        :}  
+;
+
+GRAFICA ::= 
+    pie
+    |barplot
+    |hist
+    |plot    
+;
+
+SENTENCIA_LLAMADA ::= 
+    ID:a PARIZQ PARDER
+    {: 
+        RESULT = new Llama(a,aright,aleft);
+    :}
+    |ID:a PARIZQ LISTA_EXP:b PARDER
+    {: 
+        RESULT = new Llama(a,b,aleft,aright);
+    :}
+;
+
+SENTENCIA_IF ::= 
+    Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b
+        {:
+            RESULT = new If(b,a);
+        :}      
+    |Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b Telse BLOQUE_SENT:c
+        {:
+            RESULT = new If(b,a,c);
+        :}
+    |Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b Telse SENTENCIA_IF:c
+        {:
+            RESULT = new If(b,a,c);
+        :}
+;
+
+SENTENCIA_WHILE ::=  
+    Twhile PARIZQ EXP:a PARDER BLOQUE_SENT:b
+        {:
+            RESULT = new While(b,a,aright,aleft);
+        :}
+;
+
+SENTENCIA_FOR ::= 
+    Tfor:a PARIZQ ID:valor Tin EXP:b PARDER BLOQUE_SENT:c
+        {:
+            Identificador id = new Identificador(valor,valorleft,valorright,false);                    
+            RESULT = new For(id,c,b,aleft,aright);
+        :}
+;
+
+SENTENCIA_DOWHILE::=  
+    Tdo:c BLOQUE_SENT:b Twhile PARIZQ EXP:a PARDER
+        {:
+            RESULT = new DoWhile(b,a,cleft,cright);
+        :}
+;
+
+SENTENCIA_RETURN ::= 
+    Treturn PARIZQ EXP:a PARDER
+    {:
+        RESULT = new Return(a,aleft,aright);
+    :}
+    |Treturn:a
+    {:
+        RESULT = new Return(aleft,aright);
+    :}
+;
+
+PRINT ::= 
+    Tprint PARIZQ EXP:e PARDER 
+        {:
+            RESULT = new Print(e,eleft,eright);
+        :}
+;
+
+LISTA_EXP ::= 
+    LISTA_EXP:a COMA B:b
+    {:
+        RESULT = a;
+        RESULT.addLast(b);
+    :}
+    |B:a
+    {:
+        RESULT = new LinkedList();
+        RESULT.addLast(a);
+    :}
+;
+
+B ::= 
+    EXP igual EXP
+    |EXP:a
+    {:
+        RESULT = a;
+    :}
+;
+
+EXP  ::=
+       MENOS EXP:a                      {:RESULT = new Aritmetica(a,Operador.MENOS_UNARIO,aright,aleft); :}%prec UMENOS     
+    |  EXP:a Tor        EXP:b           {:RESULT = new Logica(a, b, Operador.OR,aright,aleft);:}
+
+    |  EXP:a POR        EXP:b           {:RESULT = new Aritmetica(a, b, Operador.MULTIPLICACION,aright,aleft);:}
+    |  EXP:a MODULO     EXP:b           {:RESULT = new Aritmetica(a, b, Operador.MODULO,aright,aleft);:}
+    |  EXP:a DIVIDIDO   EXP:b           {:RESULT = new Aritmetica(a, b, Operador.DIVISION,aright,aleft);:}
+    
+    |  EXP:a MAS        EXP:b           {:RESULT = new Aritmetica(a, b, Operador.SUMA,aright,aleft);:}
+    |  EXP:a MENOS      EXP:b           {:RESULT = new Aritmetica(a, b, Operador.RESTA,aright,aleft);:}
+    |  EXP:a POTENCIA   EXP:b           {:RESULT = new Aritmetica(a, b, Operador.POTENCIA,aright,aleft);:}
+
+    |  EXP:a MAYOR      EXP:b           {:RESULT = new Relacional(a, b, Operador.MAYOR_QUE,aright,aleft);:}
+    |  EXP:a MAYORIGUAL EXP:b           {:RESULT = new Relacional(a, b, Operador.MAYOR_IGUAL,aright,aleft);:}
+    |  EXP:a MENOR      EXP:b           {:RESULT = new Relacional(a, b, Operador.MENOR_QUE,aright,aleft);:}
+    |  EXP:a MENORIGUAL EXP:b           {:RESULT = new Relacional(a, b, Operador.MENOR_IGUAL,aright,aleft);:}
+    |  EXP:a IGUALDAD   EXP:b           {:RESULT = new Relacional(a, b, Operador.IGUAL_IGUAL,aright,aleft);:}
+    |  EXP:a DIFERENTE  EXP:b           {:RESULT = new Relacional(a, b, Operador.DIFERENTE_QUE,aright,aleft);:}
+
+    |  EXP:a Tand       EXP:b           {:RESULT = new Logica(a, b, Operador.AND,aright,aleft);:}
+    |  Tnot             EXP:a           {:RESULT= new Logica(a,Operador.NOT,aright,aleft); :}%prec Tnot
+    
+    |  EXP:a ternario   EXP:b dospuntos EXP:c   {:RESULT= new Ternaria(a, b,c,aleft,aright);:}%prec ternario
+
+    |  PARIZQ EXP:a PARDER              {:RESULT =a;:}
+    |  ID:a PARIZQ PARDER               {:RESULT = new Llama(a,aleft,aright);:}
+    
+    |  ID:a PARIZQ LISTA_EXP:b PARDER   
+    {: 
+        if(a.equalsIgnoreCase("c")){
+            RESULT = new funcionC(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("list")){
+            RESULT = new GenerarList(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("typeof")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.typeof);
+        }else if(a.equalsIgnoreCase("length")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.length);
+        }else if(a.equalsIgnoreCase("nCol")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.nCol);
+        }else if(a.equalsIgnoreCase("NRow")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.NRow);
+        }else if(a.equalsIgnoreCase("StringLength")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.StringLength);
+        }else if(a.equalsIgnoreCase("remove")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.remove);
+        }else if(a.equalsIgnoreCase("toLowerCase")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.toLowerCase);
+        }else if(a.equalsIgnoreCase("toUpperCase")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.toUpperCase);
+        }else if(a.equalsIgnoreCase("trunk")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.trunk);
+        }else if(a.equalsIgnoreCase("mean")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.mean);
+        }else if(a.equalsIgnoreCase("median")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.median);
+        }else if(a.equalsIgnoreCase("mode")){
+               // RESULT = new Llama(a,b,aleft,aright,Nativas.mode);
+        }else{
+            RESULT = new Llama(a,b,aleft,aright);
+        }
+    :}
+    |  ID:valor                 {: RESULT =  new Identificador(valor,valorleft,valorright,false);                    :}
+    |  ID:a DIMENSION:b         {: RESULT =  new Identificador(a.toString(),b,false,aleft,aright);                   :}
+    |  ENTERO:valor             {: RESULT = new Literal((Object)valor, new Tipo(Tipos.INT),valorleft,valorright);    :}
+    |  DECIMAL:valor            {: RESULT = new Literal((Object)valor, new Tipo(Tipos.DOUBLE),valorleft,valorright); :}
+    |  CAD:valor                {: RESULT = new Literal((Object)valor, new Tipo(Tipos.STRING),valorleft,valorright); :}
+    |  ttrue:valor              {: RESULT = new Literal((Object)true, new Tipo(Tipos.BOOL),valorleft,valorright);    :}
+    |  tfalse:valor             {: RESULT = new Literal((Object)false, new Tipo(Tipos.BOOL),valorleft,valorright);   :}
+    |  Tnull:valor              {: RESULT = new Literal((Object)valor, new Tipo(Tipos.STRING),valorleft,valorright); :}
+    |  tdefault:valor           {: RESULT = new Literal((Object)valor, new Tipo(Tipos.DEFAULT),valorleft,valorright);:}
+;
