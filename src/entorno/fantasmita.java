@@ -34,8 +34,8 @@ public class fantasmita implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        return null;
     }
     
 }

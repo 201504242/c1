@@ -57,7 +57,7 @@ public class If  extends Condicion implements Instruccion{
                     Instruccion ins = (Instruccion)nodo;
                     Object result = ins.ejecutar(local);
                     if (ins instanceof  Break || result instanceof Break) {
-                        return new Break();
+                        return new Break(ins.linea(),ins.columna());
                     }
                     if (ins instanceof Continue) 
                     {
@@ -100,7 +100,7 @@ public class If  extends Condicion implements Instruccion{
                     {
                         if (nodo instanceof Break) 
                         {
-                            return new Break();
+                            return new Break(nodo.linea(),nodo.columna());
                         }
                         if (nodo instanceof Instruccion)
                         {
@@ -135,8 +135,31 @@ public class If  extends Condicion implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"If-Else\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        String nodoIf = "nodo" + ++cont;
+        builder.append(nodoIf).append(" [label=\"If\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoIf).append(";\n");
+
+        for (NodoAST instr : getIns()) {
+            cont = Integer.parseInt(instr.getNombre(builder, nodoIf, cont));
+        }
+
+        if (getInsElse() != null) {
+            String nodoElse = "nodo" + ++cont;
+            builder.append(nodoElse).append(" [label=\"Else\"];\n");
+            builder.append(nodo).append(" -> ").append(nodoElse).append(";\n");
+
+            for (NodoAST instr : getInsElse()) {
+                cont = Integer.parseInt(instr.getNombre(builder, nodoElse, cont));
+            }
+        }
+        
+
+        return ""+cont;
     }
     
     public LinkedList<NodoAST> getInsElse() {

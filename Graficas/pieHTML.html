@@ -1,0 +1,37 @@
+<head>
+	<script src="plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <center><div id='myDiv'></div></center>
+    <div id='myDiv2'></div>
+</body>
+
+<script>
+	var dataPie = [{
+    title: 'Global Emissions 1990-2011',
+    values: ['19','6', '55'],
+    labels: ['Residential', 'Non-Residential', 'Utility'],
+    type: 'pie'
+    }];
+
+    var layoutPie = { height: 400,width: 500};
+
+    var dataBar = [
+    {
+        x: ['giraffes', 'orangutans', 'monkeys'],
+        y: [20, 14, 23],
+        type: 'bar'
+    }
+    ];
+
+    var layoutBar = {
+        title: 'Number of Graphs Made this Week',
+        xaxis: {title: 'X axis'},
+        yaxis: {title: 'Y axis'}
+    };
+
+    Plotly.newPlot('myDiv', dataPie, layoutPie);
+    Plotly.newPlot('myDiv2', dataBar, layoutBar);
+
+</script>

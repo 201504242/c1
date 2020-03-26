@@ -5,7 +5,6 @@
  */
 package entorno;
 
-import entorno.Tipo.Tipos;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;

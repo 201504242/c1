@@ -8,6 +8,7 @@ package analizadores;
 import java_cup.runtime.*;
 import java.util.LinkedList;
 import ast.instrucciones.funciones.*;
+import ast.instrucciones.graficas.*;
 import ast.instrucciones.*;
 import ast.expresiones.*;
 import ast.expresiones.operaciones.Operacion.Operador;
@@ -1264,8 +1265,11 @@ class CUP$Sintactico$actions {
           case 33: // instruccion ::= Tbreak 
             {
               NodoAST RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		 
-            RESULT = new Break();
+            RESULT = new Break(aleft,aright);
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instruccion",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1314,10 +1318,31 @@ class CUP$Sintactico$actions {
           case 37: // instruccion ::= GRAFICA PARIZQ LISTA_EXP PARDER 
             {
               NodoAST RESULT =null;
-		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
-		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
-		LinkedList<NodoAST> a = (LinkedList<NodoAST>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
-		 
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		LinkedList<NodoAST> b = (LinkedList<NodoAST>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		
+            
+            if(a.equals("1")){
+                RESULT = new grafPie(b,aleft,aright);
+            }else if(a.equals("2")){
+                RESULT = new grafBarras(b,aleft,aright);
+            }else if(a.equals("3")){
+                   RESULT = new grafHistograma(b,aleft,aright);
+            }else if(a.equals("4")){
+                if(b.size() == 5){
+                    //linel
+                    RESULT = new grafLineas(b,aleft,aright);
+
+                }else if(b.size() == 8){
+                    //dispercion
+
+                }                   
+            }
+        
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instruccion",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1352,8 +1377,11 @@ class CUP$Sintactico$actions {
           case 40: // instruccion ::= Tbreak PTCOMA 
             {
               NodoAST RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
 		
-            RESULT = new Break();
+            RESULT = new Break(aleft,aright);
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instruccion",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1402,10 +1430,30 @@ class CUP$Sintactico$actions {
           case 44: // instruccion ::= GRAFICA PARIZQ LISTA_EXP PARDER PTCOMA 
             {
               NodoAST RESULT =null;
-		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
-		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
-		LinkedList<NodoAST> a = (LinkedList<NodoAST>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
-		 
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		LinkedList<NodoAST> b = (LinkedList<NodoAST>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		
+            if(a.equals("1")){
+                RESULT = new grafPie(b,aleft,aright);
+            }else if(a.equals("2")){
+                RESULT = new grafBarras(b,aleft,aright);
+            }else if(a.equals("3")){
+                   RESULT = new grafHistograma(b,aleft,aright);
+            }else if(a.equals("4")){
+                if(b.size() == 5){
+                    //linel
+                    RESULT = new grafLineas(b,aleft,aright);
+
+                }else if(b.size() == 8){
+                    //dispercion
+
+                }                   
+            }
+        
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instruccion",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1424,8 +1472,8 @@ class CUP$Sintactico$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 46: // GRAFICA ::= pie 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		 RESULT = "1";
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("GRAFICA",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1433,8 +1481,8 @@ class CUP$Sintactico$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 47: // GRAFICA ::= barplot 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		 RESULT = "2";
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("GRAFICA",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1442,8 +1490,8 @@ class CUP$Sintactico$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 48: // GRAFICA ::= hist 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		 RESULT = "3";
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("GRAFICA",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1451,8 +1499,8 @@ class CUP$Sintactico$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 49: // GRAFICA ::= plot 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		 RESULT = "4";
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("GRAFICA",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;

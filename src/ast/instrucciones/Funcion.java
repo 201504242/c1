@@ -92,8 +92,24 @@ public class Funcion extends Simbolo implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        return "Funcion";
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"FUNCION\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+        
+        String nodoIf = "nodo" + ++cont;
+        builder.append(nodoIf).append(" [label=\""+getIdentificador()+"\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoIf).append(";\n");
+        
+        String nodoP = "nodo" + ++cont;
+        builder.append(nodoP).append(" [label=\"Parametros: "+getParametrosFormales().size()+"\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoP).append(";\n");
+        
+        for (NodoAST instr : sentencias) {
+            cont = Integer.parseInt(instr.getNombre(builder, nodoIf, cont));
+        }
+        
+        return String.valueOf(cont);
     }
 
        

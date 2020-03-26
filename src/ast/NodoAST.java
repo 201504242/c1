@@ -12,5 +12,5 @@ package ast;
 public interface NodoAST {
     int linea();
     int columna();
-    String getNombre();
+    String getNombre(StringBuilder builder, String parent, int cont);
 }

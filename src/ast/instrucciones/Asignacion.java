@@ -7,6 +7,7 @@ package ast.instrucciones;
 
 import ast.Expresion;
 import ast.Instruccion;
+import ast.expresiones.Identificador;
 import ast.instrucciones.funciones.ListVar;
 import entorno.Entorno;
 import entorno.Simbolo;
@@ -24,6 +25,7 @@ public class Asignacion implements Instruccion{
     private Expresion der;
     private int linea;
     private int col;    
+    private String id;
 
     //id = E
 //    public Asignacion(Var var, Expresion der, int linea, int col) {
@@ -39,6 +41,7 @@ public class Asignacion implements Instruccion{
         this.der = der;
         this.linea = linea;
         this.col = col;
+        this.id = "ID";
     }
     
     
@@ -47,6 +50,7 @@ public class Asignacion implements Instruccion{
         try
         {
             Simbolo SimboloViejo = (Simbolo)variable.getValorImplicito(ent);
+            this.id = SimboloViejo.getIdentificador();
             Object valorNuevo = der.getValorImplicito(ent);
             //asigno tipo o lista
             if (valorNuevo instanceof ListVar) {
@@ -103,8 +107,18 @@ public class Asignacion implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+         String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Asignacion\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        String nodoOp = "nodo" + ++cont;
+        builder.append(nodoOp).append(" [label=\"" + this.id + "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoOp).append(";\n");
+
+        //cont = (der).getNombre(builder, nodo, cont);
+        
+        return ""+(der).getNombre(builder, nodo, cont);
     }
     
 }

@@ -18,7 +18,7 @@ import olc2.p1_201504242.JError;
 import olc2.p1_201504242.Ventana;
 
 /**
- *
+ * 
  * @author p_ab1
  */
 public class Identificador implements Expresion{
@@ -219,8 +219,16 @@ public class Identificador implements Expresion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+         String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Identificador\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        String nodoOp1 = "nodo" + ++cont;
+        builder.append(nodoOp1).append(" [label=\""+ getVal() + "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoOp1).append(";\n");
+
+        return ""+ cont;
     }
 
     public String getVal() {

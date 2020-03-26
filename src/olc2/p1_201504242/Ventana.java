@@ -9,6 +9,7 @@ import analizadores.ParseException;
 import analizadores.TokenMgrError;
 import ast.AST;
 import ast.Expresion;
+import ast.Instruccion;
 import ast.NodoAST;
 import ast.instrucciones.funciones.ListVar;
 import entorno.Entorno;
@@ -333,8 +334,9 @@ public class Ventana extends javax.swing.JFrame {
     private void MenuASTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuASTActionPerformed
         // TODO add your handling code here:
         if (arbol != null) {
-            Graficar(arbol,"AST");
-            JOptionPane.showMessageDialog(null, "AST generado Correctamente", "EXITO~~~!", JOptionPane.WARNING_MESSAGE);
+            String grafica = arbol.Graficar();
+            Graficar(grafica, "AST");
+            //JOptionPane.showMessageDialog(null, "AST generado Correctamente", "EXITO~~~!", JOptionPane.WARNING_MESSAGE);
         }
         else{
             JOptionPane.showMessageDialog(null, "AST VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
@@ -414,34 +416,17 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
-    private void Graficar(AST arbol, String nombreArchivo) {
+    private void Graficar(String arbol, String nombreArchivo) {
+  
+        
         try {
-            cad = "";
             FileWriter fichero = null;
             PrintWriter pw = null;
-            String nombre = nombreArchivo;
-            String archivo = nombre + ".dot";
+            String archivo = nombreArchivo + ".dot";
             fichero = new FileWriter(archivo);
             pw = new PrintWriter(fichero);
-            pw.println("graph G {\nnode [shape = egg];\nnode0[label=\"RAIZ\"]");
-            
-            cad = "\n";
-            index = 1;
-            for (NodoAST ins : arbol.getInstrucciones()) {
-                definirNodos(ins);
-            }  
-            index = 0;
-            enlazarNodos(arbol,0);  
-
-//            for (NodoAST ins : arbol.getInstrucciones()) {
-//                cad += "\"AST\" -> "+recorrido(ins);
-//                cad += ";\n";
-//            }
-            
-            cad += "\n}";
-            pw.println(cad);
-            fichero.close();
-            
+            pw.println(arbol);
+            fichero.close();            
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
@@ -496,7 +481,7 @@ public class Ventana extends javax.swing.JFrame {
 
     private void definirNodos(NodoAST ins) {
         if (ins != null) {
-            cad += "node" + index + "[label = \""+ins.getNombre() + "\"]; \n";
+//            cad += "node" + index + "[label = \""+ins.getNombre() + "\"]; \n";
             index++;
             
             //aca irian todas las que puedan tener mas adentro

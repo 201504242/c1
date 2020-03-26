@@ -10,6 +10,8 @@ import ast.Instruccion;
 import ast.NodoAST;
 import entorno.Entorno;
 import java.util.LinkedList;
+import olc2.p1_201504242.JError;
+import olc2.p1_201504242.Ventana;
 
 /**
  *
@@ -30,8 +32,9 @@ public class While extends Condicion implements Instruccion{
     @Override
     public Object ejecutar(Entorno ent) {
         //empieza el while
-        eti: 
-        while (verificacion((boolean)getCond().getValorImplicito(ent)))
+        try {
+            eti: 
+            while (verificacion((boolean)getCond().getValorImplicito(ent)))
             {
                 Entorno local = new Entorno(ent);               
                 for (NodoAST ins : getIns())
@@ -63,6 +66,10 @@ public class While extends Condicion implements Instruccion{
 //                local.setNombre("While");
 //            Ventana.getArray().add(local);
             }
+        } catch (Exception e) {
+            Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                        "Error en clase While "+e.getMessage()));
+        }
             return null;
     }
 
@@ -77,8 +84,15 @@ public class While extends Condicion implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"While\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        for (NodoAST instr : getIns()) {
+            cont = Integer.parseInt(instr.getNombre(builder, nodo, cont));
+        }
+        return ""+cont;
     }
 
     private boolean verificacion(boolean b) {

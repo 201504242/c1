@@ -60,8 +60,22 @@ public class Return implements Expresion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        if (isRetornoVoid()) {
+            String nodo = "nodo" + ++cont;
+            builder.append(nodo).append(" [label=\"Rerun Void\"];\n");
+            builder.append(parent).append(" -> ").append(nodo).append(";\n");
+            return ""+cont;
+        }
+        else{
+            String nodo = "nodo" + ++cont;
+            builder.append(nodo).append(" [label=\"Return Exp\"];\n");
+            builder.append(parent).append(" -> ").append(nodo).append(";\n");
+            
+            cont = Integer.parseInt(this.valorDeRetorno.getNombre(builder, nodo, cont));
+            
+            return ""+cont;
+        }
     }
     
 }
