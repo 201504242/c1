@@ -30,7 +30,8 @@ public class Tipo {
             BOOL,
             VOID,
             DEFAULT,
-            LIST
+            LIST,
+            MATRIZ
     }
  
     public boolean isNumeric(){

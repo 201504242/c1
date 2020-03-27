@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,8 +8,8 @@ package ast.instrucciones;
 
 import ast.Expresion;
 import ast.Instruccion;
-import ast.expresiones.Identificador;
 import ast.instrucciones.funciones.ListVar;
+import ast.instrucciones.funciones.ModificadorMatrix;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.Tipo;
@@ -25,7 +26,6 @@ public class Asignacion implements Instruccion{
     private Expresion der;
     private int linea;
     private int col;    
-    private String id;
 
     //id = E
 //    public Asignacion(Var var, Expresion der, int linea, int col) {
@@ -41,7 +41,6 @@ public class Asignacion implements Instruccion{
         this.der = der;
         this.linea = linea;
         this.col = col;
-        this.id = "ID";
     }
     
     
@@ -49,9 +48,15 @@ public class Asignacion implements Instruccion{
     public Object ejecutar(Entorno ent) {
         try
         {
-            Simbolo SimboloViejo = (Simbolo)variable.getValorImplicito(ent);
-            this.id = SimboloViejo.getIdentificador();
+            Object sim = variable.getValorImplicito(ent);
+            Simbolo  SimboloViejo = (sim instanceof Simbolo) ? (Simbolo)variable.getValorImplicito(ent): null;
             Object valorNuevo = der.getValorImplicito(ent);
+            
+            if( sim  instanceof ModificadorMatrix)
+            {
+                ModificadorMatrix s = (ModificadorMatrix)sim;
+                s.cambiarValor(valorNuevo);
+            }
             //asigno tipo o lista
             if (valorNuevo instanceof ListVar) {
                 SimboloViejo.setRol(Simbolo.Rol.LISTA);
@@ -122,3 +127,4 @@ public class Asignacion implements Instruccion{
     }
     
 }
+

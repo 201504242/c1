@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,7 +7,9 @@
 package ast.expresiones;
 
 import ast.Expresion;
+import ast.instrucciones.funciones.FuncionMatrix;
 import ast.instrucciones.funciones.ListVar;
+import ast.instrucciones.funciones.ModificadorMatrix;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.Simbolo.Acc;
@@ -18,7 +21,7 @@ import olc2.p1_201504242.JError;
 import olc2.p1_201504242.Ventana;
 
 /**
- * 
+ *
  * @author p_ab1
  */
 public class Identificador implements Expresion{
@@ -81,6 +84,21 @@ public class Identificador implements Expresion{
                     // tiene una lista 
                     else
                     {
+                        // Es una matrix asignandose 
+                        if(sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        {
+                            try{
+                                if(lista.size()>0)
+                                {
+                                    nodoExp nodoexpresion = lista.get(0);
+                                     
+                                    return new ModificadorMatrix(nodoexpresion, (Object[][])sim.getValor(), ent , sim);
+                                }
+                            }
+                            catch(Exception e){
+                                 System.err.println("Error acceso matriz");
+                            }
+                        }
                         //puede ser acceso a vector 
                         if (sim.getRol() == Rol.VECTOR) 
                         {
@@ -133,6 +151,21 @@ public class Identificador implements Expresion{
                     // tiene una lista 
                     else
                     {
+                        // GET MATRIZ
+                        if(sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        {
+                            try{
+                                if(lista.size()>0)
+                                {
+                                    nodoExp nodoexpresion = lista.get(0);
+                                    Object res =  FuncionMatrix.getValoresMatriz(nodoexpresion,(Object[][])sim.getValor(), ent);
+                                    return res;
+                                }
+                            }
+                            catch(Exception e){
+                                 System.err.println("Error acceso matriz");
+                            }
+                        }
                         // arreglo de valores
                         if (sim.getRol() == Rol.VECTOR && sim.getValor() instanceof Object[])
                         {
@@ -153,6 +186,7 @@ public class Identificador implements Expresion{
                             Object ob = getValorLista(lista,0,ent,list,null);
                             return ob; 
                         }
+                       
                                    
 //                            ListVar list = (ListVar) sim.getValor();
 //                            Object ob = getValorLista(lista,0,ent,list,null);
@@ -198,6 +232,7 @@ public class Identificador implements Expresion{
         }        
         else
         {
+            
             Simbolo sim2 = new Simbolo(val, Rol.VECTOR);
             ent.agregar(val, sim2);
             return sim2;
@@ -219,16 +254,8 @@ public class Identificador implements Expresion{
     }
 
     @Override
-    public String getNombre(StringBuilder builder, String parent, int cont) {
-         String nodo = "nodo" + ++cont;
-        builder.append(nodo).append(" [label=\"Identificador\"];\n");
-        builder.append(parent).append(" -> ").append(nodo).append(";\n");
-
-        String nodoOp1 = "nodo" + ++cont;
-        builder.append(nodoOp1).append(" [label=\""+ getVal() + "\"];\n");
-        builder.append(nodo).append(" -> ").append(nodoOp1).append(";\n");
-
-        return ""+ cont;
+    public String getNombre() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getVal() {
@@ -526,3 +553,4 @@ public class Identificador implements Expresion{
     
     
 }
+
