@@ -623,8 +623,19 @@ public class Relacional extends Operacion{
 
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Relacional\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        cont = Integer.parseInt(op1.getNombre(builder, nodo, cont));
+
+        String nodoOp = "nodo" + ++cont;
+        builder.append(nodoOp).append(" [label=\"" + operador + "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoOp).append(";\n");
+
+        cont = Integer.parseInt(op2.getNombre(builder, nodo, cont));
+        return ""+cont;
     }
     
 }

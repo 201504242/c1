@@ -16,9 +16,11 @@ public class Break implements Instruccion{
     private int linea;
     private int col;
 
-    public Break() {
+    public Break(int linea,int col) {
+        this.linea = linea;
+        this.col = col;
     }
-    
+
     
     @Override
     public Object ejecutar(Entorno ent) {
@@ -36,8 +38,11 @@ public class Break implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Break\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+        return ""+cont;
     }
     
 }

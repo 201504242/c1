@@ -1,6 +1,24 @@
 
+print("------- prueba grafica-----");
+x = c(19, 26, 55)
+labels =  c("Residential", "Non-Residential", "Utility")
+pie (x, labels, "ACA TITULO");
+x = c(19, 26, 55,65,20,89)
+pie (x, labels, "ACA TITULO2");
 
-print("------- Preuebas For -----");
+H = c("primaria","basicos","secundaria");
+names.arg = c(600,2500,1200,100);
+xlab = "Nivel Educativo"
+ylab = "Frecuencia"
+main = "Grafica de Educacion"
+barplot( H, xlab, ylab, main, names.arg)
+
+v = c(10,15,5,8,7,4,11,18,27,14,12);
+main = "Grafica Histograma"
+xlab = "Datos"
+hist(v, main, xlab)
+
+print("------- Preuebas For-----");
 for(i in 3){ 
     print(i) 
 }

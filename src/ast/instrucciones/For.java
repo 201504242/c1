@@ -61,7 +61,7 @@ public class For extends Condicion implements Instruccion{
                     {
                         Object result = ((Instruccion)in).ejecutar(entFor);
                         if (in instanceof Break) {
-                            return new Break();
+                            return new Break(in.linea(),in.columna());
                         }
                         if (in instanceof Continue || result instanceof Continue) 
                         {
@@ -88,7 +88,7 @@ public class For extends Condicion implements Instruccion{
                     {
                         Object result = ((Instruccion)in).ejecutar(entFor);
                         if (in instanceof Break) {
-                            return new Break();
+                            return new Break(in.linea(),in.columna());
                         }
                         if (in instanceof Continue || result instanceof Continue) 
                         {
@@ -112,7 +112,7 @@ public class For extends Condicion implements Instruccion{
                 {
                     Object result = ((Instruccion)in).ejecutar(entFor);
                     if (in instanceof Break) {
-                        return new Break();
+                        return new Break(in.linea(),in.columna());
                     }
                     if (in instanceof Continue || result instanceof Continue) 
                     {
@@ -143,8 +143,16 @@ public class For extends Condicion implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"For\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+        
+        for (NodoAST instr : getIns()) {
+            cont = Integer.parseInt(instr.getNombre(builder, nodo, cont));
+        }
+        
+        return ""+cont;
     }
     
 }

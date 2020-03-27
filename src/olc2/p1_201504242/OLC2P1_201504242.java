@@ -5,6 +5,8 @@
  */
 package olc2.p1_201504242;
 
+import java.util.Random;
+
 /**
  *
  * @author p_ab1
@@ -15,7 +17,9 @@ public class OLC2P1_201504242 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // TODO code application logic here+
+
+
         ven = new Ventana();
         ven.setVisible(true);
         

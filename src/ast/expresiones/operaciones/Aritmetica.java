@@ -686,8 +686,29 @@ public class Aritmetica extends Operacion{
 
     
     @Override
-    public String getNombre() {
-        return "Arit";
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Aritmetica\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+        
+        if (operador != Operador.MENOS_UNARIO) {
+            cont = Integer.parseInt(op1.getNombre(builder, nodo, cont));
+
+            String nodoOp = "nodo" + ++cont;
+            builder.append(nodoOp).append(" [label=\"" + operador + "\"];\n");
+            builder.append(nodo).append(" -> ").append(nodoOp).append(";\n");
+
+            cont = Integer.parseInt(op2.getNombre(builder, nodo, cont));
+            return ""+cont;
+        }else{
+            cont = Integer.parseInt(opU.getNombre(builder, nodo, cont));
+
+            String nodoOp = "nodo" + ++cont;
+            builder.append(nodoOp).append(" [label=\"" + operador + "\"];\n");
+            builder.append(nodo).append(" -> ").append(nodoOp).append(";\n");
+            return ""+cont;
+        }
+        
     }
 
 }

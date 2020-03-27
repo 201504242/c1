@@ -6,107 +6,158 @@ options {
 PARSER_BEGIN(Gramatica)
 /** Analizador de expresiones aritmeticas sencillas. */
 package analizadores; 
+
+import ast.instrucciones.funciones.*;
+import ast.instrucciones.graficas.*;
+import ast.instrucciones.*;
+
+import ast.expresiones.*;
+import ast.expresiones.operaciones.Operacion.Operador;
+import ast.expresiones.operaciones.*;
+
+import entorno.Tipo;
+import entorno.Tipo.Tipos;
+
+import entorno.Var;
+import entorno.nodoExp;
+import entorno.Simbolo.*;
+import entorno.Simbolo;
+import entorno.fantasmita;
+
+import ast.Expresion;
+import ast.Instruccion;
+import ast.AST;
+import ast.NodoAST;
+import java.util.LinkedList;
+
 public class Gramatica {
 }
 PARSER_END(Gramatica)
 
 /** Lexico */
+MORE :
+{
+    "\"" :STRING_STATE
+}
+
 SKIP : {
       " "
     | "\t"
     | "\r"
     | "\n"
+    | <"#" (~["\n", "\r"])*>
+    | <"#*" (~["*"])* "*" ("*" | ~["*","#"] (~["*"])* "*")* "#">
+    | <(~[])> {System.out.println("error");}
+}
+
+<STRING_STATE> MORE:
+{
+    <~["\""]>
+}
+
+<STRING_STATE> TOKEN:
+{
+   <STRING:"\""> : DEFAULT 
 }
 
 TOKEN : {
-      <NUMERO: (["0"-"9"])+>
+       <NUMERO: (["0"-"9"])+>
     | <DECIMAL: (["0"-"9"])+"."(["0"-"9"])+>
-    | <EVALUAR: "Evaluar">
+    | <ENTERO: "Numero">
+    | <CADENA: "Cadena">
+    | <IMPRIMIR: "print">
+    | <MIENTRAS: "Mientras">
+    | <FUNCION: "Funcion">
+    | <RETORNO: "Return">
+    | <BREAK: "Break">
+    | <CONTINUE: "continue">
+    | <SI: "if">
+    | <SINO: "else">
     | <PCOMA: ";">
     | <PARENI: "(">
     | <PAREND: ")">
     | <CORI: "[">
     | <CORD: "]">
+    | <LLAVEI: "{">
+    | <LLAVED: "}">
     | <MAS: "+">
     | <MENOS: "-">
     | <POR: "*">
     | <DIV: "/">
-    | <BREAK: "break">
-    | <CONTINUE: "continue">
-    | <IF: "if">
-    | <ELSE: "else">
-    | <WHILE: "while">
-    | <ID: ["a"-"z"] ( ["a"-"z"] | ["0"-"9"] | "_")* >
+    | <IGUAL: "=">
+    | <MENORQUE: "<">
+    | <MAYORQUE: ">">
+    | <MENORIGUAL: "<=">
+    | <MAYORIGUAL: ">=">
+    | <IGUALACION: "==">
+    | <DIFERENCIACION: "!=">
+    | <COMA: ",">
+    | <AND: "&&">
+    | <OR: "||">
+    | <NOT: "!" >
+    | <IDENTIFICADOR: ["a"-"z","A"-"Z", "_"] ( ["a"-"z","A"-"Z", "_"] | ["0"-"9"] )* >
 }
 /** Fin Lexico */
 
 /** Producción inicial 
     Analizar -> (Instruccion)+ EOF
 */
-void Analizar() :
-{}
+AST Analizar() :
+{ LinkedList<NodoAST> instrucciones = new LinkedList(); Instruccion ins; }
 {
-  (Instruccion())+ <EOF>
+    try {
+         (ins = Instruccion() {instrucciones.add(ins);})+ <EOF> {return new AST(instrucciones);}
+    } catch (ParseException exc) {
+            System.out.println(exc.toString());            
+    }
+  
 }
 
-/** Instruccion -> evaluar [ Expresion ]; */
-void Instruccion() :
-{double e;}
+/** Instruccion -> print */
+Instruccion Instruccion() :
+{ Instruccion ins; }
 {
-  <EVALUAR> <CORI> e=Expresion() <CORD> <PCOMA> {System.out.println("El valor de la expresion es: "+e);}
+    ins = Imprimir() {return ins;}
 }
 
-/** Expresion -> ExpresionMultiplicativa ('+' ExpresionMultiplicativa)*
-              |  ExpresionMultiplicativa ('-' ExpresionMultiplicativa)*
-*/
-double Expresion() :
-{double e, e1;}
+/** Imprimir -> print ( Expresion ); */
+Instruccion Imprimir() :
+{Expresion e;}
 {
-    e=ExpresionMultiplicativa()
-    (
-        <MAS> e1=ExpresionMultiplicativa() {e += e1;}
-        |
-        <MENOS> e1=ExpresionMultiplicativa() {e -= e1;}
-    )*
-    {return e;}
+    <IMPRIMIR> <PCOMA> {return new Print(null,0,0);}
 }
 
-/** ExpresionMultiplicativa -> ExpresionUnaria ('*' ExpresionUnaria)*
-                            |  ExpresionUnaria ('/' ExpresionUnaria)*
-*/
-double ExpresionMultiplicativa() :
-{double e, e1;}
-{
-    e=ExpresionUnaria()
-    (
-        <POR> e1=ExpresionUnaria() {e *= e1;}
-        |
-        <DIV> e1=ExpresionUnaria() {e /= e1;}
-    )*
-    {return e;}
-}
 
-/** ExpresionUnaria -> '-' ExpresionUnaria
-                    |  Primitivo
- */
-double ExpresionUnaria() :
-{double e;}
+Expresion E():
+{ Expresion e; }
 {
-    <MENOS> e=ExpresionUnaria() {return -e;}
-    |
     e=Primitivo() {return e;}
 }
+
 
 /** Primitivo -> Numero
               |  Decimal
               |  '(' Expresion ')' 
 */
-double Primitivo() :
-{double e;}
+Expresion Primitivo() :
+{Expresion e; Token t; String cad;}
 {
-    <NUMERO> {return Double.parseDouble(token.image);}
+    <NUMERO> {return new Literal(Integer.parseInt(token.image), new Tipo(Tipos.INT),token.beginLine,token.beginColumn);}
     |
-    <DECIMAL> {return Double.parseDouble(token.image);}
+    <DECIMAL> {return new Literal(Double.parseDouble(token.image), new Tipo(Tipos.DOUBLE),token.beginLine, token.beginColumn);}
     |
-    <PARENI> e=Expresion() <PAREND> {return e;}
+    //LOOKAHEAD(2)e=Llamada() {return e;}
+    //|
+    t=<STRING> {    cad = t.image.substring(1,t.image.length()-1);
+                    cad = cad.replace("\\","\\");
+                    cad = cad.replace("\\n","\n");
+                    cad = cad.replace("\\t","\t");
+                    return new Literal(cad, new Tipo(Tipos.STRING),token.beginLine,token.beginColumn);} 
+    |
+    LOOKAHEAD(2)t=<IDENTIFICADOR> {return new Identificador(t.image,token.beginLine,token.beginColumn,false);}
+    |
+    <PARENI> e=E() <PAREND> {return e;}
+    //|
+    //e=argumentos() {return e;}
+    
 }

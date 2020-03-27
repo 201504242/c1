@@ -31,7 +31,7 @@ public class Print implements Instruccion{
         
     @Override
     public Object ejecutar(Entorno ent) {
-        Ventana pp = (Ventana)olc2.p1_201504242.OLC2P1_201504242.ven.ggetVentana();
+        //Ventana pp = (Ventana)olc2.p1_201504242.OLC2P1_201504242.ven.ggetVentana();
         try {
             Object o = valor.getValorImplicito(ent);
             if (o instanceof ListVar) 
@@ -48,20 +48,25 @@ public class Print implements Instruccion{
                     
                 }
                 //System.out.println("");
-                pp.agregarConsola("["+cad+"]");
+                Ventana.ggetVentana().agregarConsola("["+cad+"]");
+                //pp.agregarConsola("["+cad+"]");
             }
             else if (o instanceof Object[]) {
                 Object[] s = (Object[])o;
                 
-                pp.agregarConsola(Arrays.toString(s));
-                
+               // pp.agregarConsola(Arrays.toString(s));
+                Ventana.ggetVentana().agregarConsola(Arrays.toString(s));
                 //System.out.println(Arrays.toString(s));
             }
             else if (o != null) {
-                pp.agregarConsola(o.toString());
+                //pp.agregarConsola(o.toString());
+                Ventana.ggetVentana().agregarConsola(o.toString());
+                
              //  System.out.println(o.toString());
             }else{
-                pp.agregarConsola("Null");
+                Ventana.ggetVentana().agregarConsola("Null");
+                
+//                pp.agregarConsola("Null");
                // System.out.println("Null");
             }
         } catch (Exception e) {
@@ -83,8 +88,13 @@ public class Print implements Instruccion{
     }
 
     @Override
-    public String getNombre() {
-        return "Print";
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Imprimir\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        //cont = valor.getNombre(builder, nodo, cont);
+        return ""+valor.getNombre(builder, nodo, cont);
     }
     
 }
