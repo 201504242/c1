@@ -54,8 +54,6 @@ COMENTUNILINEA =("#".*\r\n)|("#".*\n)|("#".*\r)
 ">=" {return new Symbol(sym.MAYORIGUAL,yyline,yychar, yytext());}
 "<=" {return new Symbol(sym.MENORIGUAL,yyline,yychar, yytext());}
 
-"=>" {return new Symbol(sym.asigna,yyline,yychar, yytext());}
-
 "|"   { return new Symbol(sym.Tor,yyline,yychar, yytext());}
 "&"   { return new Symbol(sym.Tand,yyline,yychar, yytext());}
 "!"   { return new Symbol(sym.Tnot,yyline,yychar, yytext());}

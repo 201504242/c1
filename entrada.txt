@@ -1,3 +1,50 @@
+print("------- Operaciones Matrix -----");
+ope = matrix(c(1,2,3,4), 3, 4)
+ope = ope + ope + ope;
+prinT(ope)
+
+print("------- Pruebas Matrix -----");
+AdA = matrix(c(1, 2, 3, 4, 5), 5, 4)
+print(AdA);
+string = matrix(c("1", 2, 3, 4), 5, 4)
+print(string);
+Vec1 = c(1,2,3,4) 
+AAA = matrix(vec1, 2, 1)
+print(AAA);
+uno = matrix(5, 3, 5)
+print(uno);
+mayor = matrix(c(1,2,3,4),2,2)
+print(mayor);
+mayor = matrix(c(1,2.5,3,4,5),2,2)
+print(mayor);
+ejemplo = matrix(c(1, "2", 3, 4), 3, 4)
+print("------- Accesos Matrix -----");
+prinT(ejemplo);
+accesos = ejemplo[2,2]
+print(accesos)      #"1"
+accesos = ejemplo[2,]
+print(accesos)      #"2,1,4,2"
+accesos = ejemplo[,3]
+print(accesos)      #"3,4,1"
+accesos = ejemplo[5]
+print(accesos)      #5
+ejemplo = matrix(c(1, "2", 3, 4), 3, 4)
+print("------- Modificacion Matrix -----");
+prinT(ejemplo);
+fantasmita
+ejemplo[3,3] = 8
+prinT(ejemplo)
+ejemplo[2, ] = 9
+prinT(ejemplo)
+ejemplo[2, ] = c(7)
+prinT(ejemplo)
+ejemplo[ ,4] = 6
+prinT(ejemplo);
+ejemplo[ ,4] = c(6,3,9,45) # Error 
+ejemplo[ ,4] = c(6,7,8)
+print(ejemplo);
+ejemplo[7] = 0
+print(ejemplo);
 
 print("------- prueba grafica-----");
 x = c(19, 26, 55)
@@ -755,7 +802,7 @@ listaGlobal = addNode(listaGlobal, getVectorEstudiante("201503953", "Z","Zergio"
 print("------------------------------------------------------------------")
 print("IMPRIMIENDO ESTA LISTA CON CIERTO MENSAJE");
 print("------------------------------------------------------------------")
-fantasmita
+
 printList(listaGlobal);
 print("------------------------------------------------------------------")
 

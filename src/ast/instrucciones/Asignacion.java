@@ -26,7 +26,7 @@ public class Asignacion implements Instruccion{
     private Expresion der;
     private int linea;
     private int col;    
-
+    private String id;
     //id = E
 //    public Asignacion(Var var, Expresion der, int linea, int col) {
 //        this.variable = var;
@@ -41,6 +41,7 @@ public class Asignacion implements Instruccion{
         this.der = der;
         this.linea = linea;
         this.col = col;
+        this.id = "Var";
     }
     
     
@@ -49,50 +50,66 @@ public class Asignacion implements Instruccion{
         try
         {
             Object sim = variable.getValorImplicito(ent);
-            Simbolo  SimboloViejo = (sim instanceof Simbolo) ? (Simbolo)variable.getValorImplicito(ent): null;
+            Simbolo  SimboloViejo = (sim instanceof Simbolo) ? (Simbolo)sim: null;
+            
             Object valorNuevo = der.getValorImplicito(ent);
             
             if( sim  instanceof ModificadorMatrix)
             {
                 ModificadorMatrix s = (ModificadorMatrix)sim;
                 s.cambiarValor(valorNuevo);
+                
             }
             //asigno tipo o lista
-            if (valorNuevo instanceof ListVar) {
+            else if (valorNuevo instanceof ListVar) {
+                this.id = SimboloViejo.getIdentificador();
                 SimboloViejo.setRol(Simbolo.Rol.LISTA);
                 SimboloViejo.setTipo(new Tipo(Tipo.Tipos.LIST));
             }
+            //matrices
+            else if (valorNuevo instanceof Object[][]) {
+                this.id = SimboloViejo.getIdentificador();
+                SimboloViejo.setRol(Simbolo.Rol.MATRIZ);
+                Tipo tipoNuevo = der.getTipo(ent);
+                SimboloViejo.setTipo(tipoNuevo);
+            }
             else{
+                this.id = SimboloViejo.getIdentificador();
                 SimboloViejo.setRol(Simbolo.Rol.VECTOR);
                 Tipo tipoNuevo = der.getTipo(ent);
                 SimboloViejo.setTipo(tipoNuevo);
             }
             
-            if (SimboloViejo.lugar == 0) {                
-                SimboloViejo.setValor(valorNuevo);  
-            }
-            else{
-                Object [] prueba = (Object[])SimboloViejo.getValor();
-                if (valorNuevo instanceof Object[]) {
-                    Object [] p = (Object[]) valorNuevo;
-                    if (p.length !=1 ) {
-                        Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
-                        "Tratando de asignar más de un valor a una posición"));
-                        return null;
-                    }
-                    valorNuevo = p[0];
+            if (SimboloViejo != null) 
+            {
+                if (SimboloViejo.lugar == 0) 
+                {                
+                    SimboloViejo.setValor(valorNuevo);  
                 }
-                prueba[SimboloViejo.lugar-1] = valorNuevo;                
-                SimboloViejo.setValor(prueba);  
-            }
-            SimboloViejo.lugar = 0;
+                else
+                {
+                    Object [] prueba = (Object[])SimboloViejo.getValor();
+                    if (valorNuevo instanceof Object[]) {
+                        Object [] p = (Object[]) valorNuevo;
+                        if (p.length !=1 ) {
+                            Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                            "Tratando de asignar más de un valor a una posición"));
+                            return null;
+                        }
+                        valorNuevo = p[0];
+                    }
+                    prueba[SimboloViejo.lugar-1] = valorNuevo;                
+                    SimboloViejo.setValor(prueba);  
+                }
+                SimboloViejo.lugar = 0;
+            }            
             
             
         }
         catch(Exception e)
         {
-            System.err.println("Semantico Fatal"+ linea()+" "+columna()+
-                    " Error en asignacion casteo en Asignacion " + e.getMessage());
+//            System.err.println("Semantico Fatal"+ linea()+" "+columna()+
+//                    " Error en asignacion casteo en Asignacion " + e.getMessage());
             Ventana.ggetVentana().listaError.add(new JError("Semantico Fatal", linea(), columna(),
             //System.err.println(
                    "Error en asignacion casteo en Asignacion " + e.getMessage()));

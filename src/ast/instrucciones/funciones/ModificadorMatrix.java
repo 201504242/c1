@@ -77,6 +77,23 @@ import entorno.nodoExp;
                         mat[i][val1_m3] = valorNuevo;
                     }
                     break;
+                    //[<Expresión>]
+            case tipo1:
+                int val1_tipo1 =  (Integer)e.getExp1().getValorImplicito(ent)-1;
+                Object resit_tipo1 = new Object();
+                int pos = 0;
+                boolean ya = true;
+                for (int i = 0; i < mat[0].length; i++){		// El primer índice recorre las columnas.
+                    for (int j = 0; j < mat.length; j++){	// El segundo índice recorre las filas.
+                            // Procesamos cada elemento de la matriz.
+                            if(pos == val1_tipo1 && ya == true){
+                                mat[j][i] = valorNuevo;
+                                ya = false;
+                                break;
+                            }
+                        pos++;
+                    }
+                }
         }
     }
      catch(Exception error)

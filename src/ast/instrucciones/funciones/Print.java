@@ -51,6 +51,18 @@ public class Print implements Instruccion{
                 Ventana.ggetVentana().agregarConsola("["+cad+"]");
                 //pp.agregarConsola("["+cad+"]");
             }
+             //Matrix
+            else if(o instanceof Object[][])
+            {
+                Object [][] m = (Object[][]) o;
+                Ventana.ggetVentana().agregarConsola("--- x: "+m.length+" y:"+m[0].length+" -----");
+                int cont = 1;
+                for (Object[] row : m){
+                    //System.out.println(Arrays.toString(row)); 
+                    Ventana.ggetVentana().agregarConsola("["+cont+",] "+Arrays.toString(row));
+                    cont++;
+                } 
+            }
             else if (o instanceof Object[]) {
                 Object[] s = (Object[])o;
                 
@@ -58,6 +70,7 @@ public class Print implements Instruccion{
                 Ventana.ggetVentana().agregarConsola(Arrays.toString(s));
                 //System.out.println(Arrays.toString(s));
             }
+           
             else if (o != null) {
                 //pp.agregarConsola(o.toString());
                 Ventana.ggetVentana().agregarConsola(o.toString());
@@ -96,5 +109,6 @@ public class Print implements Instruccion{
         //cont = valor.getNombre(builder, nodo, cont);
         return ""+valor.getNombre(builder, nodo, cont);
     }
+    
     
 }

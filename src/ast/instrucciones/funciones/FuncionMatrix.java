@@ -11,6 +11,8 @@ import entorno.Entorno;
 import entorno.Tipo;
 import entorno.nodoExp;
 import java.util.LinkedList;
+import olc2.p1_201504242.JError;
+import olc2.p1_201504242.Ventana;
 
 /**
  *
@@ -29,7 +31,19 @@ public class FuncionMatrix implements Expresion{
    
     @Override
     public Tipo getTipo(Entorno ent) {
-        return new Tipo(Tipo.Tipos.MATRIZ);
+        Tipo []tp = new Tipo[listaExp.size()];
+        int c = 0;
+        for (NodoAST nodo : listaExp) 
+        {
+            if (nodo instanceof Expresion)
+            {
+                Expresion a = (Expresion)nodo;
+                Tipo ti = a.getTipo(ent);
+                tp[c] = ti;
+                c++;
+            }                        
+        }
+        return tipoDominante(tp);
     }
 
     @Override
@@ -70,7 +84,9 @@ public class FuncionMatrix implements Expresion{
             }
             catch(Exception e)
             {
-                System.err.println("Error escribiendo la matriz");
+                Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                        "Error creando la matriz "));
+                //System.err.println("Error escribiendo la matriz");
             }
         }
         
@@ -87,11 +103,6 @@ public class FuncionMatrix implements Expresion{
         return this.col;
     }
 
-    @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     public static Object  getValoresMatriz(nodoExp e ,Object[][] mat, Entorno ent)
     {
         // Acceso a la matriz 
@@ -116,11 +127,56 @@ public class FuncionMatrix implements Expresion{
                         result_m3[i] = mat[i][val1_m3];
                     }
                     return result_m3;
+            //[<Expresión>]
+            case tipo1:
+                int val1_tipo1 =  (Integer)e.getExp1().getValorImplicito(ent)-1;
+                Object resit_tipo1 = new Object();
+                int pos = 0;
+                for (int i = 0; i < mat[0].length; i++){		// El primer índice recorre las columnas.
+                    for (int j = 0; j < mat.length; j++){	// El segundo índice recorre las filas.
+                            // Procesamos cada elemento de la matriz.
+                            if(pos == val1_tipo1){
+                                resit_tipo1 = mat[j][i];
+                                return resit_tipo1;
+                            }
+                        pos++;
+                    }
+                }
+                return resit_tipo1;
+                    
         }
            return null;
     }
-    
 
+    @Override
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    private Tipo tipoDominante(Tipo[] tp) {
+        for (Tipo tipo : tp) {
+            if (tipo.isString()) {
+                return new Tipo(Tipo.Tipos.STRING);
+            }
+        }
+        for (Tipo tipo : tp) {
+            if (tipo.isDouble()) {
+                return new Tipo(Tipo.Tipos.DOUBLE);
+            }
+        }        
+        for (Tipo tipo : tp) {
+            if (tipo.isInt()) {
+                return new Tipo(Tipo.Tipos.INT);
+            }
+        }
+        for (Tipo tipo : tp) {
+            if (tipo.isBoolean()) {
+                return new Tipo(Tipo.Tipos.BOOL);
+            }
+        }
+        return null;
+    }
    
 }
  

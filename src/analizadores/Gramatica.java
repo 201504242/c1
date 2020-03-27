@@ -51,15 +51,7 @@ public class Gramatica implements GramaticaConstants {
       jj_consume_token(0);
                                                                  {if (true) return new AST(instrucciones);}
     } catch (ParseException exc) {
-            Token t;
             System.out.println(exc.toString());
-            do {
-                t = getNextToken();
-                if(t.kind == EOF){
-                 {if (true) return ins;}
-                }
-             } while (t.kind != PCOMA && t!=null && t.kind != EOF );
-            {if (true) return Analizar(ins);}
     }
     throw new Error("Missing return statement in function");
   }

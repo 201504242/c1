@@ -54,15 +54,15 @@ public static AST arbol;
     }  
 :} 
 // ************************ SIMBOLOS
-terminal String PTCOMA,PARIZQ,PARDER,CORIZQ,CORDER,LLAIZQ,LLADER,COMA,asigna;
+terminal String PTCOMA,PARIZQ,PARDER,CORIZQ,CORDER,LLAIZQ,LLADER,COMA;
 terminal String MAS,MENOS,POR,DIVIDIDO,POTENCIA,MODULO;
 terminal String IGUALDAD,DIFERENTE,MAYOR,MENOR,MAYORIGUAL,MENORIGUAL;
 
 // ************************ PALABRAS RESERVADAS
-terminal String pie,plot,hist,barplot,matrix;
+terminal String pie,plot,hist,barplot;
 
 terminal String Tor,Tand,Tnot,igual,ternario,dospuntos;
-terminal String Tnull,ttrue,tfalse,tdefault,list,array;
+terminal String Tnull,ttrue,tfalse,tdefault;
 terminal String Tif,Telse,Tbreak,Tcase,Tswitch,Twhile,Tdo,Tfor,Tin,Tprint,Tcontinue,Tfuntion,Treturn;
 terminal fantasmita;
 
@@ -486,6 +486,8 @@ EXP  ::=
             RESULT = new funcionC(b,aleft,aright);
         }else if(a.equalsIgnoreCase("list")){
             RESULT = new GenerarList(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("matrix")){
+            RESULT = new FuncionMatrix(b,aleft,aright);
         }else if(a.equalsIgnoreCase("typeof")){
                // RESULT = new Llama(a,b,aleft,aright,Nativas.typeof);
         }else if(a.equalsIgnoreCase("length")){

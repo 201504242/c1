@@ -690,7 +690,7 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private Object traerString(Object o) {
-        if (o instanceof ListVar) 
+            if (o instanceof ListVar) 
             {
                 ListVar s = (ListVar)o;
                 String cad = "";
@@ -705,6 +705,19 @@ public class Ventana extends javax.swing.JFrame {
                 }
                 //System.out.println("");
                 return ("["+cad+"]");
+            }
+            else if(o instanceof Object[][])
+            {
+                Object [][] m = (Object[][]) o;
+                Ventana.ggetVentana().agregarConsola("--- x: "+m.length+" y:"+m[0].length+" -----");
+                int cont = 1;
+                String cad = "";
+                for (Object[] row : m){
+                    //System.out.println(Arrays.toString(row)); 
+                    cad = cad + (Arrays.toString(row));
+                    cont++;
+                } 
+                return cad;
             }
             else if (o instanceof Object[]) {
                 Object[] s = (Object[])o;

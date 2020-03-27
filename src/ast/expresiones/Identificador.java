@@ -85,7 +85,7 @@ public class Identificador implements Expresion{
                     else
                     {
                         // Es una matrix asignandose 
-                        if(sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        if(sim.getRol() == Rol.MATRIZ || sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
                         {
                             try{
                                 if(lista.size()>0)
@@ -96,7 +96,9 @@ public class Identificador implements Expresion{
                                 }
                             }
                             catch(Exception e){
-                                 System.err.println("Error acceso matriz");
+                                Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                                "Acceso a matriz imposible -> "+this.val));
+                                 //System.err.println("Error acceso matriz");
                             }
                         }
                         //puede ser acceso a vector 
@@ -127,7 +129,8 @@ public class Identificador implements Expresion{
                             //un solo valor en la lsita
                             else if (sim.getValor() instanceof Object) {
                                 ListVar listaVar = new ListVar();
-                                Simbolo ss = new Simbolo(val, listaVar.add(sim.getValor()), new Tipo(Tipo.Tipos.LIST), Rol.LISTA, 0);
+                                listaVar.add(sim.getValor());
+                                Simbolo ss = new Simbolo(val,listaVar , new Tipo(Tipo.Tipos.LIST), Rol.LISTA, 0);
                                 return ss;
                             }
                         }
@@ -152,7 +155,7 @@ public class Identificador implements Expresion{
                     else
                     {
                         // GET MATRIZ
-                        if(sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        if(sim.getRol() == Rol.MATRIZ ||sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
                         {
                             try{
                                 if(lista.size()>0)
@@ -163,7 +166,9 @@ public class Identificador implements Expresion{
                                 }
                             }
                             catch(Exception e){
-                                 System.err.println("Error acceso matriz");
+                                Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                                "Acceso a matriz imposible -> "+this.val));
+                                 //System.err.println("Error acceso matriz");
                             }
                         }
                         // arreglo de valores
@@ -233,7 +238,7 @@ public class Identificador implements Expresion{
         else
         {
             
-            Simbolo sim2 = new Simbolo(val, Rol.VECTOR);
+            Simbolo sim2 = new Simbolo(val, Rol.VECTOR,"error1");
             ent.agregar(val, sim2);
             return sim2;
         }
@@ -251,11 +256,6 @@ public class Identificador implements Expresion{
     @Override
     public int columna() {
         return this.col;
-    }
-
-    @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getVal() {
@@ -326,9 +326,9 @@ public class Identificador implements Expresion{
             }
             else
             {
-                System.err.println("Indentificador: "+val+" Indice fuera de rango "
-                        + "Vector: "+tama_vector+" Acceso: "+numLista
-                        + " lin: "+linea()+" Col: "+columna());  
+//                System.err.println("Indentificador: "+val+" Indice fuera de rango "
+//                        + "Vector: "+tama_vector+" Acceso: "+numLista
+//                        + " lin: "+linea()+" Col: "+columna());  
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "Indentificador: "+val+" Indice fuera de rango Vector: "+tama_vector+" Acceso: "+numLista)); 
                 return null;
@@ -360,9 +360,9 @@ public class Identificador implements Expresion{
             }
             else
             {
-                System.err.println("Indentificador: "+val+" Indice fuera de rango "
-                        + "Vector: 1 Acceso: "+numLista
-                        + " lin: "+linea()+" Col: "+columna());  
+//                System.err.println("Indentificador: "+val+" Indice fuera de rango "
+//                        + "Vector: 1 Acceso: "+numLista
+//                        + " lin: "+linea()+" Col: "+columna());  
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "Indentificador: "+val+" Indice fuera de rango Vector: 1 Acceso: "+numLista)); 
                 return null;
@@ -390,9 +390,9 @@ public class Identificador implements Expresion{
             }
             else
             {
-                System.err.println("Indentificador: "+val+" Indice fuera de rango "
-                        + "Vector: 1 Acceso: "+numLista
-                        + " lin: "+linea()+" Col: "+columna());  
+//                System.err.println("Indentificador: "+val+" Indice fuera de rango "
+//                        + "Vector: 1 Acceso: "+numLista
+//                        + " lin: "+linea()+" Col: "+columna());  
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "Indentificador: "+val+" Indice fuera de rango Vector: 1 Acceso: "+numLista)); 
                 return null;
@@ -430,9 +430,9 @@ public class Identificador implements Expresion{
             }
             else
             {
-                System.err.println("Indentificador: "+val+" Indice fuera de rango "
-                        + "Vector: 1 Acceso: "+numLista
-                        + " lin: "+linea()+" Col: "+columna());  
+//                System.err.println("Indentificador: "+val+" Indice fuera de rango "
+//                        + "Vector: 1 Acceso: "+numLista
+//                        + " lin: "+linea()+" Col: "+columna());  
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "Indentificador: "+val+" Indice fuera de rango Vector: 1 Acceso: "+numLista)); 
                 return null;
@@ -539,9 +539,9 @@ public class Identificador implements Expresion{
             }
             else
             {
-                System.err.println("Indentificador: "+val+" Indice fuera de rango "
-                        + "Vector: 1 Acceso: "+numLista
-                        + " lin: "+linea()+" Col: "+columna());  
+//                System.err.println("Indentificador: "+val+" Indice fuera de rango "
+//                        + "Vector: 1 Acceso: "+numLista
+//                        + " lin: "+linea()+" Col: "+columna());  
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "Indentificador: "+val+" Indice fuera de rango Vector: 1 Acceso: "+numLista)); 
                 return null;
@@ -549,6 +549,19 @@ public class Identificador implements Expresion{
         }
         sim.setValor(aux.toArray());
         return sim; 
+    }
+
+    @Override
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Identificador\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        String nodoOp1 = "nodo" + ++cont;
+        builder.append(nodoOp1).append(" [label=\""+ getVal() + "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoOp1).append(";\n");
+
+        return ""+ cont;
     }
     
     

@@ -70,8 +70,8 @@ public class AST {
                 expe.getValorImplicito(Global);
             }
         }
-        Global.Mostrar();
-        Global.MostrarFunciones();
+        //Global.Mostrar();
+        //Global.MostrarFunciones();
 
         return null;
     }
