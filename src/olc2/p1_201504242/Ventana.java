@@ -44,6 +44,8 @@ import javax.swing.JOptionPane;
  */
 public class Ventana extends javax.swing.JFrame {
     AST arbol;
+    AST arbolJavaCC;
+
     int index;
     String cad;
     public LinkedList<JError> listaError = new LinkedList();
@@ -298,10 +300,9 @@ public class Ventana extends javax.swing.JFrame {
     private void analizarJavaccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarJavaccActionPerformed
         try {
             Gramatica parser = new Gramatica(new BufferedReader(new FileReader("entradaJavaCC.txt")));
-            parser.Analizar();
-
-        } catch (FileNotFoundException ex) {
-            
+            arbolJavaCC = parser.Analizar();
+            arbolJavaCC.ejecutar();
+        } catch (FileNotFoundException ex) {            
             Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);

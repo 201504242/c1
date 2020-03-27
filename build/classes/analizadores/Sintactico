@@ -514,7 +514,7 @@ EXP  ::=
             RESULT = new Llama(a,b,aleft,aright);
         }
     :}
-    |  ID:valor                 {: RESULT =  new Identificador(valor,valorleft,valorright,false);                    :}
+    |  ID:valor                 {: RESULT = new Identificador(valor,valorleft,valorright,false);                    :}
     |  ID:a DIMENSION:b         {: RESULT =  new Identificador(a.toString(),b,false,aleft,aright);                   :}
     |  ENTERO:valor             {: RESULT = new Literal((Object)valor, new Tipo(Tipos.INT),valorleft,valorright);    :}
     |  DECIMAL:valor            {: RESULT = new Literal((Object)valor, new Tipo(Tipos.DOUBLE),valorleft,valorright); :}

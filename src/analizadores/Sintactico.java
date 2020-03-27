@@ -2082,7 +2082,7 @@ class CUP$Sintactico$actions {
 		int valorleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int valorright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		String valor = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		 RESULT =  new Identificador(valor,valorleft,valorright,false);                    
+		 RESULT = new Identificador(valor,valorleft,valorright,false);                    
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("EXP",12, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
