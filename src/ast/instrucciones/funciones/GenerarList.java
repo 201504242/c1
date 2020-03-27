@@ -9,6 +9,7 @@ import ast.Expresion;
 import ast.NodoAST;
 import entorno.Entorno;
 import entorno.Tipo;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -19,11 +20,12 @@ public class GenerarList implements Expresion{
     private LinkedList<NodoAST> listaExp;
     private int linea;
     private int col;
-
+    private ListVar ArrayR; 
     public GenerarList(LinkedList<NodoAST> listaExp, int linea, int col) {
         this.listaExp = listaExp;
         this.linea = linea;
         this.col = col;
+        this.ArrayR = null;
     }    
    
     @Override
@@ -65,6 +67,7 @@ public class GenerarList implements Expresion{
 //                }                   
             }
         }
+        this.ArrayR = Array;
         return Array;        
     }
 
@@ -79,8 +82,16 @@ public class GenerarList implements Expresion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"List\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        String nodoOp1 = "nodo" + ++cont;
+        builder.append(nodoOp1).append(" [label=\""+ Arrays.toString(this.ArrayR.toArray()) + "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoOp1).append(";\n");
+
+        return ""+ cont;
     }
     
     private Tipo tipoDominante(Tipo[] tp) {

@@ -3,6 +3,7 @@ import java_cup.runtime.*;
 import java.util.LinkedList;
 
 import ast.instrucciones.funciones.*;
+import ast.instrucciones.graficas.*;
 import ast.instrucciones.*;
 
 import ast.expresiones.*;
@@ -92,7 +93,7 @@ non terminal Instruccion ASIGNACION;
 non terminal Expresion SENTENCIA_LLAMADA;
 non terminal LinkedList<nodoExp> DIMENSION;
 non terminal nodoExp OPC_ACCESO;
-non terminal GRAFICA;
+non terminal String GRAFICA;
 non terminal LinkedList<Simbolo> formal_parameters;
 non terminal Simbolo formal_parameter;
 
@@ -274,9 +275,9 @@ instruccion ::=
         {: RESULT = e; :}
     |PRINT:e
         {: RESULT = e; :}
-    |Tbreak
+    |Tbreak:a
         {: 
-            RESULT = new Break();
+            RESULT = new Break(aleft,aright);
         :}
     |Tcontinue
         {: 
@@ -290,8 +291,26 @@ instruccion ::=
         {: 
             RESULT = e;
         :}  
-    |GRAFICA PARIZQ LISTA_EXP:a PARDER
-        {: :}
+    |GRAFICA:a PARIZQ LISTA_EXP:b PARDER
+        {:
+            
+            if(a.equals("1")){
+                RESULT = new grafPie(b,aleft,aright);
+            }else if(a.equals("2")){
+                RESULT = new grafBarras(b,aleft,aright);
+            }else if(a.equals("3")){
+                   RESULT = new grafHistograma(b,aleft,aright);
+            }else if(a.equals("4")){
+                if(b.size() == 5){
+                    //linel
+                    RESULT = new grafLineas(b,aleft,aright);
+
+                }else if(b.size() == 8){
+                    //dispercion
+
+                }                   
+            }
+        :}
 //************** CON PUNTO Y COMA
     |SENTENCIA_DOWHILE:e PTCOMA
         {: RESULT = e; :}
@@ -299,9 +318,9 @@ instruccion ::=
         {:
             RESULT = e;
         :}
-    |Tbreak PTCOMA
+    |Tbreak:a PTCOMA
         {:
-            RESULT = new Break();
+            RESULT = new Break(aleft,aright);
         :}
     |Tcontinue PTCOMA
         {: 
@@ -315,8 +334,25 @@ instruccion ::=
         {: 
             RESULT = e;
         :}  
-    |GRAFICA PARIZQ LISTA_EXP:a PARDER PTCOMA
-        {: :}
+    |GRAFICA:a PARIZQ LISTA_EXP:b PARDER PTCOMA
+        {:
+            if(a.equals("1")){
+                RESULT = new grafPie(b,aleft,aright);
+            }else if(a.equals("2")){
+                RESULT = new grafBarras(b,aleft,aright);
+            }else if(a.equals("3")){
+                   RESULT = new grafHistograma(b,aleft,aright);
+            }else if(a.equals("4")){
+                if(b.size() == 5){
+                    //linel
+                    RESULT = new grafLineas(b,aleft,aright);
+
+                }else if(b.size() == 8){
+                    //dispercion
+
+                }                   
+            }
+        :}
     |fantasmita
         {: 
             RESULT = new fantasmita();
@@ -324,10 +360,10 @@ instruccion ::=
 ;
 
 GRAFICA ::= 
-    pie
-    |barplot
-    |hist
-    |plot    
+    pie                 {: RESULT = "1";:}
+    |barplot            {: RESULT = "2";:}
+    |hist               {: RESULT = "3";:}
+    |plot               {: RESULT = "4";:}
 ;
 
 SENTENCIA_LLAMADA ::= 
@@ -478,7 +514,7 @@ EXP  ::=
             RESULT = new Llama(a,b,aleft,aright);
         }
     :}
-    |  ID:valor                 {: RESULT =  new Identificador(valor,valorleft,valorright,false);                    :}
+    |  ID:valor                 {: RESULT = new Identificador(valor,valorleft,valorright,false);                    :}
     |  ID:a DIMENSION:b         {: RESULT =  new Identificador(a.toString(),b,false,aleft,aright);                   :}
     |  ENTERO:valor             {: RESULT = new Literal((Object)valor, new Tipo(Tipos.INT),valorleft,valorright);    :}
     |  DECIMAL:valor            {: RESULT = new Literal((Object)valor, new Tipo(Tipos.DOUBLE),valorleft,valorright); :}

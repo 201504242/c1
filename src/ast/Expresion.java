@@ -15,4 +15,5 @@ import entorno.Tipo;
 public interface Expresion extends NodoAST{
     Tipo getTipo(Entorno ent);
     Object getValorImplicito(Entorno ent);
+
 }

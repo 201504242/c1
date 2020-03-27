@@ -105,8 +105,20 @@ public class Llama implements Expresion{
     }
 
     @Override
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNombre(StringBuilder builder, String parent, int cont) {
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Llamada\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        String nodoOp1 = "nodo" + ++cont;
+        builder.append(nodoOp1).append(" [label=\""+this.id+ "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoOp1).append(";\n");
+        
+        String nodoO = "nodo" + ++cont;
+        builder.append(nodoO).append(" [label=\"Parametros: "+this.valores.size()+ "\"];\n");
+        builder.append(nodo).append(" -> ").append(nodoO).append(";\n");
+        
+        return ""+ cont;
     }
 
     private Tipo tipoDominante(Tipo[] tp) {
