@@ -6,7 +6,9 @@
 package ast.expresiones;
 
 import ast.Expresion;
+import ast.instrucciones.funciones.FuncionMatrix;
 import ast.instrucciones.funciones.ListVar;
+import ast.instrucciones.funciones.ModificadorMatrix;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.Simbolo.Acc;
@@ -81,6 +83,21 @@ public class Identificador implements Expresion{
                     // tiene una lista 
                     else
                     {
+                        // Es una matrix asignandose 
+                        if(sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        {
+                            try{
+                                if(lista.size()>0)
+                                {
+                                    nodoExp nodoexpresion = lista.get(0);
+                                     
+                                    return new ModificadorMatrix(nodoexpresion, (Object[][])sim.getValor(), ent , sim);
+                                }
+                            }
+                            catch(Exception e){
+                                 System.err.println("Error acceso matriz");
+                            }
+                        }
                         //puede ser acceso a vector 
                         if (sim.getRol() == Rol.VECTOR) 
                         {
@@ -133,6 +150,21 @@ public class Identificador implements Expresion{
                     // tiene una lista 
                     else
                     {
+                        // GET MATRIZ
+                        if(sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        {
+                            try{
+                                if(lista.size()>0)
+                                {
+                                    nodoExp nodoexpresion = lista.get(0);
+                                    Object res =  FuncionMatrix.getValoresMatriz(nodoexpresion,(Object[][])sim.getValor(), ent);
+                                    return res;
+                                }
+                            }
+                            catch(Exception e){
+                                 System.err.println("Error acceso matriz");
+                            }
+                        }
                         // arreglo de valores
                         if (sim.getRol() == Rol.VECTOR && sim.getValor() instanceof Object[])
                         {
@@ -153,6 +185,7 @@ public class Identificador implements Expresion{
                             Object ob = getValorLista(lista,0,ent,list,null);
                             return ob; 
                         }
+                       
                                    
 //                            ListVar list = (ListVar) sim.getValor();
 //                            Object ob = getValorLista(lista,0,ent,list,null);
@@ -198,6 +231,7 @@ public class Identificador implements Expresion{
         }        
         else
         {
+            
             Simbolo sim2 = new Simbolo(val, Rol.VECTOR);
             ent.agregar(val, sim2);
             return sim2;

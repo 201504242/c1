@@ -8,6 +8,7 @@ package ast.instrucciones;
 import ast.Expresion;
 import ast.Instruccion;
 import ast.instrucciones.funciones.ListVar;
+import ast.instrucciones.funciones.ModificadorMatrix;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.Tipo;
@@ -46,8 +47,15 @@ public class Asignacion implements Instruccion{
     public Object ejecutar(Entorno ent) {
         try
         {
-            Simbolo SimboloViejo = (Simbolo)variable.getValorImplicito(ent);
+            Object sim = variable.getValorImplicito(ent);
+            Simbolo  SimboloViejo = (sim instanceof Simbolo) ? (Simbolo)variable.getValorImplicito(ent): null;
             Object valorNuevo = der.getValorImplicito(ent);
+            
+            if( sim  instanceof ModificadorMatrix)
+            {
+                ModificadorMatrix s = (ModificadorMatrix)sim;
+                s.cambiarValor(valorNuevo);
+            }
             //asigno tipo o lista
             if (valorNuevo instanceof ListVar) {
                 SimboloViejo.setRol(Simbolo.Rol.LISTA);
