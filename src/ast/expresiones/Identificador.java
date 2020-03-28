@@ -238,7 +238,7 @@ public class Identificador implements Expresion{
         else
         {
             
-            Simbolo sim2 = new Simbolo(val, Rol.VECTOR,"error1");
+            Simbolo sim2 = new Simbolo(val, Rol.VECTOR);
             ent.agregar(val, sim2);
             return sim2;
         }

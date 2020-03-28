@@ -63,7 +63,7 @@ terminal String pie,plot,hist,barplot;
 
 terminal String Tor,Tand,Tnot,igual,ternario,dospuntos;
 terminal String Tnull,ttrue,tfalse,tdefault;
-terminal String Tif,Telse,Tbreak,Tcase,Tswitch,Twhile,Tdo,Tfor,Tin,Tprint,Tcontinue,Tfuntion,Treturn;
+terminal String Tif,Telse,Tbreak,Tcase,Tswitch,Twhile,Tdo,Tfor,Tin,Tcontinue,Tfuntion,Treturn;
 terminal fantasmita;
 
 
@@ -78,7 +78,6 @@ non terminal ini,S;
 non terminal LinkedList<NodoAST> instrucciones;
 non terminal NodoAST instruccion;
 non terminal LinkedList<NodoAST> BLOQUE_SENT;
-non terminal Instruccion PRINT;
 non terminal Instruccion SENTENCIA_IF;
 non terminal Instruccion SENTENCIA_WHILE;
 non terminal Instruccion SENTENCIA_DOWHILE;
@@ -90,7 +89,7 @@ non terminal Expresion EXP;
 non terminal Instruccion DECLA_FUN;
 non terminal NodoAST B;
 non terminal Instruccion ASIGNACION;
-non terminal Expresion SENTENCIA_LLAMADA;
+non terminal NodoAST SENTENCIA_LLAMADA;
 non terminal LinkedList<nodoExp> DIMENSION;
 non terminal nodoExp OPC_ACCESO;
 non terminal String GRAFICA;
@@ -273,8 +272,6 @@ instruccion ::=
 //************* SIN PUTO Y COMA    
     |SENTENCIA_DOWHILE:e
         {: RESULT = e; :}
-    |PRINT:e
-        {: RESULT = e; :}
     |Tbreak:a
         {: 
             RESULT = new Break(aleft,aright);
@@ -314,10 +311,6 @@ instruccion ::=
 //************** CON PUNTO Y COMA
     |SENTENCIA_DOWHILE:e PTCOMA
         {: RESULT = e; :}
-    |PRINT:e PTCOMA
-        {:
-            RESULT = e;
-        :}
     |Tbreak:a PTCOMA
         {:
             RESULT = new Break(aleft,aright);
@@ -373,7 +366,43 @@ SENTENCIA_LLAMADA ::=
     :}
     |ID:a PARIZQ LISTA_EXP:b PARDER
     {: 
-        RESULT = new Llama(a,b,aleft,aright);
+        if(a.equalsIgnoreCase("c")){
+            RESULT = new funcionC(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("list")){
+            RESULT = new GenerarList(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("print")){
+            RESULT = new Print(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("matrix")){
+            RESULT = new FuncionMatrix(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("typeof")){
+            RESULT = new Typeof(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("length")){
+            RESULT = new Length(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("nCol")){
+            RESULT = new nMatrix("ncol",b,aleft,aright);
+        }else if(a.equalsIgnoreCase("nRow")){
+            RESULT = new nMatrix("nrow",b,aleft,aright);
+        }else if(a.equalsIgnoreCase("StringLength")){
+            RESULT = new Fstring(1,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("remove")){
+            RESULT = new Fstring(2,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("toLowerCase")){
+            RESULT = new Fstring(3,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("toUpperCase")){
+            RESULT = new Fstring(4,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("trunk")){
+            RESULT = new Fnum(1,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("round")){
+            RESULT = new Fnum(2,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("mean")){
+            RESULT = new Fnum(3,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("median")){
+            RESULT = new Fnum(4,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("mode")){
+            RESULT = new Fnum(5,b,aleft,aright);
+        }else{
+            RESULT = new Llama(a,b,aleft,aright);
+        }
     :}
 ;
 
@@ -423,13 +452,6 @@ SENTENCIA_RETURN ::=
     {:
         RESULT = new Return(aleft,aright);
     :}
-;
-
-PRINT ::= 
-    Tprint PARIZQ EXP:e PARDER 
-        {:
-            RESULT = new Print(e,eleft,eright);
-        :}
 ;
 
 LISTA_EXP ::= 
@@ -489,29 +511,31 @@ EXP  ::=
         }else if(a.equalsIgnoreCase("matrix")){
             RESULT = new FuncionMatrix(b,aleft,aright);
         }else if(a.equalsIgnoreCase("typeof")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.typeof);
+            RESULT = new Typeof(b,aleft,aright);
         }else if(a.equalsIgnoreCase("length")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.length);
+            RESULT = new Length(b,aleft,aright);
         }else if(a.equalsIgnoreCase("nCol")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.nCol);
-        }else if(a.equalsIgnoreCase("NRow")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.NRow);
+            RESULT = new nMatrix("ncol",b,aleft,aright);
+        }else if(a.equalsIgnoreCase("nRow")){
+            RESULT = new nMatrix("nrow",b,aleft,aright);
         }else if(a.equalsIgnoreCase("StringLength")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.StringLength);
+            RESULT = new Fstring(1,b,aleft,aright);
         }else if(a.equalsIgnoreCase("remove")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.remove);
+            RESULT = new Fstring(2,b,aleft,aright);
         }else if(a.equalsIgnoreCase("toLowerCase")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.toLowerCase);
+            RESULT = new Fstring(3,b,aleft,aright);
         }else if(a.equalsIgnoreCase("toUpperCase")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.toUpperCase);
+            RESULT = new Fstring(4,b,aleft,aright);
         }else if(a.equalsIgnoreCase("trunk")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.trunk);
+            RESULT = new Fnum(1,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("round")){
+            RESULT = new Fnum(2,b,aleft,aright);
         }else if(a.equalsIgnoreCase("mean")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.mean);
+            RESULT = new Fnum(3,b,aleft,aright);
         }else if(a.equalsIgnoreCase("median")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.median);
+            RESULT = new Fnum(4,b,aleft,aright);
         }else if(a.equalsIgnoreCase("mode")){
-               // RESULT = new Llama(a,b,aleft,aright,Nativas.mode);
+            RESULT = new Fnum(5,b,aleft,aright);
         }else{
             RESULT = new Llama(a,b,aleft,aright);
         }

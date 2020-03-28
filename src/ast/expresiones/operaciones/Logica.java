@@ -59,108 +59,235 @@ public class Logica extends Operacion{
             tipoResultado = opU.getTipo(ent);
             resU = opU.getValorImplicito(ent);
         }
-        
-        boolean r1 = (res1 instanceof Object[]);
-        boolean r2 = (res2 instanceof Object[]);
-        Object [] arr1 = r1==true ? (Object[])res1 : null;
-        Object [] arr2 = r2==true ? (Object[])res2 : null;
-        Object [] total;
-        int grande = 0;
-        if (r1 && r2) {
-            if (arr1.length != arr2.length && !(arr1.length == 1 || arr2.length == 1)) 
-            {
-                Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
-                        "Logica: Quiere operar 2 datos con difernte tamaño "+
-                                "Tam1: "+((Object[])res1).length+" Tam2: "+((Object[])res2).length));
-                return null;
+        boolean r1=false,r2=false; Object[]arr1= null, arr2=null,total=null;
+        Object[][]m1=null,m2=null,mtotal=null;
+        int x = 0,y=0,isMat=0;
+        //matriz
+        if (res1 instanceof Object[][] || res2 instanceof Object[][]) 
+        {
+            r1 = (res1 instanceof Object[][]);
+            r2 = (res2 instanceof Object[][]);
+            m1 = r1==true ? (Object[][])res1 : null;
+            m2 = r2==true ? (Object[][])res2 : null;
+            x = 0;
+            y = 0;
+            isMat = 1;
+            if (r1 && r2) {
+                if ((m1.length != m2.length) && (m1[0].length != m2[0].length)) 
+                {
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                            "Aritmetica: Quiere operar 2 matrices con difernte tamaño "+
+                                    "M1= x:"+((Object[][])res1).length+" y: "+((Object[][])res1)[0].length+
+                                    " M2= x:"+((Object[][])res2).length+" y: "+((Object[][])res2)[0].length ));
+                    return null;
+                }
+                x = m1.length;
+                y = m1[0].length;
+            }else if (r1) {
+                x = m1.length;
+                y = m1[0].length;
+            }else if (r2) {
+                x = m2.length;
+                y = m2[0].length;
             }
-            grande = arr1.length > arr2.length ? arr1.length : arr2.length;
+        }
+        //vector
+        else
+        {
+            r1 = (res1 instanceof Object[]);
+            r2 = (res2 instanceof Object[]);
+            arr1 = r1==true ? (Object[])res1 : null;
+            arr2 = r2==true ? (Object[])res2 : null;
+            x = 0;isMat=0;
+            if (r1 && r2) {
+                if (arr1.length != arr2.length && !(arr1.length == 1 || arr2.length == 1)) 
+                {
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                            "Logica: Quiere operar 2 datos con difernte tamaño "+
+                                    "Tam1: "+((Object[])res1).length+" Tam2: "+((Object[])res2).length));
+                    return null;
+                }
+                x = arr1.length > arr2.length ? arr1.length : arr2.length;
+            }
         }
         
         if (tipoResultado != null)
-        {
-            
+        {            
             try {
                 switch(operador){
                     case OR:
-                        // <editor-fold defaultstate="collapsed" desc="Vectores">
-                        if (r1 && r2){
-                            total = new Object[grande];
-                            for (int i = 0; i < grande; i++) {
-                                if (arr1.length == 1) {
-                                    total[i] = (boolean)arr1[0] || (boolean)arr2[i];
+                        if (isMat == 1) {
+                            // <editor-fold defaultstate="collapsed" desc="Matrices">
+                            if (r1 && r2){
+                                mtotal = new Object[x][y];
+                                for (int i=0; i < m1.length; i++) {
+                                    for (int j=0; j < m1[i].length; j++) {
+                                        mtotal[i][j] = (boolean)m1[i][j] || (boolean)m2[i][j];
+                                    }
                                 }
-                                else if (arr2.length == 1) {
-                                    total[i] = (boolean)arr1[i] || (boolean)arr2[0];
+                                return mtotal;
+                            }
+                            else if (r1) {
+                                mtotal = new Object[x][y];
+                                for (int i=0; i < m1.length; i++) {
+                                    for (int j=0; j < m1[i].length; j++) {
+                                        mtotal[i][j] = (boolean)m1[i][j] || (boolean)res2;
+                                    }
                                 }
-                                else{
-                                    total[i] = (boolean)arr1[i] || (boolean)arr2[i];
+                                return mtotal;
+                            }
+                            else if (r2) {
+                                mtotal = new Object[m2.length][m2[0].length];
+                                for (int i=0; i < m2.length; i++) {
+                                    for (int j=0; j < m2[i].length; j++) {
+                                        mtotal[i][j] = (boolean)res1 || (boolean)m2[i][j];
+                                    }
                                 }
+                                return mtotal;
                             }
-                            return total;
-                        }
-                        else if (r1) {
-                            total = new Object[arr1.length];
-                            for (int i = 0; i < arr1.length; i++) {
-                                total[i] = (boolean)arr1[i] || (boolean)res2;
+                            return null;
+                            // </editor-fold>
+                        }else{
+                            // <editor-fold defaultstate="collapsed" desc="Vectores">
+                            if (r1 && r2){
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
+                                    if (arr1.length == 1) {
+                                        total[i] = (boolean)arr1[0] || (boolean)arr2[i];
+                                    }
+                                    else if (arr2.length == 1) {
+                                        total[i] = (boolean)arr1[i] || (boolean)arr2[0];
+                                    }
+                                    else{
+                                        total[i] = (boolean)arr1[i] || (boolean)arr2[i];
+                                    }
+                                }
+                                return total;
                             }
-                            return total;
-                        }
-                        else if (r2) {
-                            total = new Object[arr2.length];
-                            for (int i = 0; i < arr2.length; i++) {
-                                total[i] = (boolean)arr2[i] || (boolean)res1;
+                            else if (r1) {
+                                total = new Object[arr1.length];
+                                for (int i = 0; i < arr1.length; i++) {
+                                    total[i] = (boolean)arr1[i] || (boolean)res2;
+                                }
+                                return total;
                             }
-                            return total;
+                            else if (r2) {
+                                total = new Object[arr2.length];
+                                for (int i = 0; i < arr2.length; i++) {
+                                    total[i] = (boolean)arr2[i] || (boolean)res1;
+                                }
+                                return total;
+                            }
+                            // </editor-fold>
+                            return (boolean)res1 || (boolean)res2;
                         }
-                        // </editor-fold>
-                        return (boolean)res1 || (boolean)res2;
                     case AND:
-                        // <editor-fold defaultstate="collapsed" desc="Vectores">
-                        if (r1 && r2){
-                            total = new Object[grande];
-                            for (int i = 0; i < grande; i++) {
-                                if (arr1.length == 1) {
-                                    total[i] = (boolean)arr1[0] && (boolean)arr2[i];
+                        if (isMat == 1) {
+                            // <editor-fold defaultstate="collapsed" desc="Matrices">
+                            if (r1 && r2){
+                                mtotal = new Object[x][y];
+                                for (int i=0; i < m1.length; i++) {
+                                    for (int j=0; j < m1[i].length; j++) {
+                                        mtotal[i][j] = (boolean)m1[i][j] && (boolean)m2[i][j];
+                                    }
                                 }
-                                else if (arr2.length == 1) {
-                                    total[i] = (boolean)arr1[i] && (boolean)arr2[0];
+                                return mtotal;
+                            }
+                            else if (r1) {
+                                mtotal = new Object[x][y];
+                                for (int i=0; i < m1.length; i++) {
+                                    for (int j=0; j < m1[i].length; j++) {
+                                        mtotal[i][j] = (boolean)m1[i][j] && (boolean)res2;
+                                    }
                                 }
-                                else{
-                                    total[i] = (boolean)arr1[i] && (boolean)arr2[i];
+                                return mtotal;
+                            }
+                            else if (r2) {
+                                mtotal = new Object[m2.length][m2[0].length];
+                                for (int i=0; i < m2.length; i++) {
+                                    for (int j=0; j < m2[i].length; j++) {
+                                        mtotal[i][j] = (boolean)res1 && (boolean)m2[i][j];
+                                    }
                                 }
+                                return mtotal;
                             }
-                            return total;
-                        }
-                        else if (r1) {
-                            total = new Object[arr1.length];
-                            for (int i = 0; i < arr1.length; i++) {
-                                total[i] = (boolean)arr1[i] && (boolean)res2;
+                            return null;
+                            // </editor-fold>
+                        }else{
+                            // <editor-fold defaultstate="collapsed" desc="Vectores">
+                            if (r1 && r2){
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
+                                    if (arr1.length == 1) {
+                                        total[i] = (boolean)arr1[0] && (boolean)arr2[i];
+                                    }
+                                    else if (arr2.length == 1) {
+                                        total[i] = (boolean)arr1[i] && (boolean)arr2[0];
+                                    }
+                                    else{
+                                        total[i] = (boolean)arr1[i] && (boolean)arr2[i];
+                                    }
+                                }
+                                return total;
                             }
-                            return total;
-                        }
-                        else if (r2) {
-                            total = new Object[arr2.length];
-                            for (int i = 0; i < arr2.length; i++) {
-                                total[i] = (boolean)arr2[i] && (boolean)res1;
+                            else if (r1) {
+                                total = new Object[arr1.length];
+                                for (int i = 0; i < arr1.length; i++) {
+                                    total[i] = (boolean)arr1[i] && (boolean)res2;
+                                }
+                                return total;
                             }
-                            return total;
+                            else if (r2) {
+                                total = new Object[arr2.length];
+                                for (int i = 0; i < arr2.length; i++) {
+                                    total[i] = (boolean)arr2[i] && (boolean)res1;
+                                }
+                                return total;
+                            }
+                            // </editor-fold>
+                            return (boolean)res1 && (boolean)res2;
                         }
-                        // </editor-fold>
-                        return (boolean)res1 && (boolean)res2;
                     case NOT:
-                        boolean rU = (resU instanceof Object[]);
-                        Object [] arrU = rU==true ? (Object[])resU : null;
-                        if (rU) 
+                        int rU = 0;
+                        //matriz
+                        if (resU instanceof Object[][]) {
+                            rU = 2;                        
+                        }
+                        else if(resU instanceof Object[]){
+                            rU = 1;
+                        }
+
+                        Object [] arrU = rU==1 ? (Object[])resU : null;
+                        Object [][] mU = rU==2 ? (Object[][])resU : null;
+                        boolean rr;
+                        //Matriz
+                        if (rU == 2) {
+                            // <editor-fold defaultstate="collapsed" desc="Matrices">
+                            x = mU.length;
+                            y = mU[0].length;
+                            mtotal = new Object[x][y];
+                            for (int i=0; i < x; i++) {
+                                for (int j=0; j < y; j++) {
+                                    rr = (boolean)mU[i][j];
+                                    mtotal[i][j] = !rr ;
+                                }
+                            }
+                            return mtotal;
+                            // </editor-fold>
+                        }
+                        //vector
+                        else if (rU == 1) 
                         {
+                            // <editor-fold defaultstate="collapsed" desc="Matrices">                                
                             total = new Object[arrU.length];
                             for (int i = 0; i < arrU.length; i++) {
-                                boolean rr = (boolean) arrU[i];
+                                rr = (boolean) arrU[i];
                                 total[i] = !rr;
                             }
-                            return total;
+                            return total;                            
+                            // </editor-fold>
                         }
-                        boolean rr = (boolean) resU;
+                        rr = (boolean) resU;
                         return !rr;
                     default:
                         Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),

@@ -84,22 +84,59 @@ public class Aritmetica extends Operacion{
             tipoResultado = opU.getTipo(ent);
             resU = opU.getValorImplicito(ent);
         }
-        boolean r1 = (res1 instanceof Object[]);
-        boolean r2 = (res2 instanceof Object[]);
-        Object [] arr1 = r1==true ? (Object[])res1 : null;
-        Object [] arr2 = r2==true ? (Object[])res2 : null;
-        Object [] total;
-        int grande = 0;
-        if (r1 && r2) {
-            if (arr1.length != arr2.length && !(arr1.length == 1 || arr2.length == 1)) 
-            {
-                Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
-                        "Aritmetica: Quiere operar 2 datos con difernte tamaño "+
-                                "Tam1: "+((Object[])res1).length+" Tam2: "+((Object[])res2).length));
-                return null;
+        //variables para operar
+        boolean r1=false,r2=false; Object[]arr1= null, arr2=null,total=null;
+        Object[][]m1=null,m2=null,mtotal=null;
+        int x = 0,y=0,isMat=0;
+        //matriz
+        if (res1 instanceof Object[][] || res2 instanceof Object[][]) 
+        {
+            r1 = (res1 instanceof Object[][]);
+            r2 = (res2 instanceof Object[][]);
+            m1 = r1==true ? (Object[][])res1 : null;
+            m2 = r2==true ? (Object[][])res2 : null;
+            x = 0;
+            y = 0;
+            isMat = 1;
+            if (r1 && r2) {
+                if ((m1.length != m2.length) && (m1[0].length != m2[0].length)) 
+                {
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                            "Aritmetica: Quiere operar 2 matrices con difernte tamaño "+
+                                    "M1= x:"+((Object[][])res1).length+" y: "+((Object[][])res1)[0].length+
+                                    " M2= x:"+((Object[][])res2).length+" y: "+((Object[][])res2)[0].length ));
+                    return null;
+                }
+                x = m1.length;
+                y = m1[0].length;
+            }else if (r1) {
+                x = m1.length;
+                y = m1[0].length;
+            }else if (r2) {
+                x = m2.length;
+                y = m2[0].length;
             }
-            grande = arr1.length > arr2.length ? arr1.length : arr2.length;
-        }       
+        }
+        //vector
+        else
+        {
+            r1 = (res1 instanceof Object[]);
+            r2 = (res2 instanceof Object[]);
+            arr1 = r1==true ? (Object[])res1 : null;
+            arr2 = r2==true ? (Object[])res2 : null;
+            x = 0; isMat=0;
+            if (r1 && r2) {
+                if (arr1.length != arr2.length && !(arr1.length == 1 || arr2.length == 1)) 
+                {
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                            "Aritmetica: Quiere operar 2 vectores con difernte tamaño "+
+                                    "Tam1: "+((Object[])res1).length+" Tam2: "+((Object[])res2).length));
+                    return null;
+                }
+                x = arr1.length > arr2.length ? arr1.length : arr2.length;
+            }  
+        }
+             
         
         if (tipoResultado != null)
         {         
@@ -109,43 +146,108 @@ public class Aritmetica extends Operacion{
                     switch (tipoResultado.getTipoPrimitivo()) 
                     {
                         case STRING:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
-                            if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = (arr1[0].toString()) + (arr2[i].toString());
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (m1[i][j].toString()) + (m2[i][j].toString());
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = (arr1[i].toString()) + (arr2[0].toString());
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (m1[i][j].toString()) + (res2.toString());
+                                        }
                                     }
-                                    else{
-                                        total[i] = new Double(arr1[i].toString()) + new Double(arr2[i].toString());
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = (res1.toString()) + (m2[i][j].toString());
+                                        }
                                     }
+                                    return mtotal;
                                 }
-                                return total;
-                            }
-                            else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = arr1[i].toString()+(res2.toString());
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (r1 && r2){
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = (arr1[0].toString()) + (arr2[i].toString());
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = (arr1[i].toString()) + (arr2[0].toString());
+                                        }
+                                        else{
+                                            total[i] = new Double(arr1[i].toString()) + new Double(arr2[i].toString());
+                                        }
+                                    }
+                                    return total;
                                 }
-                                return total;
-                            }
-                            else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = (arr2[i].toString())+(res1.toString());
+                                else if (r1) {
+                                    total = new Object[arr1.length];
+                                    for (int i = 0; i < arr1.length; i++) {
+                                        total[i] = arr1[i].toString()+(res2.toString());
+                                    }
+                                    return total;
                                 }
-                                return total;
+                                else if (r2) {
+                                    total = new Object[arr2.length];
+                                    for (int i = 0; i < arr2.length; i++) {
+                                        total[i] = (arr2[i].toString())+(res1.toString());
+                                    }
+                                    return total;
+                                }
+                                // </editor-fold>
+                                return res1.toString()+res2.toString();
                             }
-                            // </editor-fold>
-                            return res1.toString()+res2.toString();
                         case DOUBLE:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) + new Double(m2[i][j].toString());
+                                        }
+                                    }
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) + new Double(res2.toString());
+                                        }
+                                    }
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = new Double(res1.toString()) + new Double(m2[i][j].toString());
+                                        }
+                                    }
+                                    return mtotal;
+                                }
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
                                         total[i] = new Double(arr1[0].toString()) + new Double(arr2[i].toString());
                                     }
@@ -173,40 +275,75 @@ public class Aritmetica extends Operacion{
                                 return total;
                             }
                             // </editor-fold>
-                            return new Double(res1.toString()) +new Double(res2.toString());
+                                return new Double(res1.toString()) +new Double(res2.toString());
+                            }
                         case INT:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
-                            if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = (int)arr1[0] + (int)arr2[i];
+                            
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] + (int)m2[i][j];
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = (int)arr1[i] + (int)arr2[0];
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] + (int)res2;
+                                        }
                                     }
-                                    else{
-                                        total[i] = (int)arr1[i] + (int)arr2[i];
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = (int)res1 + (int)m2[i][j];
+                                        }
                                     }
+                                    return mtotal;
                                 }
-                                return total;
-                            }
-                            else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = (int)arr1[i]+(int)res2;
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (r1 && r2){
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = (int)arr1[0] + (int)arr2[i];
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = (int)arr1[i] + (int)arr2[0];
+                                        }
+                                        else{
+                                            total[i] = (int)arr1[i] + (int)arr2[i];
+                                        }
+                                    }
+                                    return total;
                                 }
-                                return total;
-                            }
-                            else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = (int)arr2[i]+(int)res1;
+                                else if (r1) {
+                                    total = new Object[arr1.length];
+                                    for (int i = 0; i < arr1.length; i++) {
+                                        total[i] = (int)arr1[i]+(int)res2;
+                                    }
+                                    return total;
                                 }
-                                return total;
+                                else if (r2) {
+                                    total = new Object[arr2.length];
+                                    for (int i = 0; i < arr2.length; i++) {
+                                        total[i] = (int)arr2[i]+(int)res1;
+                                    }
+                                    return total;
+                                }
+                                // </editor-fold>
+                                return (int)res1 + (int)res2;
                             }
-                            // </editor-fold>
-                            return (int)res1 + (int)res2;
                         default:
                             Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                             "Aritmetica: en suma no int,double,string "));
@@ -222,71 +359,137 @@ public class Aritmetica extends Operacion{
                             //System.out.println("ERROR no se puede restar tipo string");
                             return null;
                         case DOUBLE:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
-                            if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = new Double(arr1[0].toString()) - new Double(arr2[i].toString());
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) - new Double(m2[i][j].toString());
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = new Double(arr1[i].toString()) - new Double(arr2[0].toString());
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) - new Double(res2.toString());
+                                        }
                                     }
-                                    else{
-                                        total[i] = new Double(arr1[i].toString()) - new Double(arr2[i].toString());
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = new Double(res1.toString()) - new Double(m2[i][j].toString());
+                                        }
                                     }
+                                    return mtotal;
                                 }
-                                return total;
-                            }
-                            else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = new Double(arr1[i].toString()) - new Double(res2.toString());
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (r1 && r2){
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = new Double(arr1[0].toString()) - new Double(arr2[i].toString());
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = new Double(arr1[i].toString()) - new Double(arr2[0].toString());
+                                        }
+                                        else{
+                                            total[i] = new Double(arr1[i].toString()) - new Double(arr2[i].toString());
+                                        }
+                                    }
+                                    return total;
                                 }
-                                return total;
-                            }
-                            else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = new Double(res1.toString()) - new Double(arr2[i].toString());
+                                else if (r1) {
+                                    total = new Object[arr1.length];
+                                    for (int i = 0; i < arr1.length; i++) {
+                                        total[i] = new Double(arr1[i].toString()) - new Double(res2.toString());
+                                    }
+                                    return total;
                                 }
-                                return total;
+                                else if (r2) {
+                                    total = new Object[arr2.length];
+                                    for (int i = 0; i < arr2.length; i++) {
+                                        total[i] = new Double(res1.toString()) - new Double(arr2[i].toString());
+                                    }
+                                    return total;
+                                }
+                                // </editor-fold>
+                                return new Double(res1.toString()) - new Double(res2.toString());
                             }
-                            // </editor-fold>
-                            return new Double(res1.toString()) - new Double(res2.toString());
                         case INT:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
-                            if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = (int)arr1[0] - (int)arr2[i];
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] - (int)m2[i][j];
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = (int)arr1[i] - (int)arr2[0];
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] - (int)res2;
+                                        }
                                     }
-                                    else{
-                                        total[i] = (int)arr1[i] - (int)arr2[i];
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = (int)res1 - (int)m2[i][j];
+                                        }
                                     }
+                                    return mtotal;
                                 }
-                                return total;
-                            }
-                            else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = (int)arr1[i]-(int)res2;
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (r1 && r2){
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = (int)arr1[0] - (int)arr2[i];
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = (int)arr1[i] - (int)arr2[0];
+                                        }
+                                        else{
+                                            total[i] = (int)arr1[i] - (int)arr2[i];
+                                        }
+                                    }
+                                    return total;
                                 }
-                                return total;
-                            }
-                            else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = (int)res1- (int)arr2[i];
+                                else if (r1) {
+                                    total = new Object[arr1.length];
+                                    for (int i = 0; i < arr1.length; i++) {
+                                        total[i] = (int)arr1[i]-(int)res2;
+                                    }
+                                    return total;
                                 }
-                                return total;
+                                else if (r2) {
+                                    total = new Object[arr2.length];
+                                    for (int i = 0; i < arr2.length; i++) {
+                                        total[i] = (int)res1- (int)arr2[i];
+                                    }
+                                    return total;
+                                }
+                                // </editor-fold>
+                                return (int)res1 - (int)res2;
                             }
-                            // </editor-fold>
-                            return (int)res1 - (int)res2;
                         default:
                             Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                             "Aritmetica: en suma no int,double"));
@@ -301,71 +504,137 @@ public class Aritmetica extends Operacion{
                             "Aritmetica: no se puede MULTIPLICAR tipo string"));
                             return null;
                         case DOUBLE:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
-                            if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = new Double(arr1[0].toString()) * new Double(arr2[i].toString());
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) * new Double(m2[i][j].toString());
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = new Double(arr1[i].toString()) * new Double(arr2[0].toString());
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) * new Double(res2.toString());
+                                        }
                                     }
-                                    else{
-                                        total[i] = new Double(arr1[i].toString()) * new Double(arr2[i].toString());
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = new Double(res1.toString()) * new Double(m2[i][j].toString());
+                                        }
                                     }
+                                    return mtotal;
                                 }
-                                return total;
-                            }
-                            else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = new Double(arr1[i].toString()) * new Double(res2.toString());
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (r1 && r2){
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = new Double(arr1[0].toString()) * new Double(arr2[i].toString());
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = new Double(arr1[i].toString()) * new Double(arr2[0].toString());
+                                        }
+                                        else{
+                                            total[i] = new Double(arr1[i].toString()) * new Double(arr2[i].toString());
+                                        }
+                                    }
+                                    return total;
                                 }
-                                return total;
-                            }
-                            else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = new Double(res1.toString()) * new Double(arr2[i].toString());
+                                else if (r1) {
+                                    total = new Object[arr1.length];
+                                    for (int i = 0; i < arr1.length; i++) {
+                                        total[i] = new Double(arr1[i].toString()) * new Double(res2.toString());
+                                    }
+                                    return total;
                                 }
-                                return total;
+                                else if (r2) {
+                                    total = new Object[arr2.length];
+                                    for (int i = 0; i < arr2.length; i++) {
+                                        total[i] = new Double(res1.toString()) * new Double(arr2[i].toString());
+                                    }
+                                    return total;
+                                }
+                                // </editor-fold>
+                                return new Double(res1.toString()) * new Double(res2.toString());
                             }
-                            // </editor-fold>
-                            return new Double(res1.toString()) * new Double(res2.toString());
                         case INT:
-                            // <editor-fold defaultstate="collapsed" desc="Vectores">
-                            if (r1 && r2){
-                                total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = (int)arr1[0] * (int)arr2[i];
+                            if (isMat == 1) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                if (r1 && r2){
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] * (int)m2[i][j];
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = (int)arr1[i] * (int)arr2[0];
+                                    return mtotal;
+                                }
+                                else if (r1) {
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] * (int)res2;
+                                        }
                                     }
-                                    else{
-                                        total[i] = (int)arr1[i] * (int)arr2[i];
+                                    return mtotal;
+                                }
+                                else if (r2) {
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = (int)res1 * (int)m2[i][j];
+                                        }
                                     }
+                                    return mtotal;
                                 }
-                                return total;
-                            }
-                            else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = (int)arr1[i]*(int)res2;
+                                return null;
+                                // </editor-fold>
+                            }else{
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (r1 && r2){
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = (int)arr1[0] * (int)arr2[i];
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = (int)arr1[i] * (int)arr2[0];
+                                        }
+                                        else{
+                                            total[i] = (int)arr1[i] * (int)arr2[i];
+                                        }
+                                    }
+                                    return total;
                                 }
-                                return total;
-                            }
-                            else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = (int)res1*(int)arr2[i];
+                                else if (r1) {
+                                    total = new Object[arr1.length];
+                                    for (int i = 0; i < arr1.length; i++) {
+                                        total[i] = (int)arr1[i]*(int)res2;
+                                    }
+                                    return total;
                                 }
-                                return total;
+                                else if (r2) {
+                                    total = new Object[arr2.length];
+                                    for (int i = 0; i < arr2.length; i++) {
+                                        total[i] = (int)res1*(int)arr2[i];
+                                    }
+                                    return total;
+                                }
+                                // </editor-fold>
+                                return (int)res1 * (int)res2;
                             }
-                            // </editor-fold>
-                            return (int)res1 * (int)res2;
                         default:
                             Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                             "Aritmetica: en multiplicacion no int,double"));
@@ -382,44 +651,77 @@ public class Aritmetica extends Operacion{
                             return null;
                         case DOUBLE:
                             try {
-                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (isMat == 1) {
+                                    // <editor-fold defaultstate="collapsed" desc="Matrices">
                                 if (r1 && r2){
-                                    total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = new Double(arr1[0].toString()) / new Double(arr2[i].toString());
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) / new Double(m2[i][j].toString());
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = new Double(arr1[i].toString()) / new Double(arr2[0].toString());
-                                    }
-                                    else{
-                                        total[i] = new Double(arr1[i].toString()) / new Double(arr2[i].toString());
-                                    }
-                                }
-                                return total;
+                                    return mtotal;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
-                                        total[i] = new Double(arr1[i].toString()) / new Double(res2.toString());
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = new Double(m1[i][j].toString()) / new Double(res2.toString());
+                                        }
                                     }
-                                    return total;
+                                    return mtotal;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = new Double(res1.toString()) / new Double(arr2[i].toString()) ;
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = new Double(res1.toString()) / new Double(m2[i][j].toString());
+                                        }
+                                    }
+                                    return mtotal;
+                                }
+                                return null;
+                                // </editor-fold>
+                                }else{
+                                    // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                    if (r1 && r2){
+                                        total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = new Double(arr1[0].toString()) / new Double(arr2[i].toString());
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = new Double(arr1[i].toString()) / new Double(arr2[0].toString());
+                                        }
+                                        else{
+                                            total[i] = new Double(arr1[i].toString()) / new Double(arr2[i].toString());
+                                        }
                                     }
                                     return total;
+                                    }
+                                    else if (r1) {
+                                        total = new Object[arr1.length];
+                                        for (int i = 0; i < arr1.length; i++) {
+                                            total[i] = new Double(arr1[i].toString()) / new Double(res2.toString());
+                                        }
+                                        return total;
+                                    }
+                                    else if (r2) {
+                                        total = new Object[arr2.length];
+                                        for (int i = 0; i < arr2.length; i++) {
+                                            total[i] = new Double(res1.toString()) / new Double(arr2[i].toString()) ;
+                                        }
+                                        return total;
+                                    }
+                                    // </editor-fold>
+                                    Double a1 = new Double(res1.toString());
+                                    Double a2 = new Double(res2.toString());
+                                    if (a1 == 0.0 && a2 == 0.0) 
+                                    {
+                                        return new Double(0.0);
+                                    }
+                                    return a1 / a2; 
                                 }
-                                // </editor-fold>
-                                Double a1 = new Double(res1.toString());
-                                Double a2 = new Double(res2.toString());
-                                if (a1 == 0.0 && a2 == 0.0) 
-                                {
-                                    return new Double(0.0);
-                                }
-                                return a1 / a2; 
                             } catch (Exception e) {
                                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                                 "Aritmetica: Division con cero "+e.getMessage()));
@@ -427,38 +729,71 @@ public class Aritmetica extends Operacion{
                             }
                         case INT:
                             try {
-                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (isMat == 1) {
+                                    // <editor-fold defaultstate="collapsed" desc="Matrices">
                                 if (r1 && r2){
-                                    total = new Object[grande];
-                                for (int i = 0; i < grande; i++) {
-                                    if (arr1.length == 1) {
-                                        total[i] = (int)arr1[0] / (int)arr2[i];
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] / (int)m2[i][j];
+                                        }
                                     }
-                                    else if (arr2.length == 1) {
-                                        total[i] = (int)arr1[i] / (int)arr2[0];
-                                    }
-                                    else{
-                                        total[i] = (int)arr1[i] / (int)arr2[i];
-                                    }
-                                }
-                                return total;
+                                    return mtotal;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
-                                        total[i] = (int)arr1[i]/(int)res2;
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = (int)m1[i][j] / (int)res2;
+                                        }
                                     }
-                                    return total;
+                                    return mtotal;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = (int)res1/ (int)arr2[i];
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = (int)res1 / (int)m2[i][j];
+                                        }
+                                    }
+                                    return mtotal;
+                                }
+                                return null;
+                                // </editor-fold>
+                                }else{
+                                    // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                    if (r1 && r2){
+                                        total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        if (arr1.length == 1) {
+                                            total[i] = (int)arr1[0] / (int)arr2[i];
+                                        }
+                                        else if (arr2.length == 1) {
+                                            total[i] = (int)arr1[i] / (int)arr2[0];
+                                        }
+                                        else{
+                                            total[i] = (int)arr1[i] / (int)arr2[i];
+                                        }
                                     }
                                     return total;
+                                    }
+                                    else if (r1) {
+                                        total = new Object[arr1.length];
+                                        for (int i = 0; i < arr1.length; i++) {
+                                            total[i] = (int)arr1[i]/(int)res2;
+                                        }
+                                        return total;
+                                    }
+                                    else if (r2) {
+                                        total = new Object[arr2.length];
+                                        for (int i = 0; i < arr2.length; i++) {
+                                            total[i] = (int)res1/ (int)arr2[i];
+                                        }
+                                        return total;
+                                    }
+                                    // </editor-fold>
+                                    return (int)res1 / (int)res2;
                                 }
-                                // </editor-fold>
-                                return (int)res1 / (int)res2;
                             } catch (Exception e) {
                                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                                 "Aritmetica: Division con cero "+e.getMessage()));
@@ -478,38 +813,71 @@ public class Aritmetica extends Operacion{
                             return null;
                         case DOUBLE:
                             try {
-                                 // <editor-fold defaultstate="collapsed" desc="Vectores">
-                                if (r1 && r2){
-                                    total = new Object[grande];
-                                    for (int i = 0; i < grande; i++) {
-                                        if (arr1.length == 1) {
-                                            total[i] = Math.pow(new Double(arr1[0].toString()),new Double(arr2[i].toString()));
+                                if (isMat == 1) {
+                                    // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                    if (r1 && r2){
+                                        mtotal = new Object[x][y];
+                                        for (int i=0; i < m1.length; i++) {
+                                            for (int j=0; j < m1[i].length; j++) {
+                                                mtotal[i][j] = Math.pow(new Double(m1[i][j].toString()), new Double(m2[i][j].toString()));
+                                            }
                                         }
-                                        else if (arr2.length == 1) {
-                                            total[i] = Math.pow(new Double(arr1[i].toString()),new Double(arr2[0].toString()));
+                                        return mtotal;
+                                    }
+                                    else if (r1) {
+                                        mtotal = new Object[x][y];
+                                        for (int i=0; i < m1.length; i++) {
+                                            for (int j=0; j < m1[i].length; j++) {
+                                                mtotal[i][j] = Math.pow(new Double(m1[i][j].toString()) , new Double(res2.toString()));
+                                            }
                                         }
-                                        else{
-                                            total[i] = Math.pow(new Double(arr1[i].toString()),new Double(arr2[i].toString()));
+                                        return mtotal;
+                                    }
+                                    else if (r2) {
+                                        mtotal = new Object[m2.length][m2[0].length];
+                                        for (int i=0; i < m2.length; i++) {
+                                            for (int j=0; j < m2[i].length; j++) {
+                                                mtotal[i][j] = Math.pow(new Double(res1.toString()) , new Double(m2[i][j].toString()));
+                                            }
                                         }
+                                        return mtotal;
                                     }
-                                    return total;
-                                }
-                                else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
-                                        total[i] = Math.pow(new Double(arr1[i].toString()) , new Double(res2.toString()));
+                                    return null;
+                                    // </editor-fold>
+                                }else{
+                                    // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                    if (r1 && r2){
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
+                                            if (arr1.length == 1) {
+                                                total[i] = Math.pow(new Double(arr1[0].toString()),new Double(arr2[i].toString()));
+                                            }
+                                            else if (arr2.length == 1) {
+                                                total[i] = Math.pow(new Double(arr1[i].toString()),new Double(arr2[0].toString()));
+                                            }
+                                            else{
+                                                total[i] = Math.pow(new Double(arr1[i].toString()),new Double(arr2[i].toString()));
+                                            }
+                                        }
+                                        return total;
                                     }
-                                    return total;
-                                }
-                                else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = Math.pow(new Double(res1.toString()),new Double(arr2[i].toString()));
+                                    else if (r1) {
+                                        total = new Object[arr1.length];
+                                        for (int i = 0; i < arr1.length; i++) {
+                                            total[i] = Math.pow(new Double(arr1[i].toString()) , new Double(res2.toString()));
+                                        }
+                                        return total;
                                     }
-                                    return total;
+                                    else if (r2) {
+                                        total = new Object[arr2.length];
+                                        for (int i = 0; i < arr2.length; i++) {
+                                            total[i] = Math.pow(new Double(res1.toString()),new Double(arr2[i].toString()));
+                                        }
+                                        return total;
+                                    }
+                                    // </editor-fold>
+                                    return Math.pow(new Double(res1.toString()) , new Double(res2.toString()));
                                 }
-                                // </editor-fold>
-                                return Math.pow(new Double(res1.toString()) , new Double(res2.toString()));
                             } catch (Exception e) {
                                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                                 "Aritmetica: no se ejecuto potencia "+e.getMessage()));
@@ -517,38 +885,71 @@ public class Aritmetica extends Operacion{
                             }
                         case INT:
                             try {
-                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                if (isMat == 1) {
+                                    // <editor-fold defaultstate="collapsed" desc="Matrices">
                                 if (r1 && r2){
-                                    total = new Object[grande];
-                                    for (int i = 0; i < grande; i++) {
-                                        if (arr1.length == 1) {
-                                            total[i] = Math.pow((int)arr1[0] , (int)arr2[i]);
-                                        }
-                                        else if (arr2.length == 1) {
-                                            total[i] = Math.pow((int)arr1[i] , (int)arr2[0]);
-                                        }
-                                        else{
-                                            total[i] = Math.pow((int)arr1[i] , (int)arr2[i]);
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = Math.pow((int)m1[i][j] , (int)m2[i][j]);
                                         }
                                     }
-                                    return total;
+                                    return mtotal;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
-                                        total[i] = Math.pow((int)arr1[i],(int)res2);
+                                    mtotal = new Object[x][y];
+                                    for (int i=0; i < m1.length; i++) {
+                                        for (int j=0; j < m1[i].length; j++) {
+                                            mtotal[i][j] = Math.pow((int)m1[i][j] , (int)res2);
+                                        }
                                     }
-                                    return total;
+                                    return mtotal;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = Math.pow((int)res1,(int)arr2[i]);
+                                    mtotal = new Object[m2.length][m2[0].length];
+                                    for (int i=0; i < m2.length; i++) {
+                                        for (int j=0; j < m2[i].length; j++) {
+                                            mtotal[i][j] = Math.pow((int)res1 , (int)m2[i][j]);
+                                        }
                                     }
-                                    return total;
+                                    return mtotal;
                                 }
+                                return null;
                                 // </editor-fold>
-                                return Math.pow((int)res1 , (int)res2);
+                                }else{
+                                    // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                    if (r1 && r2){
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
+                                            if (arr1.length == 1) {
+                                                total[i] = Math.pow((int)arr1[0] , (int)arr2[i]);
+                                            }
+                                            else if (arr2.length == 1) {
+                                                total[i] = Math.pow((int)arr1[i] , (int)arr2[0]);
+                                            }
+                                            else{
+                                                total[i] = Math.pow((int)arr1[i] , (int)arr2[i]);
+                                            }
+                                        }
+                                        return total;
+                                    }
+                                    else if (r1) {
+                                        total = new Object[arr1.length];
+                                        for (int i = 0; i < arr1.length; i++) {
+                                            total[i] = Math.pow((int)arr1[i],(int)res2);
+                                        }
+                                        return total;
+                                    }
+                                    else if (r2) {
+                                        total = new Object[arr2.length];
+                                        for (int i = 0; i < arr2.length; i++) {
+                                            total[i] = Math.pow((int)res1,(int)arr2[i]);
+                                        }
+                                        return total;
+                                    }
+                                    // </editor-fold>
+                                    return Math.pow((int)res1 , (int)res2);
+                                }
                             } catch (Exception e) {
                                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                                 "Aritmetica: no se ejecuto potencia "+e.getMessage()));
@@ -568,71 +969,137 @@ public class Aritmetica extends Operacion{
                                 "Aritmetica: no se puede hacer modulo tipo string"));
                                 return null;
                             case DOUBLE:
-                                // <editor-fold defaultstate="collapsed" desc="Vectores">
-                                if (r1 && r2){
-                                    total = new Object[grande];
-                                    for (int i = 0; i < grande; i++) {
-                                        if (arr1.length == 1) {
-                                            total[i] = new Double(arr1[0].toString()) % new Double(arr2[i].toString());
+                                if (isMat == 1) {
+                                    // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                    if (r1 && r2){
+                                        mtotal = new Object[x][y];
+                                        for (int i=0; i < m1.length; i++) {
+                                            for (int j=0; j < m1[i].length; j++) {
+                                                mtotal[i][j] = new Double(m1[i][j].toString()) % new Double(m2[i][j].toString());
+                                            }
                                         }
-                                        else if (arr2.length == 1) {
-                                            total[i] = new Double(arr1[i].toString()) % new Double(arr2[0].toString());
+                                        return mtotal;
+                                    }
+                                    else if (r1) {
+                                        mtotal = new Object[x][y];
+                                        for (int i=0; i < m1.length; i++) {
+                                            for (int j=0; j < m1[i].length; j++) {
+                                                mtotal[i][j] = new Double(m1[i][j].toString()) % new Double(res2.toString());
+                                            }
                                         }
-                                        else{
-                                            total[i] = new Double(arr1[i].toString()) % new Double(arr2[i].toString());
+                                        return mtotal;
+                                    }
+                                    else if (r2) {
+                                        mtotal = new Object[m2.length][m2[0].length];
+                                        for (int i=0; i < m2.length; i++) {
+                                            for (int j=0; j < m2[i].length; j++) {
+                                                mtotal[i][j] = new Double(res1.toString()) % new Double(m2[i][j].toString());
+                                            }
                                         }
+                                        return mtotal;
                                     }
-                                    return total;
-                                }
-                                else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
-                                        total[i] = new Double(arr1[i].toString()) % new Double(res2.toString());
+                                    return null;
+                                    // </editor-fold>
+                                }else{
+                                    // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                    if (r1 && r2){
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
+                                            if (arr1.length == 1) {
+                                                total[i] = new Double(arr1[0].toString()) % new Double(arr2[i].toString());
+                                            }
+                                            else if (arr2.length == 1) {
+                                                total[i] = new Double(arr1[i].toString()) % new Double(arr2[0].toString());
+                                            }
+                                            else{
+                                                total[i] = new Double(arr1[i].toString()) % new Double(arr2[i].toString());
+                                            }
+                                        }
+                                        return total;
                                     }
-                                    return total;
-                                }
-                                else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = new Double(res1.toString()) % new Double(arr2[i].toString());
+                                    else if (r1) {
+                                        total = new Object[arr1.length];
+                                        for (int i = 0; i < arr1.length; i++) {
+                                            total[i] = new Double(arr1[i].toString()) % new Double(res2.toString());
+                                        }
+                                        return total;
                                     }
-                                    return total;
+                                    else if (r2) {
+                                        total = new Object[arr2.length];
+                                        for (int i = 0; i < arr2.length; i++) {
+                                            total[i] = new Double(res1.toString()) % new Double(arr2[i].toString());
+                                        }
+                                        return total;
+                                    }
+                                    // </editor-fold>
+                                    return new Double(res1.toString()) % new Double(res2.toString());
                                 }
-                                // </editor-fold>
-                                return new Double(res1.toString()) % new Double(res2.toString());
                             case INT:
-                                 // <editor-fold defaultstate="collapsed" desc="Vectores">
-                                if (r1 && r2){
-                                    total = new Object[grande];
-                                    for (int i = 0; i < grande; i++) {
-                                        if (arr1.length == 1) {
-                                            total[i] = (int)arr1[0] % (int)arr2[i];
+                                if (isMat == 1) {
+                                    // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                    if (r1 && r2){
+                                        mtotal = new Object[x][y];
+                                        for (int i=0; i < m1.length; i++) {
+                                            for (int j=0; j < m1[i].length; j++) {
+                                                mtotal[i][j] = (int)m1[i][j] % (int)m2[i][j];
+                                            }
                                         }
-                                        else if (arr2.length == 1) {
-                                            total[i] = (int)arr1[i] % (int)arr2[0];
+                                        return mtotal;
+                                    }
+                                    else if (r1) {
+                                        mtotal = new Object[x][y];
+                                        for (int i=0; i < m1.length; i++) {
+                                            for (int j=0; j < m1[i].length; j++) {
+                                                mtotal[i][j] = (int)m1[i][j] % (int)res2;
+                                            }
                                         }
-                                        else{
-                                            total[i] = (int)arr1[i] % (int)arr2[i];
+                                        return mtotal;
+                                    }
+                                    else if (r2) {
+                                        mtotal = new Object[m2.length][m2[0].length];
+                                        for (int i=0; i < m2.length; i++) {
+                                            for (int j=0; j < m2[i].length; j++) {
+                                                mtotal[i][j] = (int)res1 % (int)m2[i][j];
+                                            }
                                         }
+                                        return mtotal;
                                     }
-                                    return total;
-                                }
-                                else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
-                                        total[i] = (int)arr1[i]%(int)res2;
+                                    return null;
+                                    // </editor-fold>
+                                }else{
+                                    // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                    if (r1 && r2){
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
+                                            if (arr1.length == 1) {
+                                                total[i] = (int)arr1[0] % (int)arr2[i];
+                                            }
+                                            else if (arr2.length == 1) {
+                                                total[i] = (int)arr1[i] % (int)arr2[0];
+                                            }
+                                            else{
+                                                total[i] = (int)arr1[i] % (int)arr2[i];
+                                            }
+                                        }
+                                        return total;
                                     }
-                                    return total;
-                                }
-                                else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = (int)res1%(int)arr2[i];
+                                    else if (r1) {
+                                        total = new Object[arr1.length];
+                                        for (int i = 0; i < arr1.length; i++) {
+                                            total[i] = (int)arr1[i]%(int)res2;
+                                        }
+                                        return total;
                                     }
-                                    return total;
+                                    else if (r2) {
+                                        total = new Object[arr2.length];
+                                        for (int i = 0; i < arr2.length; i++) {
+                                            total[i] = (int)res1%(int)arr2[i];
+                                        }
+                                        return total;
+                                    }
+                                    // </editor-fold>
+                                    return (int)res1 % (int)res2;
                                 }
-                                // </editor-fold>
-                                return (int)res1 % (int)res2;
                             default:
                                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                                 "Aritmetica: no double,int"));
@@ -640,38 +1107,79 @@ public class Aritmetica extends Operacion{
                         }
                 case MENOS_UNARIO:
                 {
-                    boolean rU = (resU instanceof Object[]);
-                    Object [] arrU = rU==true ? (Object[])resU : null;
-                    if (resU instanceof Double)
-                    {
-                        if (rU) 
-                        {
-                            total = new Object[arrU.length];
-                            for (int i = 0; i < arrU.length; i++) {
-                                total[i] = 0.0 - (double)arrU[i];
-                            }
-                            return total;
-                        }
-                        return 0.0 - (double)resU;
+                    //0 = normal, 1=vector, 2 = matriz
+                    int rU = 0;
+                    //matriz
+                    if (resU instanceof Object[][]) {
+                        rU = 2;                        
                     }
-                    else if (resU instanceof Integer)
-                    {
-                        if (rU) 
-                        {
-                            total = new Object[arrU.length];
-                            for (int i = 0; i < arrU.length; i++) {
-                                total[i] = 0.0 - (int)arrU[i];
-                            }
-                            return total;
-                        }
-                        return 0 - (int)resU;
+                    else if(resU instanceof Object[]){
+                        rU = 1;
                     }
-                    else
+                    
+                    Object [] arrU = rU==1 ? (Object[])resU : null;
+                    Object [][] mU = rU==2 ? (Object[][])resU : null;
+                    switch (tipoResultado.getTipoPrimitivo()) 
                     {
-                        Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
-                                "Aritmetica: no es ni double,int (Menos unario)"));
-                        return null;
-                    }   
+                        case DOUBLE:                    
+                            //Matriz
+                            if (rU == 2) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                x = mU.length;
+                                y = mU[0].length;
+                                mtotal = new Object[x][y];
+                                for (int i=0; i < x; i++) {
+                                    for (int j=0; j < y; j++) {
+                                        mtotal[i][j] = 0.0 - (double)mU[i][j];
+                                    }
+                                }
+                                return mtotal;
+                                // </editor-fold>
+                            }
+                            //vector
+                            else if (rU == 1) 
+                            {
+                                // <editor-fold defaultstate="collapsed" desc="Vectores">
+                                total = new Object[arrU.length];
+                                for (int i = 0; i < arrU.length; i++) {
+                                    total[i] = 0.0 - (double)arrU[i];
+                                }
+                                return total;
+                                // </editor-fold>
+                            }
+                            return 0.0 - (double)resU;
+                        case INT:
+                            //Matriz
+                            if (rU == 2) {
+                                // <editor-fold defaultstate="collapsed" desc="Matrices">
+                                x = mU.length;
+                                y = mU[0].length;
+                                mtotal = new Object[x][y];
+                                for (int i=0; i < x; i++) {
+                                    for (int j=0; j < y; j++) {
+                                        mtotal[i][j] = 0 - (int)mU[i][j];
+                                    }
+                                }
+                                return mtotal;
+                                // </editor-fold>
+                            }
+                            //vector
+                            else if (rU == 1) 
+                            {
+                                // <editor-fold defaultstate="collapsed" desc="Vector">
+                                total = new Object[arrU.length];
+                                for (int i = 0; i < arrU.length; i++) {
+                                    total[i] = 0 - (int)arrU[i];
+                                }
+                                return total;
+                                // </editor-fold>
+                            }
+                            return 0 - (int)resU;
+                        default:
+                            Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                            "Aritmetica: no es ni double,int (Menos unario"));
+                            return null;
+                    }  
                 }
                 default:
                 {
@@ -679,7 +1187,6 @@ public class Aritmetica extends Operacion{
                                 "Aritmetica: ningun caso en esta clase"));
                 }
             }
-        //}
         }
         return null;
     }

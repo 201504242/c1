@@ -51,7 +51,9 @@ public class Llama implements Expresion{
         }
         else
         {
-            System.err.println("ERROR variable "+id+" no existe en el entorno actual en tipo");
+            Ventana.ggetVentana().listaError.add(new JError("Sintactico", linea(), columna(), "Error en la funcion "+id+" no existe"));
+
+            //System.err.println("ERROR variable "+id+" no existe en el entorno actual en tipo");
             return null;
         }       
     }
@@ -74,20 +76,22 @@ public class Llama implements Expresion{
                 }
                 else
                 {
-                    System.out.println("ERROR parametros formales ");
+                    Ventana.ggetVentana().listaError.add(new JError("Sintactico", linea(), columna(), "Error en los parametros, cantidad de parametros"));
+
+//                    System.out.println("ERROR parametros formales ");
                 }
             }
             else
             {
                 //Ventana.getVentana().listaError.add(new JError("Semantico", linea(), columana(),
-                System.err.println("ERROR la funcion con nombre: "+id+" no existe en ningun entorno linea:"+linea());
+                //System.err.println("ERROR la funcion con nombre: "+id+" no existe en ningun entorno linea:"+linea());
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "la funcion con nombre: "+id+" no existe en ningun entorno"));        
             }
         } catch (Exception e) {
             //WVentana.getVentana().listaError.add(new JError("Semantico Fatal", linea(), columana(),
             //System.out.println(
-            System.err.println("ERROR la funcion con nombre: "+id+" tiene un error linea:"+linea()+" "+e.getMessage());
+          //  System.err.println("ERROR la funcion con nombre: "+id+" tiene un error linea:"+linea()+" "+e.getMessage());
             Ventana.ggetVentana().listaError.add(new JError("Ejecucion", linea(), columna(),
             "la funcion con nombre: "+id+" tiene un error")); 
         }

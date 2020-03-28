@@ -31,17 +31,15 @@ public class FuncionMatrix implements Expresion{
    
     @Override
     public Tipo getTipo(Entorno ent) {
-        Tipo []tp = new Tipo[listaExp.size()];
+        Tipo []tp = new Tipo[1];
         int c = 0;
-        for (NodoAST nodo : listaExp) 
+        NodoAST arreglo = listaExp.get(0);
+        if (arreglo instanceof Expresion)
         {
-            if (nodo instanceof Expresion)
-            {
-                Expresion a = (Expresion)nodo;
-                Tipo ti = a.getTipo(ent);
-                tp[c] = ti;
-                c++;
-            }                        
+            Expresion a = (Expresion)arreglo;
+            Tipo ti = a.getTipo(ent);
+            tp[c] = ti;
+            c++;
         }
         return tipoDominante(tp);
     }
@@ -150,7 +148,11 @@ public class FuncionMatrix implements Expresion{
 
     @Override
     public String getNombre(StringBuilder builder, String parent, int cont) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String nodo = "nodo" + ++cont;
+        builder.append(nodo).append(" [label=\"Matrix\"];\n");
+        builder.append(parent).append(" -> ").append(nodo).append(";\n");
+
+        return ""+cont;
     }
     
     

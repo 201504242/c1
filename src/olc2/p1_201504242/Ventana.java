@@ -458,56 +458,6 @@ public class Ventana extends javax.swing.JFrame {
         
     }
 
-    private String recorrido(NodoAST ins) {
-//        String clase="";
-        String c="";
-//
-//        if (ins instanceof Clase) {
-//            Clase cla = (Clase) ins;
-//            clase = "\""+cla.getIdentificador()+"_"+cla.getRol()+" \"->";
-//            for (Modificador con : cla.getModificadores()) {
-//                c += clase + recorridoMod(con);
-//            }
-//            for (Funcion fun : cla.getFunciones()) {
-//                c += clase + recorridoFun((Funcion)fun);
-//            }
-//            
-//            c += "\n";
-//            for (Instruccion con : cla.getInstrucciones()) {
-//                c += clase + recorridoIns(con);
-//            }
-//        }
-        return c;
-    }
-
-    private void definirNodos(NodoAST ins) {
-        if (ins != null) {
-//            cad += "node" + index + "[label = \""+ins.getNombre() + "\"]; \n";
-            index++;
-            
-            //aca irian todas las que puedan tener mas adentro
-            if (ins instanceof Expresion) {
-                Expresion instancia = (Expresion)ins;
-                definirNodos(instancia);
-            }
-        }
-    }
-
-    private void enlazarNodos(AST arbol, int actual) {
-        for (NodoAST ins : arbol.getInstrucciones()) {
-            aux(ins,actual);
-        }          
-    }
-
-    private void aux(NodoAST ins, int actual) {
-        if (ins != null) 
-        {
-            index++;
-            cad += "\"node" + actual + "\"--" + "\"node" + index + "\"";
-
-        }
-    }
-    
     public void limpiar(){
         listaError.clear();
         Consola.setText("");
@@ -709,13 +659,10 @@ public class Ventana extends javax.swing.JFrame {
             else if(o instanceof Object[][])
             {
                 Object [][] m = (Object[][]) o;
-                Ventana.ggetVentana().agregarConsola("--- x: "+m.length+" y:"+m[0].length+" -----");
-                int cont = 1;
                 String cad = "";
                 for (Object[] row : m){
                     //System.out.println(Arrays.toString(row)); 
                     cad = cad + (Arrays.toString(row));
-                    cont++;
                 } 
                 return cad;
             }

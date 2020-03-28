@@ -68,7 +68,6 @@ COMENTUNILINEA =("#".*\r\n)|("#".*\n)|("#".*\r)
 "case" {return new Symbol(sym.Tcase,yyline,yychar, yytext());} 
 "break" {return new Symbol(sym.Tbreak,yyline,yychar, yytext());} 
 "while" {return new Symbol(sym.Twhile,yyline,yychar, yytext());} 
-"print" {return new Symbol(sym.Tprint,yyline,yychar, yytext());} 
 "do" {return new Symbol(sym.Tdo,yyline,yychar, yytext());} 
 "for" {return new Symbol(sym.Tfor,yyline,yychar, yytext());} 
 "in" {return new Symbol(sym.Tin,yyline,yychar, yytext());} 

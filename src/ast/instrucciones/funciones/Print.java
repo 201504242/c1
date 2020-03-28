@@ -7,9 +7,12 @@ package ast.instrucciones.funciones;
 
 import ast.Expresion;
 import ast.Instruccion;
+import ast.NodoAST;
 
 import entorno.Entorno;
+import entorno.Tipo;
 import java.util.Arrays;
+import java.util.LinkedList;
 import olc2.p1_201504242.JError;
 import olc2.p1_201504242.Ventana;
 
@@ -19,11 +22,11 @@ import olc2.p1_201504242.Ventana;
  */
 public class Print implements Instruccion{
 
-    private Expresion valor;
+    private LinkedList<NodoAST> valor;
     private int linea;
     private int col;
     
-    public Print(Expresion valor, int linea, int col) {
+    public Print(LinkedList<NodoAST>  valor, int linea, int col) {
         this.valor = valor;
         this.linea = linea;
         this.col = col;
@@ -33,7 +36,8 @@ public class Print implements Instruccion{
     public Object ejecutar(Entorno ent) {
         //Ventana pp = (Ventana)olc2.p1_201504242.OLC2P1_201504242.ven.ggetVentana();
         try {
-            Object o = valor.getValorImplicito(ent);
+            Expresion exp = (Expresion) valor.get(0);
+            Object o = exp.getValorImplicito(ent);
             if (o instanceof ListVar) 
             {
                 ListVar s = (ListVar)o;
@@ -106,8 +110,8 @@ public class Print implements Instruccion{
         builder.append(nodo).append(" [label=\"Imprimir\"];\n");
         builder.append(parent).append(" -> ").append(nodo).append(";\n");
 
-        //cont = valor.getNombre(builder, nodo, cont);
-        return ""+valor.getNombre(builder, nodo, cont);
+        Expresion exp = (Expresion) valor.get(0);
+        return ""+exp.getNombre(builder, nodo, cont);
     }
     
     

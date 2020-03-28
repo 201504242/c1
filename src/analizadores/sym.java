@@ -11,13 +11,12 @@ public class sym {
   public static final int Twhile = 41;
   public static final int plot = 23;
   public static final int POR = 12;
-  public static final int Treturn = 48;
+  public static final int Treturn = 47;
   public static final int barplot = 25;
-  public static final int ENTERO = 50;
+  public static final int ENTERO = 49;
   public static final int DIFERENTE = 17;
-  public static final int Tfuntion = 47;
+  public static final int Tfuntion = 46;
   public static final int igual = 29;
-  public static final int Tprint = 45;
   public static final int Tnull = 32;
   public static final int Tfor = 43;
   public static final int ternario = 30;
@@ -25,19 +24,19 @@ public class sym {
   public static final int Tnot = 28;
   public static final int Tand = 27;
   public static final int MENORIGUAL = 21;
-  public static final int CAD = 54;
+  public static final int CAD = 53;
   public static final int tdefault = 35;
   public static final int CORDER = 6;
   public static final int DIVIDIDO = 13;
   public static final int IGUALDAD = 16;
   public static final int Telse = 37;
   public static final int ttrue = 33;
-  public static final int UMENOS = 52;
+  public static final int UMENOS = 51;
   public static final int LLAIZQ = 7;
-  public static final int ID = 53;
+  public static final int ID = 52;
   public static final int Tdo = 42;
   public static final int MAYORIGUAL = 20;
-  public static final int DECIMAL = 51;
+  public static final int DECIMAL = 50;
   public static final int EOF = 0;
   public static final int PARIZQ = 3;
   public static final int error = 1;
@@ -49,7 +48,7 @@ public class sym {
   public static final int MAYOR = 18;
   public static final int tfalse = 34;
   public static final int POTENCIA = 14;
-  public static final int fantasmita = 49;
+  public static final int fantasmita = 48;
   public static final int pie = 22;
   public static final int hist = 24;
   public static final int Tcase = 39;
@@ -61,7 +60,7 @@ public class sym {
   public static final int PARDER = 4;
   public static final int CORIZQ = 5;
   public static final int Tif = 36;
-  public static final int Tcontinue = 46;
+  public static final int Tcontinue = 45;
   public static final int MAS = 10;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -109,7 +108,6 @@ public class sym {
   "Tdo",
   "Tfor",
   "Tin",
-  "Tprint",
   "Tcontinue",
   "Tfuntion",
   "Treturn",
