@@ -50,6 +50,9 @@ public class grafBarras implements Instruccion{
                 Object main =  ((Expresion)lista.get(3)).getValorImplicito(ent);
                 Object []names = (Object[]) ((Expresion)lista.get(4)).getValorImplicito(ent);
                 
+                xlab = convertirAString(xlab);
+                ylab = convertirAString(ylab);
+                main = convertirAString(main);
                 if (H !=null && names!= null && main != null) 
                 {
                     if (names.length != H.length){
@@ -192,5 +195,10 @@ public class grafBarras implements Instruccion{
         cadena += n; }
         return cadena;
     }
-
+    private Object convertirAString(Object type) {
+        if (type instanceof Object[]) {
+            return ((Object[])type)[0];
+        }
+        return type;
+    }
 }

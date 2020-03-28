@@ -48,6 +48,7 @@ public class grafPie implements Instruccion{
                 Object[]datos = (Object[]) ((Expresion)lista.get(0)).getValorImplicito(ent);
                 Object[]titulos = (Object[]) ((Expresion)lista.get(1)).getValorImplicito(ent);
                 Object nombre =  ((Expresion)lista.get(2)).getValorImplicito(ent);
+                nombre = convertirAString(nombre);
                 if (datos !=null && titulos!= null && nombre != null) 
                 {
                     if (datos.length != titulos.length){
@@ -182,5 +183,11 @@ public class grafPie implements Instruccion{
         n = (char)(rnd.nextDouble() * 26.0 + 65.0 );
         cadena += n; }
         return cadena;
+    }
+    private Object convertirAString(Object type) {
+        if (type instanceof Object[]) {
+            return ((Object[])type)[0];
+        }
+        return type;
     }
 }

@@ -5,6 +5,7 @@
 <body>
     <center><div id='myDiv'></div></center>
     <div id='myDiv2'></div>
+    <div id='line'></div>
 </body>
 
 <script>
@@ -34,4 +35,30 @@
     Plotly.newPlot('myDiv', dataPie, layoutPie);
     Plotly.newPlot('myDiv2', dataBar, layoutBar);
 
+    var lin = [
+    {
+        x: [1, 2, 3, 4],
+        y: [10, 15, 13, 17],
+        mode: 'markers',
+        //mode: 'lines',
+        //mode: 'lines+markers',
+        marker: {
+            color: 'rgb(219, 64, 82)',
+            size: 15
+        },
+        line: {
+            color: 'rgb(128, 0, 128)',
+            width: 1
+        }
+    }];
+    
+    var layoutLin = {
+        title:'Line and Scatter Plot',
+        xaxis: {title: 'X axis'},
+        yaxis: {title: 'Y axis'}
+        
+    };
+
+    Plotly.newPlot('line', lin, layoutLin)
+    ;    
 </script>

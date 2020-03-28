@@ -42,35 +42,48 @@ public class grafLineas implements Instruccion{
         if (lista.size() == 5) 
         {
             try {
-                Object[]v = (Object[]) ((Expresion)lista.get(0)).getValorImplicito(ent);
                 Object type = ((Expresion)lista.get(1)).getValorImplicito(ent);
                 Object xlab =  ((Expresion)lista.get(2)).getValorImplicito(ent);
                 Object ylab =  ((Expresion)lista.get(3)).getValorImplicito(ent);
                 Object main =  ((Expresion)lista.get(4)).getValorImplicito(ent);
+                type = convertirAString(type);
+                xlab = convertirAString(xlab);
+                ylab = convertirAString(ylab);
+                main = convertirAString(main);
                 
-//                if (v !=null && main != null && nombre != null) 
-//                {
+                Object valor1 = (Object) ((Expresion)lista.get(0)).getValorImplicito(ent);
+                
+                if (type !=null && xlab != null && ylab !=null && valor1 != null && main != null) {
                     this.nombr = (String) main;
-//                    if (datos.length != titulos.length){
-//                        Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
-//                        "Grafica de Lineas datos: "+datos.length+" titulos: " +titulos.length)); 
-//                    }
-//                    String n = getN();
-//                    if(Generar(n,(String)nombre,datos,titulos))
-//                    {
-//                              Ventana.ggetVentana().agregarConsola("GrafLineas "+this.nombr+" Generada, nombre: "+n);
-//                        int input = JOptionPane.showConfirmDialog(null, "Desea Abrir la Grafica "+nombre);
-//                        if (input == 0) 
-//                        {
-//                            abrirGrafica(n);
-//                        }
-//                    }
-//                }
-//                else
-//                {
-//                    Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
-//                    "Grafica de Lineas tiene datos nulos")); 
-//                }
+                //v = Matriz
+                    if (valor1 instanceof Object[][]) {
+                        int c=0;
+                        Object[][] matriz = (Object[][])valor1;
+                        Object[] v = new Object[matriz.length*matriz[0].length];
+                        for (int i = 0; i < matriz[0].length; i++){		// El primer índice recorre las columnas.
+                            for (int j = 0; j < matriz.length; j++){	// El segundo índice recorre las filas.
+                                v[c] = matriz[j][i];
+                                c++;
+                            }
+                        }
+                        valor1 = v;
+                    }
+                //ya con el vector arreglado lo graficamos
+                    String n = getN();
+                    if(Generar(n, (String)main, (Object[])valor1,(String)xlab,(String)ylab,((String)type).toUpperCase())){
+                       Ventana.ggetVentana().agregarConsola("Grafica Lineas "+this.nombr+" Generada, nombre: "+n);
+                    int input = JOptionPane.showConfirmDialog(null, "Desea Abrir la Grafica "+this.nombr);
+                        if (input == 0) 
+                        {
+                            abrirGrafica(n);
+                        } 
+                    }
+                }
+                else
+                {
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
+                    "Grafica de Lineas tiene datos nulos")); 
+                }
             } catch (Exception e) {
                 Ventana.ggetVentana().listaError.add(new JError("Ejecucion",linea(), columna(),
                     "Grafica de Lineas tiene error "+e.getMessage())); 
@@ -79,7 +92,7 @@ public class grafLineas implements Instruccion{
         else
         {
             Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
-                "Grafica de Lineas necesita unicamente 3 Expresiones tiene:"+lista.size())); 
+                "Grafica de Lineas necesita unicamente 5 Expresiones tiene:"+lista.size())); 
         }
         return null;
     }
@@ -112,7 +125,7 @@ return this.col;
     }
     
      
-    private boolean Generar(String archivo,String nombre, Object[] datos,Object[] titulos) {
+    private boolean Generar(String archivo,String nombre, Object[] datos,String xlab,String ylab, String type) {
          
         FileWriter filewriter = null;
         PrintWriter printw = null;
@@ -129,31 +142,46 @@ return this.col;
             printw.println("</body>");
             
             printw.println("<script>");
-            printw.println("var dataPie = [{");
-            printw.println("title:'"+nombre+"',");
-            printw.print("values:[");            
+            printw.println("var data = [{");   
+            
+            printw.print("y: [");   
             for (int i = 0; i < datos.length; i++) {
                 String cad = i != datos.length-1 ? "'"+datos[i]+"',":"'"+datos[i]+"'";
                 printw.print(cad);
             }
             printw.println("],");
-            printw.print("labels:[");     
-            for (int i = 0; i < datos.length; i++) {
-                String cad;
-                if (i < titulos.length) {
-                    cad = i != titulos.length-1 ? "'"+titulos[i]+"',":"'"+titulos[i]+"'";
-                }
-                else{
-                    cad = i != datos.length-1 ? ",'Des"+i+"'":",'Des"+i+"'";
-                }
-                
+            
+            printw.print("x: [");   
+            for (int i = 1; i < datos.length+1; i++) {
+                String cad = i != datos.length ? "'"+i+"',":"'"+i+"'";
                 printw.print(cad);
             }
             printw.println("],");
-            printw.println("type: 'pie'");            
+            
+            switch(type){
+                case "P"://puntos
+                    printw.println("mode: 'markers',");    
+                    break;
+                case "I"://lineas
+                    printw.println("mode: 'lines',");    
+                    break;
+                case "O"://lineas y puntos
+                    printw.println("mode: 'lines+markers',");    
+                    break;
+                default:
+                    return false;
+            }
+            printw.println("marker: {\n" +
+            "            color: 'rgb(219, 64, 82)',\n" +
+            "            size: 15\n" +
+            "        },\n" +
+            "        line: {\n" +
+            "            color: 'rgb(128, 0, 128)',\n" +
+            "            width: 1\n" +
+            "        }");            
             printw.println("}];");           
-            printw.println("var layoutPie = { height: 400,width: 500};");           
-            printw.println("Plotly.newPlot('myDiv', dataPie, layoutPie);");           
+            printw.println("var layout = {title: '"+nombre+"',xaxis: {title:'"+xlab+"'},yaxis: {title:'"+ylab+"'} };");           
+            printw.println("Plotly.newPlot('myDiv', data, layout);");           
                
             printw.println("</script>");    
             
@@ -183,5 +211,12 @@ return this.col;
         n = (char)(rnd.nextDouble() * 26.0 + 65.0 );
         cadena += n; }
         return cadena;
+    }
+
+    private Object convertirAString(Object type) {
+        if (type instanceof Object[]) {
+            return ((Object[])type)[0];
+        }
+        return type;
     }
 }

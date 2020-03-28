@@ -46,7 +46,8 @@ public class grafHistograma implements Instruccion{
                 Object[]v= (Object[]) ((Expresion)lista.get(0)).getValorImplicito(ent);
                 Object main =  ((Expresion)lista.get(1)).getValorImplicito(ent);
                 Object xlab =  ((Expresion)lista.get(2)).getValorImplicito(ent);
-                
+                xlab = convertirAString(xlab);
+                main = convertirAString(main);
                 if (v !=null && xlab!= null && main != null) 
                 {                    
                     String n = getN();
@@ -183,5 +184,10 @@ public class grafHistograma implements Instruccion{
         cadena += n; }
         return cadena;
     }
-    
+    private Object convertirAString(Object type) {
+        if (type instanceof Object[]) {
+            return ((Object[])type)[0];
+        }
+        return type;
+    }
 }
