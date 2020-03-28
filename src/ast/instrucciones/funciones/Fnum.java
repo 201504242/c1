@@ -9,6 +9,7 @@ import ast.Expresion;
 import ast.NodoAST;
 import entorno.Entorno;
 import entorno.Tipo;
+import java.util.Arrays;
 import java.util.LinkedList;
 import olc2.p1_201504242.JError;
 import olc2.p1_201504242.Ventana;
@@ -106,24 +107,72 @@ public class Fnum implements Expresion{
                         return sum/contador;
                     }
                     return null;
-////                    val = String.valueOf(o).toLowerCase();                
-//                    return val;
                 case 4://Median
+                    //sin trim
+                    trim = 0;
+                    if (valor.size() > 1) {
+                        trim = (int)((Expresion) valor.get(1)).getValorImplicito(ent);
+                    }
                     if (o instanceof Object[]) {
-                        Object[] cad = (Object[]) o;
-                        if (cad.length == 1) {
-//                            val = String.valueOf(cad[0]).toUpperCase();                
-//                            return val;
-                        }else{
-                            Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(), 
-                                    "Vector tiene mas de 1 dato"));
-                            return null;
+                        Object[] cad = (Object[]) o; 
+                        int middle = 0;
+                        if (trim == 0) {
+                            middle = cad.length/2;
+                        }
+                        else{
+                            LinkedList aux = new LinkedList();
+                            for (int i = 0; i < cad.length; i++) {
+                                double valr = new Double(cad[i].toString());
+                                if(trim < valr){
+                                    aux.add(valr); 
+                                }
+                            }
+                            cad = aux.toArray();
+                            middle = cad.length/2;
+                        }
+                        Arrays.sort(cad);
+                        if (cad.length%2 == 1) {
+                            return new Double(cad[middle].toString());
+                        } else {
+                            return (Double.parseDouble(cad[middle-1].toString()) + Double.parseDouble(cad[middle].toString())) / 2.0;
                         }
                     }
-////                    val = String.valueOf(o).toUpperCase();  
-//                    return val;
+                    return null;
                 case 5://Mode
-                        break;
+                    trim = 0;
+                    int mode = 0;
+                    if (valor.size() > 1) {
+                        trim = (int)((Expresion) valor.get(1)).getValorImplicito(ent);
+                    }
+                     if (o instanceof Object[]) {
+                        Object[] cad = (Object[]) o;
+                        if (trim == 0) {
+                            int v[] = new int[cad.length];
+                            for (int i = 0; i < cad.length; i++) {
+                                v[i] = (int)cad[i];
+                            }
+                            mode = moda(v);
+                            return mode;
+                        }
+                        else{
+                            LinkedList<Integer> aux = new LinkedList();
+                            for (int i = 0; i < cad.length; i++) {
+                                int valr = new Integer(cad[i].toString());
+                                if(trim < valr){
+                                    aux.add(valr); 
+                                }
+                            }
+                            int v[] = new int[aux.size()];
+                            int i = 0;
+                            for (Integer in : aux) {
+                                v[i] = in;
+                                i++;
+                            }
+                            mode = moda(v);
+                            return mode;
+                        }
+                    }
+                    return null;
             }
             return null;
         } catch (Exception e) {
@@ -168,4 +217,24 @@ public class Fnum implements Expresion{
         return ""+exp.getNombre(builder, nodo, cont);
     }
     
+    public static int moda ( int [ ] v ) {
+    int i, j, moda = 0, n = v.length, frec;
+    int frecTemp, frecModa = 0, moda1 = -1; 
+  
+    // ordenar de menor a mayor
+    Arrays.sort(v);
+
+    for ( i = 0; i < n; i++ ) {
+      frecTemp = 1; 
+      for ( j = i + 1; j < n; j++ ) {
+        if ( v [ i ] == v [ j ] )
+          frecTemp++;
+      }
+      if ( frecTemp > frecModa ) {
+        frecModa = frecTemp;
+        moda1 = v [ i ];
+      }
+    }
+    return moda1;
+  }
 }
