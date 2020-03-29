@@ -59,7 +59,6 @@ terminal String MAS,MENOS,POR,DIVIDIDO,POTENCIA,MODULO;
 terminal String IGUALDAD,DIFERENTE,MAYOR,MENOR,MAYORIGUAL,MENORIGUAL;
 
 // ************************ PALABRAS RESERVADAS
-terminal String pie,plot,hist,barplot;
 
 terminal String Tor,Tand,Tnot,igual,ternario,dospuntos;
 terminal String Tnull,ttrue,tfalse,tdefault;
@@ -92,7 +91,6 @@ non terminal Instruccion ASIGNACION;
 non terminal NodoAST SENTENCIA_LLAMADA;
 non terminal LinkedList<nodoExp> DIMENSION;
 non terminal nodoExp OPC_ACCESO;
-non terminal String GRAFICA;
 non terminal LinkedList<Simbolo> formal_parameters;
 non terminal Simbolo formal_parameter;
 
@@ -288,26 +286,6 @@ instruccion ::=
         {: 
             RESULT = e;
         :}  
-    |GRAFICA:a PARIZQ LISTA_EXP:b PARDER
-        {:
-            
-            if(a.equals("1")){
-                RESULT = new grafPie(b,aleft,aright);
-            }else if(a.equals("2")){
-                RESULT = new grafBarras(b,aleft,aright);
-            }else if(a.equals("3")){
-                   RESULT = new grafHistograma(b,aleft,aright);
-            }else if(a.equals("4")){
-                if(b.size() == 5){
-                    //linel
-                    RESULT = new grafLineas(b,aleft,aright);
-
-                }else if(b.size() == 8){
-                    //dispercion
-
-                }                   
-            }
-        :}
 //************** CON PUNTO Y COMA
     |SENTENCIA_DOWHILE:e PTCOMA
         {: RESULT = e; :}
@@ -327,37 +305,12 @@ instruccion ::=
         {: 
             RESULT = e;
         :}  
-    |GRAFICA:a PARIZQ LISTA_EXP:b PARDER PTCOMA
-        {:
-            if(a.equals("1")){
-                RESULT = new grafPie(b,aleft,aright);
-            }else if(a.equals("2")){
-                RESULT = new grafBarras(b,aleft,aright);
-            }else if(a.equals("3")){
-                   RESULT = new grafHistograma(b,aleft,aright);
-            }else if(a.equals("4")){
-                if(b.size() == 5){
-                    //linel
-                    RESULT = new grafLineas(b,aleft,aright);
-
-                }else if(b.size() == 8){
-                    //dispercion
-
-                }                   
-            }
-        :}
     |fantasmita
         {: 
             RESULT = new fantasmita();
         :}  
 ;
 
-GRAFICA ::= 
-    pie                 {: RESULT = "1";:}
-    |barplot            {: RESULT = "2";:}
-    |hist               {: RESULT = "3";:}
-    |plot               {: RESULT = "4";:}
-;
 
 SENTENCIA_LLAMADA ::= 
     ID:a PARIZQ PARDER
@@ -400,6 +353,14 @@ SENTENCIA_LLAMADA ::=
             RESULT = new Fnum(4,b,aleft,aright);
         }else if(a.equalsIgnoreCase("mode")){
             RESULT = new Fnum(5,b,aleft,aright);
+        }else if(a.equalsIgnoreCase("pie")){
+                RESULT = new grafPie(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("barplot")){
+            RESULT = new grafBarras(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("hist")){
+               RESULT = new grafHistograma(b,aleft,aright);
+        }else if(a.equalsIgnoreCase("plot")){
+            RESULT = new grafLineas(b,aleft,aright);                 
         }else{
             RESULT = new Llama(a,b,aleft,aright);
         }

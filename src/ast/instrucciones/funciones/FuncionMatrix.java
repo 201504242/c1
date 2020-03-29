@@ -61,11 +61,16 @@ public class FuncionMatrix implements Expresion{
                     if(crearData instanceof Object[])
                     {
                         Object[] vec = (Object[])crearData; 
+                        int contador = 0;
                         for(int i = 0 ; i < ncol ; i++)
                         {
                             for(int y=0 ; y < nrow ; y++)
                             {
-                                matrizNueva[y][i] = vec[y%vec.length] ;
+                                if (contador == vec.length) {
+                                    contador = 0;
+                                }
+                                matrizNueva[y][i] = vec[contador] ;
+                                contador++;
                             }
                         }
                     }else{

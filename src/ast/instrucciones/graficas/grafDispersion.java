@@ -38,39 +38,55 @@ public class grafDispersion implements Instruccion{
     
     @Override
     public Object ejecutar(Entorno ent) {
-        //plot(mat,main, xlab, ylab, ylim
-         if (lista.size() == 5) 
+        
+        if (lista.size() == 5) 
         {
             try {
-                Object[]MAT = (Object[]) ((Expresion)lista.get(0)).getValorImplicito(ent);
+                Object[][]MAT = (Object[][]) ((Expresion)lista.get(0)).getValorImplicito(ent);
                 Object main = ((Expresion)lista.get(1)).getValorImplicito(ent);
                 Object xlab =  ((Expresion)lista.get(2)).getValorImplicito(ent);
                 Object ylab =  ((Expresion)lista.get(3)).getValorImplicito(ent);
-                Object ylim =  ((Expresion)lista.get(4)).getValorImplicito(ent);
+                Object[] ylim =  (Object[])((Expresion)lista.get(4)).getValorImplicito(ent);
+                xlab = convertirAString(xlab);
+                ylab = convertirAString(ylab);
+                main = convertirAString(main);
                 
-//                if (v !=null && main != null && nombre != null) 
-//                {
+                if (MAT !=null && main != null && xlab != null && ylab != null && ylim !=null) 
+                {
                     this.nombr = (String) main;
-//                    if (datos.length != titulos.length){
-//                        Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
-//                        "Grafica de Lineas datos: "+datos.length+" titulos: " +titulos.length)); 
-//                    }
-//                    String n = getN();
-//                    if(Generar(n,(String)nombre,datos,titulos))
-//                    {
-//                          Ventana.ggetVentana().agregarConsola("GrafDispersion "+this.nombr+" Generada, nombre: "+n);
-//                        int input = JOptionPane.showConfirmDialog(null, "Desea Abrir la Grafica "+nombre);
-//                        if (input == 0) 
-//                        {
-//                            abrirGrafica(n);
-//                        }
-//                    }
-//                }
-//                else
-//                {
-//                    Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
-//                    "Grafica de Lineas tiene datos nulos")); 
-//                }
+                    String n = getN();
+                    //Matriz a lineal
+                    int c=0;
+                    Object[][] matriz = (Object[][])MAT;
+                    Object[] v = new Object[matriz.length*matriz[0].length];
+                    for (int i = 0; i < matriz[0].length; i++){	
+                        for (int j = 0; j < matriz.length; j++){
+                            v[c] = matriz[j][i];
+                            c++;
+                        }
+                    } 
+                    //valor minimo y maximo
+                    double min = (double) ylim[0];
+                    double max = (double) ylim[1];
+                    if (min > max) {
+                        max = min;
+                        min = max;
+                    }
+                    if(Generar(n,(String)main,v,(String)xlab,(String)ylab,min,max))
+                    {
+                        Ventana.ggetVentana().agregarConsola("Grafica Dispersion: "+this.nombr+" Generada, nombre: "+n);
+                        int input = JOptionPane.showConfirmDialog(null, "Desea Abrir la Grafica "+main);
+                        if (input == 0) 
+                        {
+                            abrirGrafica(n);
+                        }
+                    }
+                }
+                else
+                {
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico",linea(), columna(),
+                    "Grafica de Dispersion tiene datos nulos")); 
+                }
             } catch (Exception e) {
                 Ventana.ggetVentana().listaError.add(new JError("Ejecucion",linea(), columna(),
                     "Grafica de Dispersion tiene error "+e.getMessage())); 
@@ -112,8 +128,7 @@ public class grafDispersion implements Instruccion{
         return String.valueOf(cont);
     }
     
-      private boolean Generar(String archivo,String nombre, Object[] datos,Object[] titulos) {
-         
+    private boolean Generar(String archivo,String nombre, Object[] datos,String xlab,String ylab,double min,double max) {
         FileWriter filewriter = null;
         PrintWriter printw = null;
         try{
@@ -129,31 +144,37 @@ public class grafDispersion implements Instruccion{
             printw.println("</body>");
             
             printw.println("<script>");
-            printw.println("var dataPie = [{");
-            printw.println("title:'"+nombre+"',");
-            printw.print("values:[");            
+            printw.println("var data = [{");   
+            
+            printw.print("y: [");   
             for (int i = 0; i < datos.length; i++) {
-                String cad = i != datos.length-1 ? "'"+datos[i]+"',":"'"+datos[i]+"'";
+                double valorExp = (double) datos[i];
+                //valor permitidos en Y
+                if (valorExp >= min && valorExp <= max) {
+                    String cad = i != datos.length-1 ? "'"+datos[i]+"',":"'"+datos[i]+"'";
+                    printw.print(cad);  
+                }                
+            }
+            printw.println("],");
+            
+            printw.print("x: [");   
+            for (int i = 1; i < datos.length+1; i++) {
+                String cad = i != datos.length ? "'"+i+"',":"'"+i+"'";
                 printw.print(cad);
             }
             printw.println("],");
-            printw.print("labels:[");     
-            for (int i = 0; i < datos.length; i++) {
-                String cad;
-                if (i < titulos.length) {
-                    cad = i != titulos.length-1 ? "'"+titulos[i]+"',":"'"+titulos[i]+"'";
-                }
-                else{
-                    cad = i != datos.length-1 ? ",'Des"+i+"'":",'Des"+i+"'";
-                }
-                
-                printw.print(cad);
-            }
-            printw.println("],");
-            printw.println("type: 'pie'");            
+            printw.println("mode: 'markers',");
+            printw.println("marker: {\n" +
+            "            color: 'rgb(219, 64, 82)',\n" +
+            "            size: 15\n" +
+            "        },\n" +
+            "        line: {\n" +
+            "            color: 'rgb(128, 0, 128)',\n" +
+            "            width: 1\n" +
+            "        }");            
             printw.println("}];");           
-            printw.println("var layoutPie = { height: 400,width: 500};");           
-            printw.println("Plotly.newPlot('myDiv', dataPie, layoutPie);");           
+            printw.println("var layout = {title: '"+nombre+"',xaxis: {title:'"+xlab+"'},yaxis: {title:'"+ylab+"'} };");           
+            printw.println("Plotly.newPlot('myDiv', data, layout);");           
                
             printw.println("</script>");    
             
@@ -183,5 +204,12 @@ public class grafDispersion implements Instruccion{
         n = (char)(rnd.nextDouble() * 26.0 + 65.0 );
         cadena += n; }
         return cadena;
+    }
+    
+    private Object convertirAString(Object type) {
+        if (type instanceof Object[]) {
+            return ((Object[])type)[0];
+        }
+        return type;
     }
 }

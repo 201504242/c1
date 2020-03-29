@@ -1,3 +1,41 @@
+B = matrix(c(1, 2, 3, 4), 5, 4)
+Print(B)
+
+print("------- prueba grafica-----");
+x = c(19, 26, 55)
+labels =  c("Residential", "Non-Residential", "Utility")
+pie (x, labels, "ACA TITULO");          #1
+x = c(19, 26, 55,65,20,89)
+pie (x, labels, "ACA TITULO2");         #2
+
+H = c("primaria","basicos","secundaria");
+names.arg = c(600,2500,1200,100);
+xlab = "Nivel Educativo"
+ylab = "Frecuencia"
+main = "Grafica de Educacion"
+barplot( H, xlab, ylab, main, names.arg)    #3
+
+xlab = "Meses"
+ylab = "Milimetros"
+v = C(40,20,80,110,120,40,80,125,32,160,55,21);
+main = c("Grafica Lineas")
+plot(v,"p",xlab,ylab,main);         #4
+plot(v,"i",xlab,ylab,main);         #5
+plot(v,c("o"),xlab,ylab,main);      #6
+
+plot(matrix(c(10,20,30),3,3),c("o"),xlab,ylab,main);    #7
+
+v = c(10,15,5,8,7,4,11,18,27,14,12);        
+main = "Grafica Histograma"
+xlab = "Datos"
+hist(v, main, xlab)                 #8
+
+main = "Grafica Dispersion"
+xlab = "x Lab"
+ylab = "y Lab"
+ylim = c(11,20);
+plot(matrix(c(10,20,30,40,50,60,70,10,56,9),5,5),main,xlab,ylab,ylim);    #9
+
 print("------- Pruebas typeof -----");
 li = 26665;
 print(li +" -> " + typeof(li));  #int
@@ -118,34 +156,6 @@ print(ejemplo);
 
 
 
-print("------- prueba grafica-----");
-x = c(19, 26, 55)
-labels =  c("Residential", "Non-Residential", "Utility")
-pie (x, labels, "ACA TITULO");
-x = c(19, 26, 55,65,20,89)
-pie (x, labels, "ACA TITULO2");
-
-H = c("primaria","basicos","secundaria");
-names.arg = c(600,2500,1200,100);
-xlab = "Nivel Educativo"
-ylab = "Frecuencia"
-main = "Grafica de Educacion"
-barplot( H, xlab, ylab, main, names.arg)
-
-xlab = "Meses"
-ylab = "Milimetros"
-v = C(40,20,80,110,120,40,80,125,32,160,55,21);
-main = c("Grafica Lineas")
-plot(v,"p",xlab,ylab,main);
-plot(v,"i",xlab,ylab,main);
-plot(v,c("o"),xlab,ylab,main);
-
-plot(matrix(c(10,20,30),3,3),c("o"),xlab,ylab,main);
-
-v = c(10,15,5,8,7,4,11,18,27,14,12);
-main = "Grafica Histograma"
-xlab = "Datos"
-hist(v, main, xlab)
 
 print("------- Preuebas For-----");
 for(i in 3){ 

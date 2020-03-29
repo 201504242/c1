@@ -79,10 +79,6 @@ COMENTUNILINEA =("#".*\r\n)|("#".*\n)|("#".*\r)
 "false" {return new Symbol(sym.tfalse,yyline,yychar, yytext());} 
 "default" {return new Symbol(sym.tdefault,yyline,yychar, yytext());} 
 
-"pie" {return new Symbol(sym.pie,yyline,yychar, yytext());}
-"barplot" {return new Symbol(sym.barplot,yyline,yychar, yytext());}
-"plot" {return new Symbol(sym.plot,yyline,yychar, yytext());}
-"hist" {return new Symbol(sym.hist,yyline,yychar, yytext());}
 "fantasmita" {return new Symbol(sym.fantasmita,yyline,yychar, yytext());}
 
 

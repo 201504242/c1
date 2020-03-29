@@ -8,35 +8,33 @@ package analizadores;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int Twhile = 41;
-  public static final int plot = 23;
+  public static final int Twhile = 37;
   public static final int POR = 12;
-  public static final int Treturn = 47;
-  public static final int barplot = 25;
-  public static final int ENTERO = 49;
+  public static final int Treturn = 43;
+  public static final int ENTERO = 45;
   public static final int DIFERENTE = 17;
-  public static final int Tfuntion = 46;
-  public static final int igual = 29;
-  public static final int Tnull = 32;
-  public static final int Tfor = 43;
-  public static final int ternario = 30;
-  public static final int Tswitch = 40;
-  public static final int Tnot = 28;
-  public static final int Tand = 27;
+  public static final int Tfuntion = 42;
+  public static final int igual = 25;
+  public static final int Tnull = 28;
+  public static final int Tfor = 39;
+  public static final int ternario = 26;
+  public static final int Tswitch = 36;
+  public static final int Tnot = 24;
+  public static final int Tand = 23;
   public static final int MENORIGUAL = 21;
-  public static final int CAD = 53;
-  public static final int tdefault = 35;
+  public static final int CAD = 49;
+  public static final int tdefault = 31;
   public static final int CORDER = 6;
   public static final int DIVIDIDO = 13;
   public static final int IGUALDAD = 16;
-  public static final int Telse = 37;
-  public static final int ttrue = 33;
-  public static final int UMENOS = 51;
+  public static final int Telse = 33;
+  public static final int ttrue = 29;
+  public static final int UMENOS = 47;
   public static final int LLAIZQ = 7;
-  public static final int ID = 52;
-  public static final int Tdo = 42;
+  public static final int ID = 48;
+  public static final int Tdo = 38;
   public static final int MAYORIGUAL = 20;
-  public static final int DECIMAL = 50;
+  public static final int DECIMAL = 46;
   public static final int EOF = 0;
   public static final int PARIZQ = 3;
   public static final int error = 1;
@@ -44,23 +42,21 @@ public class sym {
   public static final int MODULO = 15;
   public static final int MENOS = 11;
   public static final int MENOR = 19;
-  public static final int dospuntos = 31;
+  public static final int dospuntos = 27;
   public static final int MAYOR = 18;
-  public static final int tfalse = 34;
+  public static final int tfalse = 30;
   public static final int POTENCIA = 14;
-  public static final int fantasmita = 48;
-  public static final int pie = 22;
-  public static final int hist = 24;
-  public static final int Tcase = 39;
-  public static final int Tin = 44;
+  public static final int fantasmita = 44;
+  public static final int Tcase = 35;
+  public static final int Tin = 40;
   public static final int PTCOMA = 2;
-  public static final int Tor = 26;
-  public static final int Tbreak = 38;
+  public static final int Tor = 22;
+  public static final int Tbreak = 34;
   public static final int LLADER = 8;
   public static final int PARDER = 4;
   public static final int CORIZQ = 5;
-  public static final int Tif = 36;
-  public static final int Tcontinue = 45;
+  public static final int Tif = 32;
+  public static final int Tcontinue = 41;
   public static final int MAS = 10;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -85,10 +81,6 @@ public class sym {
   "MENOR",
   "MAYORIGUAL",
   "MENORIGUAL",
-  "pie",
-  "plot",
-  "hist",
-  "barplot",
   "Tor",
   "Tand",
   "Tnot",

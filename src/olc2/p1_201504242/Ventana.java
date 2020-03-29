@@ -461,7 +461,7 @@ public class Ventana extends javax.swing.JFrame {
     public void limpiar(){
         listaError.clear();
         Consola.setText("");
-        
+        jLabel1.setText("");
     }
     
      private void generarTS() {
