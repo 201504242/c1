@@ -111,7 +111,7 @@ start with S;
 
 S ::= ini
     {:
-        System.out.println("**************** Se creo arbol - TERMINO GRAMATICA*********************");
+        System.out.println("**************** TERMINO cup GRAMATICA*********************");
     :}
 ;
 
@@ -274,9 +274,9 @@ instruccion ::=
         {: 
             RESULT = new Break(aleft,aright);
         :}
-    |Tcontinue
+    |Tcontinue:a
         {: 
-            RESULT = new Continue();
+            RESULT = new Continue(aleft,aright);
         :}
     |SENTENCIA_RETURN:e
         {: 
@@ -293,9 +293,9 @@ instruccion ::=
         {:
             RESULT = new Break(aleft,aright);
         :}
-    |Tcontinue PTCOMA
+    |Tcontinue:a PTCOMA
         {: 
-            RESULT = new Continue();
+            RESULT = new Continue(aleft,aright);
         :}
     |SENTENCIA_RETURN:e PTCOMA
         {: 
@@ -370,15 +370,16 @@ SENTENCIA_LLAMADA ::=
 SENTENCIA_IF ::= 
     Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b
         {:
-            RESULT = new If(b,a);
+            RESULT = new If(b,a,aleft);
+
         :}      
     |Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b Telse BLOQUE_SENT:c
         {:
-            RESULT = new If(b,a,c);
+            RESULT = new If(b,a,c,aleft);
         :}
     |Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b Telse SENTENCIA_IF:c
         {:
-            RESULT = new If(b,a,c);
+            RESULT = new If(b,a,c,aleft);
         :}
 ;
 

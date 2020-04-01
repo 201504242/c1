@@ -11,6 +11,8 @@ import ast.NodoAST;
 import ast.expresiones.Return;
 import entorno.Entorno;
 import java.util.LinkedList;
+import olc2.p1_201504242.JError;
+import olc2.p1_201504242.Ventana;
 
 /**
  *
@@ -23,103 +25,114 @@ public class If  extends Condicion implements Instruccion{
     private int linea;
     private int col;
 
-    public If(LinkedList<NodoAST> ins, Expresion cond) {
+    //f ( E ) { sent }
+    public If(LinkedList<NodoAST> ins, Expresion cond,int linea) {
         super(ins, cond);
+        this.linea = linea;
     }
     
-    public If(LinkedList<NodoAST> ins, Expresion cond,LinkedList<NodoAST>insElse) {
+    public If(LinkedList<NodoAST> ins, Expresion cond,LinkedList<NodoAST>insElse,int linea) {
         super(ins, cond);
         this.insElse = insElse;
+        this.linea = linea;
     }
     
-    public If(LinkedList<NodoAST> ins, Expresion cond,Instruccion elseIf) {
+    public If(LinkedList<NodoAST> ins, Expresion cond,Instruccion elseIf,int linea) {
         super(ins, cond);
         this.elseIf = elseIf;
+        this.linea = linea;
     }
+
     @Override
     public Object ejecutar(Entorno ent) {
         //verifico si traer un arreglo
-        Object verificacion = (Object)getCond().getValorImplicito(ent);
-        boolean valorCondicion = true;
-        if (verificacion instanceof Object[]) {
-            valorCondicion = (boolean)((Object[])verificacion)[0];
-        }
-        else{
-            valorCondicion = (boolean)verificacion;
-        }
-        
-        if (valorCondicion) 
-        {
-            Entorno local = new Entorno(ent);
-            for (NodoAST nodo : getIns()) {
-                if (nodo instanceof Instruccion) 
-                {
-                    Instruccion ins = (Instruccion)nodo;
-                    Object result = ins.ejecutar(local);
-                    if (ins instanceof  Break || result instanceof Break) {
-                        return new Break(ins.linea(),ins.columna());
-                    }
-                    if (ins instanceof Continue) 
-                    {
-                        return new Continue();
-                    }
+        try {
 
-                    if (result != null) {
-                        return result;
-                    }                    
-                }
-                else if (nodo instanceof Expresion) 
-                {
-                    Expresion exp = (Expresion)nodo;
-                    if (exp instanceof Return) {
-                        return exp.getValorImplicito(local);
-                    }
-                    exp.getValorImplicito(local);
-                }
+            Object verificacion = (Object)getCond().getValorImplicito(ent);
+            boolean valorCondicion = true;
+            if (verificacion instanceof Object[]) {
+                valorCondicion = (boolean)((Object[])verificacion)[0];
             }
-//            local.setNombre("If");
-//            Ventana.getArray().add(local);
-        }
-        else
-        {
-            Entorno local = new Entorno(ent);
-            //ejecuto el else if
-            if (elseIf != null) 
+            else{
+                valorCondicion = (boolean)verificacion;
+            }
+
+            if (valorCondicion) 
             {
-                Object result = elseIf.ejecutar(local);
-                if (result != null)
-                {
-                    return result;
+                Entorno local = new Entorno(ent);
+                for (NodoAST nodo : getIns()) {
+                    if (nodo instanceof Instruccion) 
+                    {
+                        Instruccion ins = (Instruccion)nodo;
+                        Object result = ins.ejecutar(local);
+                        if (ins instanceof  Break || result instanceof Break) {
+                            return new Break(ins.linea(),ins.columna());
+                        }
+                        if (ins instanceof Continue) 
+                        {
+                            return new Continue(ins.linea(),ins.columna());
+                        }
+
+                        if (result != null) {
+                            return result;
+                        }                    
+                    }
+                    else if (nodo instanceof Expresion) 
+                    {
+                        Expresion exp = (Expresion)nodo;
+                        if (exp instanceof Return) {
+                            return exp.getValorImplicito(local);
+                        }
+                        exp.getValorImplicito(local);
+                    }
                 }
+    //            local.setNombre("If");
+    //            Ventana.getArray().add(local);
             }
-            //ejecuto el else
             else
             {
-                if (getInsElse() != null) {
-                    for(NodoAST nodo : getInsElse())
+                Entorno local = new Entorno(ent);
+                //ejecuto el else if
+                if (elseIf != null) 
+                {
+                    Object result = elseIf.ejecutar(local);
+                    if (result != null)
                     {
-                        if (nodo instanceof Break) 
+                        return result;
+                    }
+                }
+                //ejecuto el else
+                else
+                {
+                    if (getInsElse() != null) {
+                        for(NodoAST nodo : getInsElse())
                         {
-                            return new Break(nodo.linea(),nodo.columna());
-                        }
-                        if (nodo instanceof Instruccion)
-                        {
-                            Instruccion ins = (Instruccion)nodo;
-                            Object result = ins.ejecutar(local);
-                            if (result != null)
+                            if (nodo instanceof Break) 
                             {
-                                return result;
+                                return new Break(nodo.linea(),nodo.columna());
+                            }
+                            if (nodo instanceof Instruccion)
+                            {
+                                Instruccion ins = (Instruccion)nodo;
+                                Object result = ins.ejecutar(local);
+                                if (result != null)
+                                {
+                                    return result;
+                                }
+                            }
+                            else if (nodo instanceof Expresion)
+                            {
+                                Expresion expr = (Expresion)nodo;
+                                return expr.getValorImplicito(local);
                             }
                         }
-                        else if (nodo instanceof Expresion)
-                        {
-                            Expresion expr = (Expresion)nodo;
-                            return expr.getValorImplicito(local);
-                        }
-                    }
-                }                
-            }          
-            
+                    }                
+                }          
+
+            }
+        } catch (Exception e) {
+            Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
+                        "Clase If: "+e.getMessage()));
         }
         return null;
     }

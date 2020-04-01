@@ -12,77 +12,91 @@ public interface GramaticaConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int STRING = 10;
+  int MIENTRAS = 1;
   /** RegularExpression Id. */
-  int NUMERO = 11;
+  int FUNCION = 2;
   /** RegularExpression Id. */
-  int DECIMAL = 12;
+  int RETORNO = 3;
   /** RegularExpression Id. */
-  int ENTERO = 13;
+  int BREAK = 4;
   /** RegularExpression Id. */
-  int CADENA = 14;
+  int CONTINUE = 5;
   /** RegularExpression Id. */
-  int IMPRIMIR = 15;
+  int SI = 6;
   /** RegularExpression Id. */
-  int MIENTRAS = 16;
+  int SINO = 7;
   /** RegularExpression Id. */
-  int FUNCION = 17;
+  int TRUE = 8;
   /** RegularExpression Id. */
-  int RETORNO = 18;
+  int FALSE = 9;
   /** RegularExpression Id. */
-  int BREAK = 19;
+  int NULL = 10;
   /** RegularExpression Id. */
-  int CONTINUE = 20;
+  int DEFA = 11;
   /** RegularExpression Id. */
-  int SI = 21;
+  int PCOMA = 12;
   /** RegularExpression Id. */
-  int SINO = 22;
+  int COMA = 13;
   /** RegularExpression Id. */
-  int PCOMA = 23;
+  int PARENI = 14;
   /** RegularExpression Id. */
-  int PARENI = 24;
+  int PAREND = 15;
   /** RegularExpression Id. */
-  int PAREND = 25;
+  int CORI = 16;
   /** RegularExpression Id. */
-  int CORI = 26;
+  int CORD = 17;
   /** RegularExpression Id. */
-  int CORD = 27;
+  int LLAVEI = 18;
   /** RegularExpression Id. */
-  int LLAVEI = 28;
+  int LLAVED = 19;
   /** RegularExpression Id. */
-  int LLAVED = 29;
+  int TERNARIO = 20;
   /** RegularExpression Id. */
-  int MAS = 30;
+  int DOSPUNTOS = 21;
   /** RegularExpression Id. */
-  int MENOS = 31;
+  int MAS = 22;
   /** RegularExpression Id. */
-  int POR = 32;
+  int MENOS = 23;
   /** RegularExpression Id. */
-  int DIV = 33;
+  int POR = 24;
   /** RegularExpression Id. */
-  int IGUAL = 34;
+  int MODULO = 25;
   /** RegularExpression Id. */
-  int MENORQUE = 35;
+  int DIV = 26;
   /** RegularExpression Id. */
-  int MAYORQUE = 36;
+  int POTENCIA = 27;
   /** RegularExpression Id. */
-  int MENORIGUAL = 37;
+  int IGUAL = 28;
   /** RegularExpression Id. */
-  int MAYORIGUAL = 38;
+  int MENORQUE = 29;
   /** RegularExpression Id. */
-  int IGUALACION = 39;
+  int MAYORQUE = 30;
   /** RegularExpression Id. */
-  int DIFERENCIACION = 40;
+  int MENORIGUAL = 31;
   /** RegularExpression Id. */
-  int COMA = 41;
+  int MAYORIGUAL = 32;
   /** RegularExpression Id. */
-  int AND = 42;
+  int IGUALACION = 33;
   /** RegularExpression Id. */
-  int OR = 43;
+  int DIFERENCIACION = 34;
   /** RegularExpression Id. */
-  int NOT = 44;
+  int AND = 35;
   /** RegularExpression Id. */
-  int IDENTIFICADOR = 45;
+  int OR = 36;
+  /** RegularExpression Id. */
+  int NOT = 37;
+  /** RegularExpression Id. */
+  int NUMERO = 38;
+  /** RegularExpression Id. */
+  int DECIMAL = 39;
+  /** RegularExpression Id. */
+  int ENTERO = 40;
+  /** RegularExpression Id. */
+  int CADENA = 41;
+  /** RegularExpression Id. */
+  int ID = 42;
+  /** RegularExpression Id. */
+  int STRING = 52;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -92,39 +106,33 @@ public interface GramaticaConstants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\"\\\"\"",
-    "\" \"",
-    "\"\\t\"",
-    "\"\\r\"",
-    "\"\\n\"",
-    "<token of kind 6>",
-    "<token of kind 7>",
-    "<token of kind 8>",
-    "<token of kind 9>",
-    "\"\\\"\"",
-    "<NUMERO>",
-    "<DECIMAL>",
-    "\"Numero\"",
-    "\"Cadena\"",
-    "\"print\"",
-    "\"Mientras\"",
+    "\"while\"",
     "\"Funcion\"",
     "\"Return\"",
     "\"Break\"",
     "\"continue\"",
     "\"if\"",
     "\"else\"",
+    "\"true\"",
+    "\"false\"",
+    "\"null\"",
+    "\"default\"",
     "\";\"",
+    "\",\"",
     "\"(\"",
     "\")\"",
     "\"[\"",
     "\"]\"",
     "\"{\"",
     "\"}\"",
+    "\"?\"",
+    "\":\"",
     "\"+\"",
     "\"-\"",
     "\"*\"",
+    "\"%%\"",
     "\"/\"",
+    "\"^\"",
     "\"=\"",
     "\"<\"",
     "\">\"",
@@ -132,11 +140,24 @@ public interface GramaticaConstants {
     "\">=\"",
     "\"==\"",
     "\"!=\"",
-    "\",\"",
     "\"&&\"",
     "\"||\"",
     "\"!\"",
-    "<IDENTIFICADOR>",
+    "<NUMERO>",
+    "<DECIMAL>",
+    "\"Numero\"",
+    "\"Cadena\"",
+    "<ID>",
+    "\"\\\"\"",
+    "\" \"",
+    "\"\\t\"",
+    "\"\\r\"",
+    "\"\\n\"",
+    "<token of kind 48>",
+    "<token of kind 49>",
+    "<token of kind 50>",
+    "<token of kind 51>",
+    "\"\\\"\"",
   };
 
 }

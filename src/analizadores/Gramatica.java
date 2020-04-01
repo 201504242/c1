@@ -21,9 +21,11 @@ import entorno.fantasmita;
 
 import ast.Expresion;
 import ast.Instruccion;
-import ast.AST;
 import ast.NodoAST;
 import java.util.LinkedList;
+
+import olc2.p1_201504242.JError;
+import olc2.p1_201504242.Ventana;
 
 public class Gramatica implements GramaticaConstants {
 
@@ -32,15 +34,19 @@ public class Gramatica implements GramaticaConstants {
 /** Producción inicial 
     Analizar -> (Instruccion)+ EOF
 */
-  final public AST Analizar() throws ParseException {
-  LinkedList<NodoAST> instrucciones = new LinkedList(); Instruccion ins;
+  final public LinkedList<NodoAST> Analizar() throws ParseException {
+  LinkedList<NodoAST> instrucciones = new LinkedList(); NodoAST ins;
     try {
       label_1:
       while (true) {
         ins = Instruccion();
-                               instrucciones.add(ins);
+                                 instrucciones.add(ins);
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case IMPRIMIR:
+        case MIENTRAS:
+        case BREAK:
+        case CONTINUE:
+        case SI:
+        case ID:
           ;
           break;
         default:
@@ -49,34 +55,657 @@ public class Gramatica implements GramaticaConstants {
         }
       }
       jj_consume_token(0);
-                                                                 {if (true) return new AST(instrucciones);}
+         System.out.println("********TERMINO javacc GRAMATICA************");{if (true) return (instrucciones);}
     } catch (ParseException exc) {
+            System.out.println("catch");
             System.out.println(exc.toString());
     }
     throw new Error("Missing return statement in function");
   }
 
-/** Instruccion -> print */
-  final public Instruccion Instruccion() throws ParseException {
-  Instruccion ins;
-    ins = Imprimir();
+/** Instruccion ->  Llamada
+                    | asignacion */
+  final public NodoAST Instruccion() throws ParseException {
+  Instruccion ins; NodoAST nodo;
+    if (jj_2_1(2)) {
+      nodo = Llamada();
+                                  {if (true) return nodo;}
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case ID:
+        ins = Asignacion();
+                        {if (true) return ins;}
+        break;
+      case SI:
+        ins = Si();
+                {if (true) return ins;}
+        break;
+      case MIENTRAS:
+        ins = Mientras();
                       {if (true) return ins;}
+        break;
+      case BREAK:
+        ins = detener();
+                   {if (true) return ins;}
+        break;
+      case CONTINUE:
+        ins = Continue();
+                    {if (true) return ins;}
+        break;
+      default:
+        jj_la1[1] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
     throw new Error("Missing return statement in function");
   }
 
-/** Imprimir -> print ( Expresion ); */
-  final public Instruccion Imprimir() throws ParseException {
- Expresion e;
-    jj_consume_token(IMPRIMIR);
-    jj_consume_token(PCOMA);
-                        {if (true) return new Print(null,0,0);}
+  final public Instruccion detener() throws ParseException {
+ Instruccion e;
+    jj_consume_token(BREAK);
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case PCOMA:
+      jj_consume_token(PCOMA);
+      break;
+    default:
+      jj_la1[2] = jj_gen;
+      ;
+    }
+                       {if (true) return new Break(token.beginLine, token.beginColumn);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Instruccion Continue() throws ParseException {
+ Instruccion e;
+    jj_consume_token(CONTINUE);
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case PCOMA:
+      jj_consume_token(PCOMA);
+      break;
+    default:
+      jj_la1[3] = jj_gen;
+      ;
+    }
+                          {if (true) return new Continue(token.beginLine, token.beginColumn);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Instruccion Mientras() throws ParseException {
+ Expresion e; LinkedList<NodoAST> ins;
+    jj_consume_token(MIENTRAS);
+    jj_consume_token(PARENI);
+    e = E();
+    jj_consume_token(PAREND);
+    ins = Bloque();
+     {if (true) return new While(ins,e,token.beginLine, token.beginColumn);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Instruccion Si() throws ParseException {
+ Expresion e; Instruccion If; LinkedList<NodoAST> insIf, insElse = new LinkedList();
+    jj_consume_token(SI);
+    jj_consume_token(PARENI);
+    e = E();
+    jj_consume_token(PAREND);
+    insIf = Bloque();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case SINO:
+      if (jj_2_2(2)) {
+        jj_consume_token(SINO);
+        If = Si();
+                                     insElse.add(If);
+      } else if (jj_2_3(2)) {
+        jj_consume_token(SINO);
+        insElse = Bloque();
+      } else {
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      break;
+    default:
+      jj_la1[4] = jj_gen;
+      ;
+    }
+     {if (true) return new If(insIf,e,insElse, token.beginLine);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public LinkedList<NodoAST> Bloque() throws ParseException {
+ LinkedList<NodoAST> insBloque = new LinkedList(); NodoAST e;
+    jj_consume_token(LLAVEI);
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case MIENTRAS:
+      case BREAK:
+      case CONTINUE:
+      case SI:
+      case ID:
+        ;
+        break;
+      default:
+        jj_la1[5] = jj_gen;
+        break label_2;
+      }
+      e = Instruccion();
+                             insBloque.add(e);
+    }
+    jj_consume_token(LLAVED);
+                                                            {if (true) return insBloque;}
+    throw new Error("Missing return statement in function");
+  }
+
+/** Asignacion ->   id = expresion;
+                    |id DIM = EXP
+ */
+  final public Instruccion Asignacion() throws ParseException {
+ Expresion e; Token id; Token t; LinkedList<nodoExp> ld=null;
+    if (jj_2_4(2)) {
+      id = jj_consume_token(ID);
+      jj_consume_token(IGUAL);
+      e = E();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case PCOMA:
+        jj_consume_token(PCOMA);
+        break;
+      default:
+        jj_la1[6] = jj_gen;
+        ;
+      }
+        {if (true) return new Asignacion(new Identificador(id.image.toLowerCase(),id.beginLine,id.beginColumn,true),e,token.beginLine,token.beginColumn);}
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case ID:
+        t = jj_consume_token(ID);
+        ld = Dimensiones();
+        jj_consume_token(IGUAL);
+        e = E();
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case PCOMA:
+          jj_consume_token(PCOMA);
+          break;
+        default:
+          jj_la1[7] = jj_gen;
+          ;
+        }
+        Identificador ident = new Identificador(t.image.toLowerCase(),ld,true,t.beginLine,t.beginColumn);
+        {if (true) return new Asignacion(ident,e,token.beginLine,token.beginColumn);}
+        break;
+      default:
+        jj_la1[8] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public LinkedList<nodoExp> Dimensiones() throws ParseException {
+ nodoExp exp; LinkedList<nodoExp> lista = new LinkedList();
+    jj_consume_token(CORI);
+    exp = Dimension();
+                            lista.add(exp);
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case CORI:
+        ;
+        break;
+      default:
+        jj_la1[9] = jj_gen;
+        break label_3;
+      }
+      jj_consume_token(CORI);
+      exp = Dimension();
+                                 lista.add(exp);
+    }
+     {if (true) return lista;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public nodoExp Dimension() throws ParseException {
+ nodoExp exp; Expresion e=null;Expresion e2=null;
+    if (jj_2_5(2)) {
+      e = E();
+      jj_consume_token(COMA);
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case TRUE:
+      case FALSE:
+      case NULL:
+      case DEFA:
+      case PARENI:
+      case MENOS:
+      case NOT:
+      case NUMERO:
+      case DECIMAL:
+      case ID:
+      case STRING:
+        e2 = E();
+        break;
+      default:
+        jj_la1[10] = jj_gen;
+        ;
+      }
+      jj_consume_token(CORD);
+            {if (true) return new nodoExp(e,e2,Acc.m1);}
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case COMA:
+        jj_consume_token(COMA);
+        e2 = E();
+        jj_consume_token(CORD);
+                          {if (true) return new nodoExp(e2,Acc.m3);}
+        break;
+      case CORI:
+        jj_consume_token(CORI);
+        e = E();
+        jj_consume_token(CORD);
+        jj_consume_token(CORD);
+                                {if (true) return new nodoExp(e,Acc.tipo2);}
+        break;
+      case TRUE:
+      case FALSE:
+      case NULL:
+      case DEFA:
+      case PARENI:
+      case MENOS:
+      case NOT:
+      case NUMERO:
+      case DECIMAL:
+      case ID:
+      case STRING:
+        e = E();
+        jj_consume_token(CORD);
+                  {if (true) return new nodoExp(e,Acc.tipo1);}
+        break;
+      default:
+        jj_la1[11] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+/** Llamada -> print ( Expresion ); */
+  final public NodoAST Llamada() throws ParseException {
+ LinkedList<NodoAST> expres=null; Instruccion ins;Token t;
+    t = jj_consume_token(ID);
+    jj_consume_token(PARENI);
+    expres = Lista_Expresiones();
+    jj_consume_token(PAREND);
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case PCOMA:
+      jj_consume_token(PCOMA);
+      break;
+    default:
+      jj_la1[12] = jj_gen;
+      ;
+    }
+            String a = t.image.toLowerCase();
+            if(a.equalsIgnoreCase("c")){
+            {if (true) return new funcionC(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("list")){
+                {if (true) return new GenerarList(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("print")){
+                {if (true) return new Print(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("matrix")){
+                {if (true) return new FuncionMatrix(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("typeof")){
+                {if (true) return new Typeof(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("length")){
+                {if (true) return new Length(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("nCol")){
+                {if (true) return new nMatrix("ncol",expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("nRow")){
+                {if (true) return new nMatrix("nrow",expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("StringLength")){
+                {if (true) return new Fstring(1,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("remove")){
+                {if (true) return new Fstring(2,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("toLowerCase")){
+                {if (true) return new Fstring(3,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("toUpperCase")){
+                {if (true) return new Fstring(4,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("trunk")){
+                {if (true) return new Fnum(1,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("round")){
+                {if (true) return new Fnum(2,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("mean")){
+                {if (true) return new Fnum(3,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("median")){
+                {if (true) return new Fnum(4,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("mode")){
+                {if (true) return new Fnum(5,expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("pie")){
+                    {if (true) return new grafPie(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("barplot")){
+                {if (true) return new grafBarras(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("hist")){
+                   {if (true) return new grafHistograma(expres,t.beginLine,t.beginColumn);}
+            }else if(a.equalsIgnoreCase("plot")){
+                {if (true) return new grafLineas(expres,t.beginLine,t.beginColumn);}
+            }else{
+                {if (true) return new Llama(t.image,expres,t.beginLine,t.beginColumn);}
+            }
+    throw new Error("Missing return statement in function");
+  }
+
+/** Lista_Expresiones -> Expresion ( , )*; */
+  final public LinkedList<NodoAST> Lista_Expresiones() throws ParseException {
+ Expresion exp; LinkedList<NodoAST> lista = new LinkedList();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case TRUE:
+    case FALSE:
+    case NULL:
+    case DEFA:
+    case PARENI:
+    case MENOS:
+    case NOT:
+    case NUMERO:
+    case DECIMAL:
+    case ID:
+    case STRING:
+      exp = E();
+                 lista.add(exp);
+      label_4:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case COMA:
+          ;
+          break;
+        default:
+          jj_la1[13] = jj_gen;
+          break label_4;
+        }
+        jj_consume_token(COMA);
+        exp = E();
+                            lista.add(exp);
+      }
+      break;
+    default:
+      jj_la1[14] = jj_gen;
+      ;
+    }
+     {if (true) return lista;}
     throw new Error("Missing return statement in function");
   }
 
   final public Expresion E() throws ParseException {
-  Expresion e;
-    e = Primitivo();
+  Expresion e,e1;
+    e = CondicionTernaria();
+    label_5:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case OR:
+        ;
+        break;
+      default:
+        jj_la1[15] = jj_gen;
+        break label_5;
+      }
+      jj_consume_token(OR);
+      e1 = CondicionTernaria();
+                                     e = new Logica(e, e1, Operador.OR, token.beginLine, token.beginColumn);
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion CondicionTernaria() throws ParseException {
+ Expresion e, e1,e2;
+    e = CondicionAnd();
+    label_6:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case TERNARIO:
+        ;
+        break;
+      default:
+        jj_la1[16] = jj_gen;
+        break label_6;
+      }
+      jj_consume_token(TERNARIO);
+      e1 = CondicionAnd();
+      jj_consume_token(DOSPUNTOS);
+      e2 = CondicionAnd();
+                                                                    e = new Ternaria(e, e1,e2,token.beginLine, token.beginColumn);
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion CondicionAnd() throws ParseException {
+ Expresion e, e1;
+    e = ExpresionIgualdad();
+    label_7:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case AND:
+        ;
+        break;
+      default:
+        jj_la1[17] = jj_gen;
+        break label_7;
+      }
+      jj_consume_token(AND);
+      e1 = ExpresionIgualdad();
+                                      e = new Logica(e, e1, Operador.AND, token.beginLine, token.beginColumn);
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion ExpresionIgualdad() throws ParseException {
+ Expresion e, e1;
+    e = ExpresionRelacional();
+    label_8:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case IGUALACION:
+      case DIFERENCIACION:
+        ;
+        break;
+      default:
+        jj_la1[18] = jj_gen;
+        break label_8;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case IGUALACION:
+        jj_consume_token(IGUALACION);
+        e1 = ExpresionRelacional();
+                                               e = new Relacional(e, e1, Operador.IGUAL_IGUAL, token.beginLine, token.beginColumn);
+        break;
+      case DIFERENCIACION:
+        jj_consume_token(DIFERENCIACION);
+        e1 = ExpresionRelacional();
+                                                   e = new Relacional(e, e1, Operador.DIFERENTE_QUE, token.beginLine, token.beginColumn);
+        break;
+      default:
+        jj_la1[19] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion ExpresionRelacional() throws ParseException {
+ Expresion e, e1;
+    e = ExpresionAditiva();
+    label_9:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case MENORQUE:
+      case MAYORQUE:
+      case MENORIGUAL:
+      case MAYORIGUAL:
+        ;
+        break;
+      default:
+        jj_la1[20] = jj_gen;
+        break label_9;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case MAYORQUE:
+        jj_consume_token(MAYORQUE);
+        e1 = ExpresionAditiva();
+                                          e = new Relacional(e, e1, Operador.MAYOR_QUE, token.beginLine, token.beginColumn);
+        break;
+      case MENORQUE:
+        jj_consume_token(MENORQUE);
+        e1 = ExpresionAditiva();
+                                          e = new Relacional(e, e1, Operador.MENOR_QUE, token.beginLine, token.beginColumn);
+        break;
+      case MAYORIGUAL:
+        jj_consume_token(MAYORIGUAL);
+        e1 = ExpresionAditiva();
+                                            e = new Relacional(e, e1, Operador.MAYOR_IGUAL, token.beginLine, token.beginColumn);
+        break;
+      case MENORIGUAL:
+        jj_consume_token(MENORIGUAL);
+        e1 = ExpresionAditiva();
+                                            e = new Relacional(e, e1, Operador.MENOR_IGUAL, token.beginLine, token.beginColumn);
+        break;
+      default:
+        jj_la1[21] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion ExpresionAditiva() throws ParseException {
+ Expresion e, e1;
+    e = ExpresionMultiplicativa();
+    label_10:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case MAS:
+      case MENOS:
+        ;
+        break;
+      default:
+        jj_la1[22] = jj_gen;
+        break label_10;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case MAS:
+        jj_consume_token(MAS);
+        e1 = ExpresionMultiplicativa();
+                                            e = new Aritmetica(e, e1, Operador.SUMA, token.beginLine, token.beginColumn);
+        break;
+      case MENOS:
+        jj_consume_token(MENOS);
+        e1 = ExpresionMultiplicativa();
+                                              e = new Aritmetica(e, e1, Operador.RESTA, token.beginLine, token.beginColumn);
+        break;
+      default:
+        jj_la1[23] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion ExpresionMultiplicativa() throws ParseException {
+ Expresion e, e1;
+    e = ExpresionPotencia();
+    label_11:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case POR:
+      case MODULO:
+      case DIV:
+        ;
+        break;
+      default:
+        jj_la1[24] = jj_gen;
+        break label_11;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case POR:
+        jj_consume_token(POR);
+        e1 = ExpresionPotencia();
+                                      e = new Aritmetica(e, e1, Operador.MULTIPLICACION, token.beginLine, token.beginColumn);
+        break;
+      case DIV:
+        jj_consume_token(DIV);
+        e1 = ExpresionPotencia();
+                                      e = new Aritmetica(e, e1, Operador.DIVISION, token.beginLine, token.beginColumn);
+        break;
+      case MODULO:
+        jj_consume_token(MODULO);
+        e1 = ExpresionPotencia();
+                                         e = new Aritmetica(e, e1, Operador.MODULO, token.beginLine, token.beginColumn);
+        break;
+      default:
+        jj_la1[25] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion ExpresionPotencia() throws ParseException {
+ Expresion e, e1;
+    e = ExpresionUnaria();
+    label_12:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case POTENCIA:
+        ;
+        break;
+      default:
+        jj_la1[26] = jj_gen;
+        break label_12;
+      }
+      jj_consume_token(POTENCIA);
+      e1 = ExpresionUnaria();
+                                         e = new Aritmetica(e, e1, Operador.POTENCIA, token.beginLine, token.beginColumn);
+    }
+     {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Expresion ExpresionUnaria() throws ParseException {
+ Expresion e;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case MENOS:
+      jj_consume_token(MENOS);
+      e = ExpresionUnaria();
+                                 {if (true) return new Aritmetica(e, Operador.MENOS_UNARIO, token.beginLine, token.beginColumn);}
+      break;
+    case NOT:
+      jj_consume_token(NOT);
+      e = ExpresionUnaria();
+                               {if (true) return new Logica(e, Operador.NOT, token.beginLine, token.beginColumn);}
+      break;
+    case TRUE:
+    case FALSE:
+    case NULL:
+    case DEFA:
+    case PARENI:
+    case NUMERO:
+    case DECIMAL:
+    case ID:
+    case STRING:
+      e = Primitivo();
                    {if (true) return e;}
+      break;
+    default:
+      jj_la1[27] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
     throw new Error("Missing return statement in function");
   }
 
@@ -85,7 +714,7 @@ public class Gramatica implements GramaticaConstants {
               |  '(' Expresion ')' 
 */
   final public Expresion Primitivo() throws ParseException {
- Expresion e; Token t; String cad;
+ Expresion e;LinkedList<NodoAST> expres=null; Token t; String cad; LinkedList<nodoExp> ld=null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case NUMERO:
       jj_consume_token(NUMERO);
@@ -96,20 +725,89 @@ public class Gramatica implements GramaticaConstants {
                {if (true) return new Literal(Double.parseDouble(token.image), new Tipo(Tipos.DOUBLE),token.beginLine, token.beginColumn);}
       break;
     case STRING:
-      //LOOKAHEAD(2)e=Llamada() {return e;}
-          //|
-          t = jj_consume_token(STRING);
+      t = jj_consume_token(STRING);
                     cad = t.image.substring(1,t.image.length()-1);
                     cad = cad.replace("\\","\\");
                     cad = cad.replace("\\n","\n");
                     cad = cad.replace("\\t","\t");
                     {if (true) return new Literal(cad, new Tipo(Tipos.STRING),token.beginLine,token.beginColumn);}
       break;
+    case TRUE:
+      jj_consume_token(TRUE);
+            {if (true) return new Literal(true, new Tipo(Tipos.BOOL),token.beginLine,token.beginColumn);}
+      break;
+    case FALSE:
+      jj_consume_token(FALSE);
+             {if (true) return new Literal(false, new Tipo(Tipos.BOOL),token.beginLine,token.beginColumn);}
+      break;
+    case NULL:
+      jj_consume_token(NULL);
+            {if (true) return new Literal(token.image, new Tipo(Tipos.STRING),token.beginLine,token.beginColumn);}
+      break;
+    case DEFA:
+      jj_consume_token(DEFA);
+            {if (true) return new Literal(token.image, new Tipo(Tipos.DEFAULT),token.beginLine,token.beginColumn);}
+      break;
     default:
-      jj_la1[1] = jj_gen;
-      if (jj_2_1(2)) {
-        t = jj_consume_token(IDENTIFICADOR);
-                                   {if (true) return new Identificador(t.image,token.beginLine,token.beginColumn,false);}
+      jj_la1[30] = jj_gen;
+      if (jj_2_6(2)) {
+        t = jj_consume_token(ID);
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case PARENI:
+          jj_consume_token(PARENI);
+          expres = Lista_Expresiones();
+          jj_consume_token(PAREND);
+                        String a = t.image.toLowerCase();
+                        if(a.equalsIgnoreCase("c")){
+                        {if (true) return new funcionC(expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("list")){
+                            {if (true) return new GenerarList(expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("matrix")){
+                            {if (true) return new FuncionMatrix(expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("typeof")){
+                            {if (true) return new Typeof(expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("length")){
+                            {if (true) return new Length(expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("nCol")){
+                            {if (true) return new nMatrix("ncol",expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("nRow")){
+                            {if (true) return new nMatrix("nrow",expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("StringLength")){
+                            {if (true) return new Fstring(1,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("remove")){
+                            {if (true) return new Fstring(2,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("toLowerCase")){
+                            {if (true) return new Fstring(3,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("toUpperCase")){
+                            {if (true) return new Fstring(4,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("trunk")){
+                            {if (true) return new Fnum(1,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("round")){
+                            {if (true) return new Fnum(2,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("mean")){
+                            {if (true) return new Fnum(3,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("median")){
+                            {if (true) return new Fnum(4,expres,t.beginLine,t.beginColumn);}
+                        }else if(a.equalsIgnoreCase("mode")){
+                            {if (true) return new Fnum(5,expres,t.beginLine,t.beginColumn);}
+                        }else{
+                            {if (true) return new Llama(t.image,expres,t.beginLine,t.beginColumn);}
+                        }
+          break;
+        default:
+          jj_la1[28] = jj_gen;
+          ;
+        }
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case CORI:
+          ld = Dimensiones();
+          break;
+        default:
+          jj_la1[29] = jj_gen;
+          ;
+        }
+                    {if (true) return new Identificador(t.image.toLowerCase(),ld,false,token.beginLine,token.beginColumn);}
+             {if (true) return new Identificador(t.image.toLowerCase(),token.beginLine,token.beginColumn,false);}
       } else {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case PARENI:
@@ -119,7 +817,7 @@ public class Gramatica implements GramaticaConstants {
                              {if (true) return e;}
           break;
         default:
-          jj_la1[2] = jj_gen;
+          jj_la1[31] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -135,8 +833,414 @@ public class Gramatica implements GramaticaConstants {
     finally { jj_save(0, xla); }
   }
 
+  private boolean jj_2_2(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_2(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(1, xla); }
+  }
+
+  private boolean jj_2_3(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_3(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(2, xla); }
+  }
+
+  private boolean jj_2_4(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_4(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(3, xla); }
+  }
+
+  private boolean jj_2_5(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_5(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(4, xla); }
+  }
+
+  private boolean jj_2_6(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_6(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(5, xla); }
+  }
+
+  private boolean jj_3R_14() {
+    if (jj_scan_token(SI)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_37() {
+    if (jj_scan_token(MENORIGUAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_36() {
+    if (jj_scan_token(MAYORIGUAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_35() {
+    if (jj_scan_token(MENORQUE)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_17() {
+    if (jj_scan_token(PARENI)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_29() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_34()) {
+    jj_scanpos = xsp;
+    if (jj_3R_35()) {
+    jj_scanpos = xsp;
+    if (jj_3R_36()) {
+    jj_scanpos = xsp;
+    if (jj_3R_37()) return true;
+    }
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_34() {
+    if (jj_scan_token(MAYORQUE)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_26() {
+    if (jj_3R_28()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_29()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_31() {
+    if (jj_scan_token(DIFERENCIACION)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_27() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_30()) {
+    jj_scanpos = xsp;
+    if (jj_3R_31()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3R_30() {
+    if (jj_scan_token(IGUALACION)) return true;
+    return false;
+  }
+
+  private boolean jj_3_6() {
+    if (jj_scan_token(ID)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_17()) jj_scanpos = xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_18()) jj_scanpos = xsp;
+    return false;
+  }
+
+  private boolean jj_3R_57() {
+    if (jj_scan_token(DEFA)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_24() {
+    if (jj_3R_26()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_27()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_56() {
+    if (jj_scan_token(NULL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_55() {
+    if (jj_scan_token(FALSE)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_13() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_scan_token(PARENI)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_25() {
+    if (jj_scan_token(AND)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_54() {
+    if (jj_scan_token(TRUE)) return true;
+    return false;
+  }
+
   private boolean jj_3_1() {
-    if (jj_scan_token(IDENTIFICADOR)) return true;
+    if (jj_3R_13()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_22() {
+    if (jj_3R_24()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_25()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_53() {
+    if (jj_scan_token(STRING)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_52() {
+    if (jj_scan_token(DECIMAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_23() {
+    if (jj_scan_token(TERNARIO)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_51() {
+    if (jj_scan_token(NUMERO)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_50() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_51()) {
+    jj_scanpos = xsp;
+    if (jj_3R_52()) {
+    jj_scanpos = xsp;
+    if (jj_3R_53()) {
+    jj_scanpos = xsp;
+    if (jj_3R_54()) {
+    jj_scanpos = xsp;
+    if (jj_3R_55()) {
+    jj_scanpos = xsp;
+    if (jj_3R_56()) {
+    jj_scanpos = xsp;
+    if (jj_3R_57()) {
+    jj_scanpos = xsp;
+    if (jj_3_6()) {
+    jj_scanpos = xsp;
+    if (jj_3R_58()) return true;
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_19() {
+    if (jj_3R_22()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_23()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3_5() {
+    if (jj_3R_16()) return true;
+    if (jj_scan_token(COMA)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_20() {
+    if (jj_scan_token(OR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_49() {
+    if (jj_3R_50()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_48() {
+    if (jj_scan_token(NOT)) return true;
+    if (jj_3R_42()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_47() {
+    if (jj_scan_token(MENOS)) return true;
+    if (jj_3R_42()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_42() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_47()) {
+    jj_scanpos = xsp;
+    if (jj_3R_48()) {
+    jj_scanpos = xsp;
+    if (jj_3R_49()) return true;
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_16() {
+    if (jj_3R_19()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_20()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_21() {
+    if (jj_scan_token(CORI)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_18() {
+    if (jj_3R_21()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_43() {
+    if (jj_scan_token(POTENCIA)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_38() {
+    if (jj_3R_42()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_43()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_46() {
+    if (jj_scan_token(MODULO)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_58() {
+    if (jj_scan_token(PARENI)) return true;
+    if (jj_3R_16()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_45() {
+    if (jj_scan_token(DIV)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_44() {
+    if (jj_scan_token(POR)) return true;
+    return false;
+  }
+
+  private boolean jj_3_4() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_scan_token(IGUAL)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_39() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_44()) {
+    jj_scanpos = xsp;
+    if (jj_3R_45()) {
+    jj_scanpos = xsp;
+    if (jj_3R_46()) return true;
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_32() {
+    if (jj_3R_38()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_39()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_15() {
+    if (jj_scan_token(LLAVEI)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_41() {
+    if (jj_scan_token(MENOS)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_33() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_40()) {
+    jj_scanpos = xsp;
+    if (jj_3R_41()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3R_40() {
+    if (jj_scan_token(MAS)) return true;
+    return false;
+  }
+
+  private boolean jj_3_3() {
+    if (jj_scan_token(SINO)) return true;
+    if (jj_3R_15()) return true;
+    return false;
+  }
+
+  private boolean jj_3_2() {
+    if (jj_scan_token(SINO)) return true;
+    if (jj_3R_14()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_28() {
+    if (jj_3R_32()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_33()) { jj_scanpos = xsp; break; }
+    }
     return false;
   }
 
@@ -154,7 +1258,7 @@ public class Gramatica implements GramaticaConstants {
   private boolean jj_lookingAhead = false;
   private boolean jj_semLA;
   private int jj_gen;
-  final private int[] jj_la1 = new int[3];
+  final private int[] jj_la1 = new int[32];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -162,12 +1266,12 @@ public class Gramatica implements GramaticaConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x8000,0x1c00,0x1000000,};
+      jj_la1_0 = new int[] {0x72,0x72,0x1000,0x1000,0x80,0x72,0x1000,0x1000,0x0,0x10000,0x804f00,0x816f00,0x1000,0x2000,0x804f00,0x0,0x100000,0x0,0x0,0x0,0xe0000000,0xe0000000,0xc00000,0xc00000,0x7000000,0x7000000,0x8000000,0x804f00,0x4000,0x10000,0xf00,0x4000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x400,0x400,0x0,0x0,0x0,0x400,0x0,0x0,0x400,0x0,0x1004e0,0x1004e0,0x0,0x0,0x1004e0,0x10,0x0,0x8,0x6,0x6,0x1,0x1,0x0,0x0,0x0,0x0,0x0,0x1004e0,0x0,0x0,0x1000c0,0x0,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[1];
+  final private JJCalls[] jj_2_rtns = new JJCalls[6];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -182,7 +1286,7 @@ public class Gramatica implements GramaticaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -197,7 +1301,7 @@ public class Gramatica implements GramaticaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -208,7 +1312,7 @@ public class Gramatica implements GramaticaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -219,7 +1323,7 @@ public class Gramatica implements GramaticaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -229,7 +1333,7 @@ public class Gramatica implements GramaticaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -239,7 +1343,7 @@ public class Gramatica implements GramaticaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -354,12 +1458,12 @@ public class Gramatica implements GramaticaConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[46];
+    boolean[] la1tokens = new boolean[53];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 32; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -371,7 +1475,7 @@ public class Gramatica implements GramaticaConstants {
         }
       }
     }
-    for (int i = 0; i < 46; i++) {
+    for (int i = 0; i < 53; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -398,7 +1502,7 @@ public class Gramatica implements GramaticaConstants {
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 6; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -406,6 +1510,11 @@ public class Gramatica implements GramaticaConstants {
           jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
           switch (i) {
             case 0: jj_3_1(); break;
+            case 1: jj_3_2(); break;
+            case 2: jj_3_3(); break;
+            case 3: jj_3_4(); break;
+            case 4: jj_3_5(); break;
+            case 5: jj_3_6(); break;
           }
         }
         p = p.next;

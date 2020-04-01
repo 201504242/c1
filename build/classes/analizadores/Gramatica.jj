@@ -26,15 +26,75 @@ import entorno.fantasmita;
 
 import ast.Expresion;
 import ast.Instruccion;
-import ast.AST;
 import ast.NodoAST;
 import java.util.LinkedList;
+
+import olc2.p1_201504242.JError;
+import olc2.p1_201504242.Ventana;
 
 public class Gramatica {
 }
 PARSER_END(Gramatica)
 
 /** Lexico */
+
+//PALABRAS RESERVADAS
+TOKEN :{
+    <MIENTRAS: "while">
+    | <FUNCION: "Funcion">
+    | <RETORNO: "Return">
+    | <BREAK: "Break">
+    | <CONTINUE: "continue">
+    | <SI: "if">
+    | <SINO: "else">
+    | <TRUE: "true">
+    | <FALSE: "false">
+    | <NULL: "null">
+    | <DEFA: "default">
+
+}
+//SIMBOLOS
+TOKEN :{
+    <PCOMA: ";">   
+    | <COMA: ",">
+    | <PARENI: "("> 
+    | <PAREND: ")">
+    | <CORI: "[">
+    | <CORD: "]">
+    | <LLAVEI: "{">
+    | <LLAVED: "}">
+    | <TERNARIO: "?">
+    | <DOSPUNTOS: ":">
+}
+//OPERADORES
+TOKEN: {
+     <MAS: "+">
+    | <MENOS: "-">
+    | <POR: "*">
+    | <MODULO: "%%">
+    | <DIV: "/">
+    | <POTENCIA: "^">
+    | <IGUAL: "=">
+    | <MENORQUE: "<">
+    | <MAYORQUE: ">">
+    | <MENORIGUAL: "<=">
+    | <MAYORIGUAL: ">=">
+    | <IGUALACION: "==">
+    | <DIFERENCIACION: "!=">
+    | <AND: "&&">
+    | <OR: "||">
+    | <NOT: "!" >
+}
+
+//TOKEN CON VALOR
+TOKEN : {
+       <NUMERO: (["0"-"9"])+>
+    | <DECIMAL: (["0"-"9"])+"."(["0"-"9"])+>
+    | <ENTERO: "Numero">
+    | <CADENA: "Cadena">
+    | <ID: ["a"-"z","A"-"Z", "_","."] ( ["a"-"z","A"-"Z", "_","."] | ["0"-"9"] )* > {System.out.println(image);}
+}
+
 MORE :
 {
     "\"" :STRING_STATE
@@ -45,9 +105,10 @@ SKIP : {
     | "\t"
     | "\r"
     | "\n"
-    | <"#" (~["\n", "\r"])*>
+    | <"#" (~["\n", "\r"])*> {System.out.println("#comentario");}
     | <"#*" (~["*"])* "*" ("*" | ~["*","#"] (~["*"])* "*")* "#">
-    | <(~[])> {System.out.println("error");}
+    | <(~[])> {Ventana.ggetVentana().listaError.add(new JError("Sintactico",0,
+           0,"Dato: "+image+" No Encontrada"));}
 }
 
 <STRING_STATE> MORE:
@@ -59,78 +120,299 @@ SKIP : {
 {
    <STRING:"\""> : DEFAULT 
 }
-
-TOKEN : {
-       <NUMERO: (["0"-"9"])+>
-    | <DECIMAL: (["0"-"9"])+"."(["0"-"9"])+>
-    | <ENTERO: "Numero">
-    | <CADENA: "Cadena">
-    | <IMPRIMIR: "print">
-    | <MIENTRAS: "Mientras">
-    | <FUNCION: "Funcion">
-    | <RETORNO: "Return">
-    | <BREAK: "Break">
-    | <CONTINUE: "continue">
-    | <SI: "if">
-    | <SINO: "else">
-    | <PCOMA: ";">
-    | <PARENI: "(">
-    | <PAREND: ")">
-    | <CORI: "[">
-    | <CORD: "]">
-    | <LLAVEI: "{">
-    | <LLAVED: "}">
-    | <MAS: "+">
-    | <MENOS: "-">
-    | <POR: "*">
-    | <DIV: "/">
-    | <IGUAL: "=">
-    | <MENORQUE: "<">
-    | <MAYORQUE: ">">
-    | <MENORIGUAL: "<=">
-    | <MAYORIGUAL: ">=">
-    | <IGUALACION: "==">
-    | <DIFERENCIACION: "!=">
-    | <COMA: ",">
-    | <AND: "&&">
-    | <OR: "||">
-    | <NOT: "!" >
-    | <IDENTIFICADOR: ["a"-"z","A"-"Z", "_"] ( ["a"-"z","A"-"Z", "_"] | ["0"-"9"] )* >
-}
 /** Fin Lexico */
 
 /** Producción inicial 
     Analizar -> (Instruccion)+ EOF
 */
-AST Analizar() :
-{ LinkedList<NodoAST> instrucciones = new LinkedList(); Instruccion ins; }
+LinkedList<NodoAST> Analizar() :
+{ LinkedList<NodoAST> instrucciones = new LinkedList(); NodoAST ins; }
 {
     try {
-         (ins = Instruccion() {instrucciones.add(ins);})+ <EOF> {return new AST(instrucciones);}
+        (
+            ins = Instruccion() {instrucciones.add(ins);}
+        )+ <EOF> 
+        {System.out.println("********TERMINO javacc GRAMATICA************");return (instrucciones);}
+
     } catch (ParseException exc) {
+            System.out.println("catch");            
             System.out.println(exc.toString());            
     }
   
 }
 
-/** Instruccion -> print */
-Instruccion Instruccion() :
-{ Instruccion ins; }
+/** Instruccion ->  Llamada
+                    | asignacion */
+NodoAST Instruccion() :
+{ Instruccion ins; NodoAST nodo;}
 {
-    ins = Imprimir() {return ins;}
+    LOOKAHEAD(2)nodo = Llamada() {return nodo;}
+    |
+    ins = Asignacion() {return ins;}
+    |
+    ins = Si() {return ins;}
+    |
+    ins = Mientras() {return ins;}
+    |
+    ins=detener() {return ins;}
+    |
+    ins=Continue() {return ins;}
 }
 
-/** Imprimir -> print ( Expresion ); */
-Instruccion Imprimir() :
-{Expresion e;}
+Instruccion detener() :
+{Instruccion e;}
 {
-    <IMPRIMIR> <PCOMA> {return new Print(null,0,0);}
+    <BREAK> (<PCOMA>)?{return new Break(token.beginLine, token.beginColumn);}
+}
+Instruccion Continue() :
+{Instruccion e;}
+{
+    <CONTINUE> (<PCOMA>)?{return new Continue(token.beginLine, token.beginColumn);}
+}
+
+Instruccion Mientras() :
+{Expresion e; LinkedList<NodoAST> ins;}
+{
+    <MIENTRAS> <PARENI> e=E() <PAREND> ins=Bloque() 
+    {return new While(ins,e,token.beginLine, token.beginColumn);}
+}
+
+Instruccion Si() :
+{Expresion e; Instruccion If; LinkedList<NodoAST> insIf, insElse = new LinkedList();}
+{
+    <SI> <PARENI> e=E() <PAREND> insIf=Bloque()
+    (
+        LOOKAHEAD(2) <SINO> If=Si() {insElse.add(If);}
+        |
+        LOOKAHEAD(2) <SINO> insElse=Bloque()
+    )?
+
+    {return new If(insIf,e,insElse, token.beginLine);}
+}
+
+LinkedList<NodoAST> Bloque() :
+{LinkedList<NodoAST> insBloque = new LinkedList(); NodoAST e;}
+{
+  <LLAVEI> (e=Instruccion() {insBloque.add(e);})* <LLAVED> {return insBloque;}
+}
+/** Asignacion ->   id = expresion;
+                    |id DIM = EXP
+ */
+Instruccion Asignacion():
+{Expresion e; Token id; Token t; LinkedList<nodoExp> ld=null;}
+{
+    LOOKAHEAD(2)
+    id=<ID> <IGUAL> e=E() (<PCOMA>)? 
+    {
+        return new Asignacion(new Identificador(id.image.toLowerCase(),id.beginLine,id.beginColumn,true),e,token.beginLine,token.beginColumn);
+    }
+    |
+    t=<ID> ld=Dimensiones() <IGUAL> e=E() (<PCOMA>)?
+    {
+        Identificador ident = new Identificador(t.image.toLowerCase(),ld,true,t.beginLine,t.beginColumn);
+        return new Asignacion(ident,e,token.beginLine,token.beginColumn);
+    }
+}
+
+
+LinkedList<nodoExp> Dimensiones():
+{nodoExp exp; LinkedList<nodoExp> lista = new LinkedList();}
+{   
+    <CORI> exp=Dimension() {lista.add(exp);}
+    (
+        <CORI>  exp=Dimension() {lista.add(exp);}
+    )*
+    {return lista;}
+}
+
+nodoExp Dimension():
+{nodoExp exp; Expresion e=null;Expresion e2=null;}
+{
+    LOOKAHEAD(2)
+    e=E() <COMA> 
+        (   
+            e2=E()
+        )?  
+    <CORD>{ return new nodoExp(e,e2,Acc.m1);}
+    |    
+    <COMA> e2=E() <CORD>{ return new nodoExp(e2,Acc.m3);}
+    |
+    <CORI> e=E() <CORD> <CORD> {return new nodoExp(e,Acc.tipo2);}    
+    |
+    e=E() <CORD>{ return new nodoExp(e,Acc.tipo1);}
+}
+
+/** Llamada -> print ( Expresion ); */
+NodoAST Llamada():
+{LinkedList<NodoAST> expres=null; Instruccion ins;Token t;}
+{
+    t=<ID> <PARENI> expres=Lista_Expresiones() <PAREND> (<PCOMA>)?
+        {
+            String a = t.image.toLowerCase();
+            if(a.equalsIgnoreCase("c")){
+            return new funcionC(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("list")){
+                return new GenerarList(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("print")){
+                return new Print(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("matrix")){
+                return new FuncionMatrix(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("typeof")){
+                return new Typeof(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("length")){
+                return new Length(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("nCol")){
+                return new nMatrix("ncol",expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("nRow")){
+                return new nMatrix("nrow",expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("StringLength")){
+                return new Fstring(1,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("remove")){
+                return new Fstring(2,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("toLowerCase")){
+                return new Fstring(3,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("toUpperCase")){
+                return new Fstring(4,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("trunk")){
+                return new Fnum(1,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("round")){
+                return new Fnum(2,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("mean")){
+                return new Fnum(3,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("median")){
+                return new Fnum(4,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("mode")){
+                return new Fnum(5,expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("pie")){
+                    return new grafPie(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("barplot")){
+                return new grafBarras(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("hist")){
+                   return new grafHistograma(expres,t.beginLine,t.beginColumn);
+            }else if(a.equalsIgnoreCase("plot")){
+                return new grafLineas(expres,t.beginLine,t.beginColumn);                 
+            }else{
+                return new Llama(t.image,expres,t.beginLine,t.beginColumn);
+            }
+        }
+}
+
+/** Lista_Expresiones -> Expresion ( , )*; */
+LinkedList<NodoAST> Lista_Expresiones():
+{Expresion exp; LinkedList<NodoAST> lista = new LinkedList();}
+{
+    (
+        exp=E() {lista.add(exp);}
+        (
+            <COMA> exp=E() {lista.add(exp);}
+        )*
+    )?
+    {return lista;}
 }
 
 
 Expresion E():
-{ Expresion e; }
+{ Expresion e,e1; }
 {
+    e=CondicionTernaria() 
+    (
+        <OR> e1=CondicionTernaria() {e = new Logica(e, e1, Operador.OR, token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+    //exp=Primitivo() {return exp;}
+}
+
+Expresion CondicionTernaria() :
+{Expresion e, e1,e2;}
+{
+    e=CondicionAnd() 
+    (
+        <TERNARIO> e1=CondicionAnd() <DOSPUNTOS> e2=CondicionAnd() {e = new Ternaria(e, e1,e2,token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+Expresion CondicionAnd() :
+{Expresion e, e1;}
+{
+    e=ExpresionIgualdad() 
+    (
+        <AND> e1=ExpresionIgualdad() {e = new Logica(e, e1, Operador.AND, token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+Expresion ExpresionIgualdad() :
+{Expresion e, e1;}
+{
+    e=ExpresionRelacional() 
+    (
+        <IGUALACION> e1=ExpresionRelacional() {e = new Relacional(e, e1, Operador.IGUAL_IGUAL, token.beginLine, token.beginColumn);}
+        |
+        <DIFERENCIACION> e1=ExpresionRelacional() {e = new Relacional(e, e1, Operador.DIFERENTE_QUE, token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+Expresion ExpresionRelacional() :
+{Expresion e, e1;}
+{
+    e=ExpresionAditiva() 
+    (
+        <MAYORQUE> e1=ExpresionAditiva() {e = new Relacional(e, e1, Operador.MAYOR_QUE, token.beginLine, token.beginColumn);}
+        |
+        <MENORQUE> e1=ExpresionAditiva() {e = new Relacional(e, e1, Operador.MENOR_QUE, token.beginLine, token.beginColumn);}
+        |
+        <MAYORIGUAL> e1=ExpresionAditiva() {e = new Relacional(e, e1, Operador.MAYOR_IGUAL, token.beginLine, token.beginColumn);}
+        |
+        <MENORIGUAL> e1=ExpresionAditiva() {e = new Relacional(e, e1, Operador.MENOR_IGUAL, token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+Expresion ExpresionAditiva() :
+{Expresion e, e1;}
+{
+    e=ExpresionMultiplicativa()
+    (
+        <MAS> e1=ExpresionMultiplicativa() {e = new Aritmetica(e, e1, Operador.SUMA, token.beginLine, token.beginColumn);}
+        |
+        <MENOS> e1=ExpresionMultiplicativa() {e = new Aritmetica(e, e1, Operador.RESTA, token.beginLine, token.beginColumn);}        
+    )*
+    {return e;}
+}
+
+Expresion ExpresionMultiplicativa() :
+{Expresion e, e1;}
+{
+    e=ExpresionPotencia()
+    (
+        <POR> e1=ExpresionPotencia() {e = new Aritmetica(e, e1, Operador.MULTIPLICACION, token.beginLine, token.beginColumn);}
+        |
+        <DIV> e1=ExpresionPotencia() {e = new Aritmetica(e, e1, Operador.DIVISION, token.beginLine, token.beginColumn);}
+        |
+        <MODULO> e1=ExpresionPotencia() {e = new Aritmetica(e, e1, Operador.MODULO, token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+Expresion ExpresionPotencia() :
+{Expresion e, e1;}
+{
+    e=ExpresionUnaria()
+    (
+        <POTENCIA> e1=ExpresionUnaria() {e = new Aritmetica(e, e1, Operador.POTENCIA, token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+Expresion ExpresionUnaria() :
+{Expresion e;}
+{
+    <MENOS> e=ExpresionUnaria() {return new Aritmetica(e, Operador.MENOS_UNARIO, token.beginLine, token.beginColumn);}
+    |
+    <NOT> e=ExpresionUnaria() {return new Logica(e, Operador.NOT, token.beginLine, token.beginColumn);}
+    |
     e=Primitivo() {return e;}
 }
 
@@ -140,24 +422,74 @@ Expresion E():
               |  '(' Expresion ')' 
 */
 Expresion Primitivo() :
-{Expresion e; Token t; String cad;}
+{Expresion e;LinkedList<NodoAST> expres=null; Token t; String cad; LinkedList<nodoExp> ld=null;}
 {
     <NUMERO> {return new Literal(Integer.parseInt(token.image), new Tipo(Tipos.INT),token.beginLine,token.beginColumn);}
     |
     <DECIMAL> {return new Literal(Double.parseDouble(token.image), new Tipo(Tipos.DOUBLE),token.beginLine, token.beginColumn);}
     |
-    //LOOKAHEAD(2)e=Llamada() {return e;}
-    //|
     t=<STRING> {    cad = t.image.substring(1,t.image.length()-1);
                     cad = cad.replace("\\","\\");
                     cad = cad.replace("\\n","\n");
                     cad = cad.replace("\\t","\t");
                     return new Literal(cad, new Tipo(Tipos.STRING),token.beginLine,token.beginColumn);} 
     |
-    LOOKAHEAD(2)t=<IDENTIFICADOR> {return new Identificador(t.image,token.beginLine,token.beginColumn,false);}
+    <TRUE> {return new Literal(true, new Tipo(Tipos.BOOL),token.beginLine,token.beginColumn);}
+    |
+    <FALSE> {return new Literal(false, new Tipo(Tipos.BOOL),token.beginLine,token.beginColumn);}
+    |
+    <NULL> {return new Literal(token.image, new Tipo(Tipos.STRING),token.beginLine,token.beginColumn);}
+    |
+    <DEFA> {return new Literal(token.image, new Tipo(Tipos.DEFAULT),token.beginLine,token.beginColumn);}
+    |
+    LOOKAHEAD(2) t=<ID> 
+                (
+                    <PARENI> expres=Lista_Expresiones() <PAREND>
+                    {
+                        String a = t.image.toLowerCase();
+                        if(a.equalsIgnoreCase("c")){
+                        return new funcionC(expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("list")){
+                            return new GenerarList(expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("matrix")){
+                            return new FuncionMatrix(expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("typeof")){
+                            return new Typeof(expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("length")){
+                            return new Length(expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("nCol")){
+                            return new nMatrix("ncol",expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("nRow")){
+                            return new nMatrix("nrow",expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("StringLength")){
+                            return new Fstring(1,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("remove")){
+                            return new Fstring(2,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("toLowerCase")){
+                            return new Fstring(3,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("toUpperCase")){
+                            return new Fstring(4,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("trunk")){
+                            return new Fnum(1,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("round")){
+                            return new Fnum(2,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("mean")){
+                            return new Fnum(3,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("median")){
+                            return new Fnum(4,expres,t.beginLine,t.beginColumn);
+                        }else if(a.equalsIgnoreCase("mode")){
+                            return new Fnum(5,expres,t.beginLine,t.beginColumn);
+                        }else{
+                            return new Llama(t.image,expres,t.beginLine,t.beginColumn);
+                        }
+                    }
+                )?
+                (
+                    ld=Dimensiones()
+                )? {return new Identificador(t.image.toLowerCase(),ld,false,token.beginLine,token.beginColumn);}
+            {return new Identificador(t.image.toLowerCase(),token.beginLine,token.beginColumn,false);}
     |
     <PARENI> e=E() <PAREND> {return e;}
     //|
-    //e=argumentos() {return e;}
-    
+    //e=argumentos() {return e;}    
 }

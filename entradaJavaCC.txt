@@ -1,1 +1,295 @@
-print;
+if("hol" > "hola"){
+    print("s");
+}
+else{
+    print("n");
+}
+
+prueba = true;
+print("uno: "+prueba)
+prueba = 10
+print("dos: "+prueba)
+if(prueba == 10){
+    prueba = 20
+    print("tres "+ prueba)
+}
+print("cuatro"+prueba)
+prueba = false;
+prueba = c(true,false,true)
+if(prueba == prueba){
+    print("bien");
+}
+
+if(5 == 5.0)
+{
+	print("si");
+}else {
+	print("no")
+}
+print(5>2 ? "sacaste 100" : "sacaste 0")
+
+if(3>4){
+	print("cagadales");
+}else{
+	print("codgio pelado");
+}
+
+if(3>4){
+	print("nel");
+}else if(4<2){
+	print("nel x2");
+}else if(9>4){
+	print("codigo pelado");
+}else{
+	print("nel x3");
+}
+
+If( 3 > 4) { 
+    print(1) 
+} else if (2 > 5){ 
+    print(2) 
+} else { 
+    print(3)
+}
+
+If(FALSE){ 
+    print("imp:"+true) 
+}
+ELSE{
+    print("imp:"+FALSE)
+}
+
+
+PRINT(1+1-1*1+1+1-(5^2));
+print(5>2 ? "sacaste 100" : "sacaste 0")
+d=2
+print(d)
+a=3;
+print(a);
+v = c(10,20,30,41,58);
+print(v);
+v[10] = 20;
+print(v);
+hola(5);
+hola();
+break
+print("------- prueba grafica-----");
+x = c(19, 26, 55)
+labels =  c("Residential", "Non-Residential", "Utility")
+pie (x, labels, "ACA TITULO");          
+
+xlab = "Meses"
+ylab = "Milimetros"
+v = C(40,20,80,110,120,40,80,125,32,160,55,21);
+main = c("Grafica Lineas")
+#plot(v,"p",xlab,ylab,main);         #4
+#plot(v,"i",xlab,ylab,main);         #5
+#plot(v,c("o"),xlab,ylab,main);      #6
+
+#plot(matrix(c(10,20,30),3,3),c("o"),xlab,ylab,main);
+continue
+val = trunk (5.8) #val toma el valor de 5
+print(val);
+val = round(5.8) #val tome el valor de 6 
+print(val);
+val = round(5.5) #val tome el valor de 6 
+print(val);
+val = round(5.4) #val tome el valor de 5
+print(val);
+
+print("------- Pruebas Matrix -----");
+AdA = matrix(c(1, 2, 3, 4, 5), 5, 4)
+print(AdA);
+string = matrix(c("1", 2, 3, 4), 5, 4)
+print(string);
+Vec1 = c(1,2,3,4) 
+AAA = matrix(vec1, 2, 1)
+print(AAA);
+uno = matrix(5, 3, 5)
+print(uno);
+mayor = matrix(c(1,2,3,4),2,2)
+print(mayor);
+mayor = matrix(c(1,2.5,3,4,5),2,2)
+print(mayor);
+ejemplo = matrix(c(1, "2", 3, 4), 3, 4)
+print("------- Accesos Matrix -----");
+accesos = ejemplo[5]
+print(accesos)      #1
+accesos = ejemplo[2,2]
+print(accesos)      #"1"
+accesos = ejemplo[,3]
+print(accesos)      #"3,4,1"
+accesos = ejemplo[2,]
+print(accesos)      #"2,1,4,3"
+
+ejemplo = matrix(c(1, "2", 3, 4), 3, 4)
+print("------- Modificacion Matrix -----");
+prinT(ejemplo);
+ejemplo[3,3] = 8
+prinT(ejemplo)
+ejemplo[2, ] = 9
+prinT(ejemplo)
+ejemplo[2, ] = c(7)
+prinT(ejemplo)
+ejemplo[ ,4] = 6
+prinT(ejemplo);
+ejemplo[ ,4] = c(6,3,9,45) # Error 
+ejemplo[ ,4] = c(6,7,8)
+print(ejemplo);
+ejemplo[7] = 0
+print(ejemplo);
+
+print("------- Modificacion listas -----");
+L1 = list("hola");
+
+L1[[4]] = "45"
+print(l1);                  #L1 -> ["hola", NULL, NULL, "45"]
+L1[[3]] = "cambio"          
+print(l1);                  #L1 -> ["hola", NULL, "cambio", "45"]
+L1 = c(L1, "nuevo")
+print(L1)                   #L1 -> ["hola", NULL, "cambio", "45", "nuevo"]
+L2 = list("hola");
+L2[4] = c("45", "adios")    #error porque l2[4] = list["hola"]
+print(L2[4])
+L2[4] = list(c("45", "adiós"))
+
+print(L2);                  #L2 -> ["hola", NULL, NULL, ("45", "adios")]
+
+
+print("------- Creando listas -----");
+l1 = list(1,1);
+l2 = list(3,4);
+A = c(1,2,l1)       
+print(A)            # [1,2,1,1]
+B = c(l1,l2,l2,l2)    
+print(B)            # [1,1,3,4,3,4,3,4]
+
+Lista1 = list("hola mundo");
+Lista2 = list("hola mundo", 43, TRUE, 32.3)
+print(Lista1);          #[hola mundo]
+print(Lista2);          #[hola mundo 43, TRUE, 32.3]
+
+Lista3 = c(Lista1, Lista2)          
+print(Lista3);                              #Lista3 -> ["hola mundo", "hola mundo", 43, TRUE, 32.3]
+Lista4 = c(List(1,2,3), 4, "hola mundo")
+print(lista4);                          # Contenido de Lista4 -> [1,2,3,4, "hola mundo"]
+
+print("------- 1) Acceso listas -----");
+
+aa = list(1,2,3)
+print(aa[2])                 # Te devuelve list[2]
+print(aa[[2]])               # Te devuelve 2
+
+aa =  list(1,list(2,3),4)
+print(aa);           #[1,[2,3],4]
+print(aa[2])               # Te devuelve list[list[2,3]]
+print(aa[[2]])             # Te devuelve list[2,3]
+print(aa[[2]][[1]])        # Te devuelve 2
+
+
+print("------- 2) Acceso listas -----");
+
+Lista1 = list(1,2,3,4)
+Lista2 = Lista1[2]
+print(Lista2)               #list[2]
+Num = Lista1[[3]]
+print(num)                  # num -> 3
+Lista3 = list(1,2, 3, 4, c(5,6))   
+print(Lista3)               #Lista3 = [1,2,3,4, (5,6)]
+Lista4 = Lista3[5]
+print(Lista4);              #Lista4 = list[(5,6)]
+Vector1 = Lista3[[5]]       
+print(Vector1)              # (5,6)
+Print(Lista3[[5]][2])       #6
+Print(Lista3[5][[1]][1])    #5
+
+
+print("------ Prueba Vectores ------")\
+Perro = "Perro"
+Gato = "Gato" 
+Animales = c(Perro, Gato) # Contenido del vector animales -> [Perro", Gato"] 
+print(animales);
+# Acceso vector0
+Aux = Animales[1] # Recordar que el índice inicia en 1, contenido del vector Aux -> [Perro"] 
+print(aux);
+# Creando otro vector 
+Animales = c(Aux, Animales) # Contenido del vector animales -> [Perro", Perro", Gato"]
+print(animales);
+# Creando otro vector 
+Animales = c(Animales[3], Animales) # Contenido del vector animales -> [Gato", Perro", Perro", Gato"]
+print(animales);
+
+Aux = Animales[5][1][1][1][1] # Recordar que el índice inicia e  n 1, contenido del vector Aux -> [Perro"]
+
+print(Aux)'
+
+VectorN = NULL # Vector de tipo String
+prinT(VectorN);
+
+a = "a"
+PRINT(a);
+
+b = a[1][1];
+print(b[1]);
+c = b;
+print(c)    
+
+Vec1 = c(1,2,true, "HOLA", 4.5);
+Vec2 = c(1,2,true, 5, 4.5);
+Vec3 = c(Vec1,Vec2);
+
+Vector1 = c(1,2,true, 5.5, 4.5);
+Var1 = "pala"
+Vector2 = c(Var1,Vector1);  
+print(VeC3)
+prinT(VeCtOr2)
+
+v1=c(1,2.5);
+v2=c(3,4);
+
+v3=c(v1,v2);
+
+print(v3[1]);
+print(v3[2]);
+print(v3[3]);
+print(v3[4]);
+print(v3[5]);
+
+print("------ Prueba Cuadrado con While ------");
+contador = 1;
+cuadro = 5*2-2^2;
+while (contador <= cuadro){
+    contador2 = 1;
+    cad = "";
+    while (contador2 <= cuadro)
+    {
+        cad = cad + ("*");
+        contador2 = contador2 + 1;
+    } 
+    print(cad);
+    contador = contador + 1;
+}
+
+print("------ Prueba break ------");
+i = 0; 
+cad = "res: ";
+while (i < 10) {
+    cad = cad +" "+ (i);
+    i = i + 1;
+    if (i == 4) {
+        break;
+    }
+}
+print(cad);
+cad = "res:";
+print("------ Prueba continue ------");
+i = 0;
+while (i < 10) {
+    if (i == 4) {
+        i = i +1;
+        continue;
+    }
+    cad = cad +" "+ (i);
+    i = i +1;
+}  
+print(cad);

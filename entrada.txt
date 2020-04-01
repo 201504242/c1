@@ -1,12 +1,20 @@
-B = matrix(c(1, 2, 3, 4), 5, 4)
+#Archivo mio
+Vec1 = c(1,2,3,4) 
+AAA = matrix(vec1, 2, 1)
+print(AAA);
+
+typeof = function(valor){
+    print("NO "+varlor);
+}
+    B = matrix(c(1, 2, 3, 4), 5, 4)
 Print(B)
 
 print("------- prueba grafica-----");
 x = c(19, 26, 55)
 labels =  c("Residential", "Non-Residential", "Utility")
-pie (x, labels, "ACA TITULO");          #1
+#pie (x, labels, "ACA TITULO");          #1
 x = c(19, 26, 55,65,20,89)
-pie (x, labels, "ACA TITULO2");         #2
+#pie (x, labels, "ACA TITULO2");         #2
 
 H = c("primaria","basicos","secundaria");
 names.arg = c(600,2500,1200,100);

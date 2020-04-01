@@ -53,12 +53,11 @@ public class Asignacion implements Instruccion{
             Simbolo  SimboloViejo = (sim instanceof Simbolo) ? (Simbolo)sim: null;
             
             Object valorNuevo = der.getValorImplicito(ent);
-            
             if( sim  instanceof ModificadorMatrix)
             {
                 ModificadorMatrix s = (ModificadorMatrix)sim;
                 s.cambiarValor(valorNuevo);
-                
+
             }
             //asigno tipo o lista
             else if (valorNuevo instanceof ListVar) {
@@ -102,6 +101,20 @@ public class Asignacion implements Instruccion{
                     SimboloViejo.setValor(prueba);  
                 }
                 SimboloViejo.lugar = 0;
+                //ARREGLO EL TIPO dependiendo del Valor
+                try {
+                    Tipo tipoViejo = SimboloViejo.getTipo();
+                    if (isCorrect(tipoViejo)) {
+                        if (SimboloViejo.getValor() instanceof Object[]) {
+                            Tipo tipoNuevo = buscarTipo((Object[])SimboloViejo.getValor());
+                            tipoViejo = tipoNuevo.getTipoPrimitivo() == tipoViejo.getTipoPrimitivo() ? tipoViejo:tipoNuevo;
+                            SimboloViejo.setTipo(tipoViejo);
+
+                        }
+                    }
+                //termina
+                } catch (Exception e) {
+                }
             }            
             
             
@@ -142,6 +155,62 @@ public class Asignacion implements Instruccion{
         
         return ""+(der).getNombre(builder, nodo, cont);
     }
+
+    private Tipo buscarTipo(Object[] object) {
+        Tipo[] t = new Tipo[object.length];
+        int c=0;
+        for (Object r : object) {
+            if (r instanceof Integer) {
+                t[c] = new Tipo(Tipo.Tipos.INT);
+            }else if(r instanceof Boolean){
+                t[c] = new Tipo(Tipo.Tipos.BOOL);
+            }else if(r instanceof String){
+                t[c] = new Tipo(Tipo.Tipos.STRING);
+            }else if(r instanceof Double){
+                t[c] = new Tipo(Tipo.Tipos.DOUBLE);
+            }else{
+                t[c] = new Tipo(Tipo.Tipos.VOID);
+            }
+            c++;
+        }
+        return tipoDominante(t);        
+    }
     
+    
+    private Tipo tipoDominante(Tipo[] tp) {
+        for (Tipo tipo : tp) {
+            if (tipo.isString()) {
+                return new Tipo(Tipo.Tipos.STRING);
+            }
+        }
+        for (Tipo tipo : tp) {
+            if (tipo.isDouble()) {
+                return new Tipo(Tipo.Tipos.DOUBLE);
+            }
+        }        
+        for (Tipo tipo : tp) {
+            if (tipo.isInt()) {
+                return new Tipo(Tipo.Tipos.INT);
+            }
+        }
+        for (Tipo tipo : tp) {
+            if (tipo.isBoolean()) {
+                return new Tipo(Tipo.Tipos.BOOL);
+            }
+        }
+        return null;
+    }
+
+    private boolean isCorrect(Tipo tipoViejo) {
+        entorno.Tipo.Tipos t = tipoViejo.getTipoPrimitivo();
+        switch(t){
+            case BOOL:return false;
+            case DOUBLE:return false;
+            case INT:return false;
+            case STRING:return false;
+            //case :return true;
+        }
+        return true;
+    }
 }
 

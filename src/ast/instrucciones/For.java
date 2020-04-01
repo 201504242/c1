@@ -12,6 +12,7 @@ import ast.expresiones.Identificador;
 import ast.instrucciones.funciones.ListVar;
 import entorno.Entorno;
 import entorno.Simbolo;
+import entorno.Tipo;
 import java.util.LinkedList;
 import olc2.p1_201504242.JError;
 import olc2.p1_201504242.Ventana;
@@ -36,7 +37,7 @@ public class For extends Condicion implements Instruccion{
     public Object ejecutar(Entorno ent) {
         Entorno local = new Entorno(ent);
         try {
-            //inicializacion existe
+            //VALOR IZQUIERDO
             if (ent.existe(id.getVal())) 
             {
                 Simbolo sim = ent.get(id.getVal());
@@ -46,6 +47,7 @@ public class For extends Condicion implements Instruccion{
             {
                 local.agregar(id.getVal(), new Simbolo(id.getVal(), Simbolo.Rol.VECTOR));
             }
+            //VAROR DERECHO
             Expresion condicion = getCond();
             Object ob = condicion.getValorImplicito(local);
             if (ob instanceof ListVar) 
@@ -55,7 +57,7 @@ public class For extends Condicion implements Instruccion{
                     Entorno entFor = new Entorno(local); 
                     String variable = id.getVal();
                     Simbolo s = entFor.get(variable);
-                    s.setValor(c);
+                    s.setValor(c);                    
                     entFor.agregar(variable, s);
                     for (NodoAST in : getIns()) 
                     {
@@ -155,4 +157,69 @@ public class For extends Condicion implements Instruccion{
         return ""+cont;
     }
     
+    private Tipo colocarTipo(Object[] r) {
+       Tipo []tp = new Tipo[r.length];
+        int c = 0;
+        for (Object nodo : r) 
+        {
+            Tipo ti = tipo(nodo);
+            tp[c] = ti;
+            c++;
+                                
+        }
+        return tipoDominante(tp);
+        
+    }
+    
+    private Tipo colocarTipo(ListVar r) {
+       Tipo []tp = new Tipo[r.size()];
+        int c = 0;
+        for (Object nodo : r) 
+        {
+            Tipo ti = tipo(nodo);
+            tp[c] = ti;
+            c++;
+                                
+        }
+        return tipoDominante(tp);
+        
+    }
+    
+    private Tipo tipoDominante(Tipo[] tp) {
+        for (Tipo tipo : tp) {
+            if (tipo.isString()) {
+                return new Tipo(Tipo.Tipos.STRING);
+            }
+        }
+        for (Tipo tipo : tp) {
+            if (tipo.isDouble()) {
+                return new Tipo(Tipo.Tipos.DOUBLE);
+            }
+        }        
+        for (Tipo tipo : tp) {
+            if (tipo.isInt()) {
+                return new Tipo(Tipo.Tipos.INT);
+            }
+        }
+        for (Tipo tipo : tp) {
+            if (tipo.isBoolean()) {
+                return new Tipo(Tipo.Tipos.BOOL);
+            }
+        }
+        return null;
+    }
+
+    private Tipo tipo(Object r) {
+        if (r instanceof Integer) {
+            return new Tipo(Tipo.Tipos.INT);
+        }else if(r instanceof Boolean){
+            return new Tipo(Tipo.Tipos.BOOL);
+        }else if(r instanceof String){
+            return new Tipo(Tipo.Tipos.STRING);
+        }else if(r instanceof Double){
+            return new Tipo(Tipo.Tipos.DOUBLE);
+        }else{
+            return new Tipo(Tipo.Tipos.VOID);
+        }
+    }
 }

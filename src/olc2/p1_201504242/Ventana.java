@@ -17,13 +17,17 @@ import entorno.Simbolo;
 import entorno.Tipo;
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -45,7 +49,7 @@ import javax.swing.JOptionPane;
 public class Ventana extends javax.swing.JFrame {
     AST arbol;
     AST arbolJavaCC;
-
+    boolean tipo = true; //true = cup y  Flex | false = JAVACC
     int index;
     String cad;
     public LinkedList<JError> listaError = new LinkedList();
@@ -87,7 +91,6 @@ public class Ventana extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         MenuCup = new javax.swing.JMenuItem();
-        MenuJavacc = new javax.swing.JMenuItem();
         MenuTS = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         MenuAST = new javax.swing.JMenuItem();
@@ -143,16 +146,13 @@ public class Ventana extends javax.swing.JFrame {
         jMenu3.setText("Errores");
 
         MenuCup.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        MenuCup.setText("Cup y Flex");
+        MenuCup.setText("HTML");
         MenuCup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuCupActionPerformed(evt);
             }
         });
         jMenu3.add(MenuCup);
-
-        MenuJavacc.setText("JAVACC");
-        jMenu3.add(MenuJavacc);
 
         jMenu2.add(jMenu3);
 
@@ -228,53 +228,8 @@ public class Ventana extends javax.swing.JFrame {
     private void AnalizarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizarBTNActionPerformed
         limpiar();
         String entra = "entrada.txt";
-        File archivo = null;
-        FileReader fr = null;
-        BufferedReader br = null;
-        
-        FileWriter fichero = null;
-        PrintWriter pw = null;
-        try {
-            archivo = new File (entra);
-            fr = new FileReader (archivo);
-            br = new BufferedReader(fr);
-            String linea;
-            
-            fichero = new FileWriter("c:/"+entra);
-            pw = new PrintWriter(fichero);
-
-            while((linea=br.readLine())!=null) {
-                if (linea.contains("=>")) {
-                    int intIndex = linea.indexOf("(");
-                    if (intIndex != -1) {
-                        linea = linea.replace("=>", "");
-                        for (int i = 0; i < linea.toCharArray().length; i++) {
-                            if(i == intIndex){
-                                pw.print("function(");
-                            }else{
-                                pw.print(linea.charAt(i));                            
-                            }
-                        }
-                    pw.println("");
-                    }                    
-                }else{
-                    pw.println(linea);
-                }
-                
-            }      
-        }catch(IOException e){
-            e.printStackTrace();
-        }finally{
-            try{                    
-                if( null != fr ){   
-                    fr.close();  
-                    fichero.close();
-                }                  
-            }catch (IOException e2){ 
-                e2.printStackTrace();
-            }
-        } 
-            
+        archivo(entra);         
+        tipo = true;    
         try {
             analizadores.Sintactico pars;           
             pars = new analizadores.Sintactico(new analizadores.Lexico(new FileInputStream("c:/"+entra)));
@@ -298,17 +253,28 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_AnalizarBTNActionPerformed
 
     private void analizarJavaccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarJavaccActionPerformed
+        Gramatica parser = null;
+        limpiar();
+        String entra = "entradaJavaCC.txt";
+        archivo(entra); 
+        tipo = false;
         try {
-            Gramatica parser = new Gramatica(new BufferedReader(new FileReader("entradaJavaCC.txt")));
-            arbolJavaCC = parser.Analizar();
+            InputStream inputstream = new FileInputStream("c:/"+entra);
+            parser = new Gramatica(inputstream,"utf-8");
+            LinkedList<NodoAST> instruccionsCC = parser.Analizar();
+            arbolJavaCC = new AST(instruccionsCC);
             arbolJavaCC.ejecutar();
-        } catch (FileNotFoundException ex) {            
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (ParseException ex) {
             Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
         } catch(TokenMgrError e){
             System.err.println(e.getMessage());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
         }
+        jLabel1.setText("Errores JAVACC: "+listaError.size());
 
     }//GEN-LAST:event_analizarJavaccActionPerformed
 
@@ -333,16 +299,32 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuTSActionPerformed
 
     private void MenuASTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuASTActionPerformed
-        // TODO add your handling code here:
-        if (arbol != null) {
-            String grafica = arbol.Graficar();
-            Graficar(grafica, "AST");
-            //JOptionPane.showMessageDialog(null, "AST generado Correctamente", "EXITO~~~!", JOptionPane.WARNING_MESSAGE);
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "AST VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
 
+        //CUP y FLEX
+        if (tipo) {
+            if (arbol != null) {
+                String grafica = arbol.Graficar();
+                Graficar(grafica, "AST");
+                //JOptionPane.showMessageDialog(null, "AST generado Correctamente", "EXITO~~~!", JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "AST CUP VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+
+            }
         }
+        //JAVACC
+        else{
+            if (arbolJavaCC != null) {
+                String grafica = arbolJavaCC.Graficar();
+                Graficar(grafica, "AST");
+                //JOptionPane.showMessageDialog(null, "AST generado Correctamente", "EXITO~~~!", JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "AST JAVACC VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+        }
+        
     }//GEN-LAST:event_MenuASTActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -404,7 +386,6 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuCup;
     private javax.swing.JMenuItem MenuGuardar;
     private javax.swing.JMenuItem MenuGuardarComo;
-    private javax.swing.JMenuItem MenuJavacc;
     private javax.swing.JMenuItem MenuTS;
     private javax.swing.JButton analizarJavacc;
     private javax.swing.JLabel jLabel1;
@@ -679,5 +660,66 @@ public class Ventana extends javax.swing.JFrame {
             }
         return null;
     }
+
+    private void archivo(String entra) {
+        File entrada = null;
+        File salida = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try {
+            entrada = new File (entra);
+            salida = new File("c:/"+entra);
+            
+            BufferedWriter bw = null;
+            
+            fr = new FileReader (entrada);
+            br = new BufferedReader(fr);
+            String linea;
+            
+            if (!salida.exists()) {
+                bw = new BufferedWriter(new FileWriter(salida));
+                bw.write("#Archivo");
+            }
+            
+            fichero = new FileWriter("c:/"+entra);
+            pw = new PrintWriter(fichero);
+
+            while((linea=br.readLine())!=null) {
+                if (linea.contains("=>")) {
+                    int intIndex = linea.indexOf("(");
+                    if (intIndex != -1) {
+                        linea = linea.replace("=>", "");
+                        for (int i = 0; i < linea.toCharArray().length; i++) {
+                            if(i == intIndex){
+                                pw.print("function(");
+                            }else{
+                                pw.print(linea.charAt(i));                            
+                            }
+                        }
+                    pw.println("");
+                    }                    
+                }else{
+                    pw.println(linea);
+                }
+                
+            }      
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally{
+            try{                    
+                if( null != fr ){   
+                    fr.close();  
+                    fichero.close();
+                }                  
+            }catch (IOException e2){ 
+                e2.printStackTrace();
+            }
+        }
+    }
+    
+    
 
 }

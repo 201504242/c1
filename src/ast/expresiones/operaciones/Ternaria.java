@@ -32,8 +32,15 @@ public class Ternaria implements Expresion{
     @Override
     public Tipo getTipo(Entorno ent) {
         if (ex1.getTipo(ent).isBoolean()) {
-            Object r1 = ex1.getValorImplicito(ent);
-            if ((boolean)r1)
+            Object res1 = ex1.getValorImplicito(ent);
+            boolean r1=false;Object[]arr1= null;
+            r1 = (res1 instanceof Object[]);
+            if (r1)
+            {
+                arr1 = r1==true ? (Object[])res1 : null;
+                res1 = arr1[0];
+            }
+            if ((boolean)res1)
             {
                 return ex2.getTipo(ent);
             }
@@ -44,11 +51,21 @@ public class Ternaria implements Expresion{
 
     @Override
     public Object getValorImplicito(Entorno ent) {
-        Object r1 = ex1.getValorImplicito(ent);
+        Object res1=null,res2=null;
+        boolean r1=false; Object[]arr1= null;
+        
+        res1 = ex1.getValorImplicito(ent);
+        r1 = (res1 instanceof Object[]);
+        if (r1)
+        {
+            arr1 = r1==true ? (Object[])res1 : null;
+            res1 = arr1[0];
+        }
+        
         Tipo t1 = ex1.getTipo(ent);
-        if (r1 != null && t1.isBoolean()) 
+        if (res1 != null && t1.isBoolean()) 
         {               
-            if ((boolean)r1) 
+            if ((boolean)res1) 
             {
                 return ex2.getValorImplicito(ent);
             }

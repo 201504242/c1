@@ -31,14 +31,25 @@ public class Typeof implements Expresion{
     
     @Override
     public Tipo getTipo(Entorno ent) {
-        Expresion valorDeRetorno = (Expresion) valor.get(0);
-        return valorDeRetorno != null ? valorDeRetorno.getTipo(ent) : null;
+        return new Tipo(Tipo.Tipos.STRING);
     }
 
     @Override
     public Object getValorImplicito(Entorno ent) {
         try{
             Expresion exp = (Expresion) valor.get(0);
+            switch(exp.getTipo(ent).getTipoPrimitivo()){
+                case INT:
+                    return "integer";
+                case BOOL:
+                    return "boolean";
+                case DOUBLE:
+                    return "numeric";
+                case LIST:
+                    return "list";
+                case STRING:
+                    return "string";
+            }
             return exp.getTipo(ent).getTipoPrimitivo();
         } catch (Exception e) {
             Ventana.ggetVentana().listaError.add(new JError("Ejecucion", linea(), columna(), "Error en Clase Typeof: "+e.getMessage()));

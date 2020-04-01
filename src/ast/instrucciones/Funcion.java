@@ -10,6 +10,7 @@ import ast.Instruccion;
 import ast.NodoAST;
 import entorno.Entorno;
 import entorno.Simbolo;
+import entorno.Tipo;
 import java.util.LinkedList;
 
 /**
@@ -111,8 +112,7 @@ public class Funcion extends Simbolo implements Instruccion{
         
         return String.valueOf(cont);
     }
-
-       
+     
     
     
 }

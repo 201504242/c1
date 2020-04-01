@@ -8,6 +8,7 @@ package ast.instrucciones.funciones;
 import ast.Expresion;
 import ast.NodoAST;
 import entorno.Entorno;
+import entorno.Simbolo;
 import entorno.Tipo;
 import entorno.nodoExp;
 import java.util.LinkedList;

@@ -8,6 +8,7 @@ package ast.expresiones;
 import ast.Expresion;
 import ast.NodoAST;
 import ast.instrucciones.Funcion;
+import ast.instrucciones.funciones.ListVar;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.Simbolo.Rol;
@@ -187,6 +188,7 @@ public class Llama implements Expresion{
             }
             valor = exp_aux.getValorImplicito(ent); 
             tipoPar_aux = colocarTipo(valor).getTipoPrimitivo();
+            
             //ACA TIENE QUE MODIFICARSE CUANDO YA HAYAN VECTORES 
             //EL ROL Y LAS DIMENSIONES CAMBIARAN
             Simbolo s = new Simbolo(id_aux, valor, new Tipo(tipoPar_aux),Rol.VECTOR,0);
@@ -215,5 +217,48 @@ public class Llama implements Expresion{
         }
         
     }
+    
+     private Tipo colocarTipo(Object[] r) {
+       Tipo []tp = new Tipo[r.length];
+        int c = 0;
+        for (Object nodo : r) 
+        {
+            Tipo ti = tipo(nodo);
+            tp[c] = ti;
+            c++;
+                                
+        }
+        return tipoDominante(tp);
+        
+    }
+    
+      private Tipo tipo(Object r) {
+        if (r instanceof Integer) {
+            return new Tipo(Tipo.Tipos.INT);
+        }else if(r instanceof Boolean){
+            return new Tipo(Tipo.Tipos.BOOL);
+        }else if(r instanceof String){
+            return new Tipo(Tipo.Tipos.STRING);
+        }else if(r instanceof Double){
+            return new Tipo(Tipo.Tipos.DOUBLE);
+        }else{
+            return new Tipo(Tipo.Tipos.VOID);
+        }
+    }
+      
+    private Tipo colocarTipo(ListVar r) {
+       Tipo []tp = new Tipo[r.size()];
+        int c = 0;
+        for (Object nodo : r) 
+        {
+            Tipo ti = tipo(nodo);
+            tp[c] = ti;
+            c++;
+                                
+        }
+        return tipoDominante(tp);
+        
+    }
+    
     
 }

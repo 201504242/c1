@@ -134,7 +134,11 @@ public class Aritmetica extends Operacion{
                     return null;
                 }
                 x = arr1.length > arr2.length ? arr1.length : arr2.length;
-            }  
+            }else if(r1){
+                x = arr1.length;
+            }else if (r2) {
+                x = arr2.length;
+            }
         }
              
         
@@ -189,22 +193,22 @@ public class Aritmetica extends Operacion{
                                             total[i] = (arr1[i].toString()) + (arr2[0].toString());
                                         }
                                         else{
-                                            total[i] = new Double(arr1[i].toString()) + new Double(arr2[i].toString());
+                                            total[i] = (arr1[i].toString()) + (arr2[i].toString());
                                         }
                                     }
                                     return total;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = arr1[i].toString()+(res2.toString());
                                     }
                                     return total;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
-                                        total[i] = (arr2[i].toString())+(res1.toString());
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
+                                        total[i] = ((res1.toString()+arr2[i].toString()));
                                     }
                                     return total;
                                 }
@@ -261,16 +265,16 @@ public class Aritmetica extends Operacion{
                                 return total;
                             }
                             else if (r1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = new Double(arr1[i].toString())+new Double(res2.toString());
                                 }
                                 return total;
                             }
                             else if (r2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = new Double(arr2[i].toString())+new Double(res1.toString());
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
+                                    total[i] = new Double(res1.toString())+new Double(arr2[i].toString());
                                 }
                                 return total;
                             }
@@ -328,15 +332,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (int)arr1[i]+(int)res2;
                                     }
                                     return total;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (int)arr2[i]+(int)res1;
                                     }
                                     return total;
@@ -408,15 +412,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = new Double(arr1[i].toString()) - new Double(res2.toString());
                                     }
                                     return total;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = new Double(res1.toString()) - new Double(arr2[i].toString());
                                     }
                                     return total;
@@ -474,15 +478,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (int)arr1[i]-(int)res2;
                                     }
                                     return total;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (int)res1- (int)arr2[i];
                                     }
                                     return total;
@@ -553,15 +557,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = new Double(arr1[i].toString()) * new Double(res2.toString());
                                     }
                                     return total;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = new Double(res1.toString()) * new Double(arr2[i].toString());
                                     }
                                     return total;
@@ -619,15 +623,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                 }
                                 else if (r1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (int)arr1[i]*(int)res2;
                                     }
                                     return total;
                                 }
                                 else if (r2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (int)res1*(int)arr2[i];
                                     }
                                     return total;
@@ -700,15 +704,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                     }
                                     else if (r1) {
-                                        total = new Object[arr1.length];
-                                        for (int i = 0; i < arr1.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = new Double(arr1[i].toString()) / new Double(res2.toString());
                                         }
                                         return total;
                                     }
                                     else if (r2) {
-                                        total = new Object[arr2.length];
-                                        for (int i = 0; i < arr2.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = new Double(res1.toString()) / new Double(arr2[i].toString()) ;
                                         }
                                         return total;
@@ -778,15 +782,15 @@ public class Aritmetica extends Operacion{
                                     return total;
                                     }
                                     else if (r1) {
-                                        total = new Object[arr1.length];
-                                        for (int i = 0; i < arr1.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = (int)arr1[i]/(int)res2;
                                         }
                                         return total;
                                     }
                                     else if (r2) {
-                                        total = new Object[arr2.length];
-                                        for (int i = 0; i < arr2.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = (int)res1/ (int)arr2[i];
                                         }
                                         return total;
@@ -862,15 +866,15 @@ public class Aritmetica extends Operacion{
                                         return total;
                                     }
                                     else if (r1) {
-                                        total = new Object[arr1.length];
-                                        for (int i = 0; i < arr1.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = Math.pow(new Double(arr1[i].toString()) , new Double(res2.toString()));
                                         }
                                         return total;
                                     }
                                     else if (r2) {
-                                        total = new Object[arr2.length];
-                                        for (int i = 0; i < arr2.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = Math.pow(new Double(res1.toString()),new Double(arr2[i].toString()));
                                         }
                                         return total;
@@ -934,15 +938,15 @@ public class Aritmetica extends Operacion{
                                         return total;
                                     }
                                     else if (r1) {
-                                        total = new Object[arr1.length];
-                                        for (int i = 0; i < arr1.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = Math.pow((int)arr1[i],(int)res2);
                                         }
                                         return total;
                                     }
                                     else if (r2) {
-                                        total = new Object[arr2.length];
-                                        for (int i = 0; i < arr2.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = Math.pow((int)res1,(int)arr2[i]);
                                         }
                                         return total;
@@ -1018,15 +1022,15 @@ public class Aritmetica extends Operacion{
                                         return total;
                                     }
                                     else if (r1) {
-                                        total = new Object[arr1.length];
-                                        for (int i = 0; i < arr1.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = new Double(arr1[i].toString()) % new Double(res2.toString());
                                         }
                                         return total;
                                     }
                                     else if (r2) {
-                                        total = new Object[arr2.length];
-                                        for (int i = 0; i < arr2.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = new Double(res1.toString()) % new Double(arr2[i].toString());
                                         }
                                         return total;
@@ -1084,15 +1088,15 @@ public class Aritmetica extends Operacion{
                                         return total;
                                     }
                                     else if (r1) {
-                                        total = new Object[arr1.length];
-                                        for (int i = 0; i < arr1.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = (int)arr1[i]%(int)res2;
                                         }
                                         return total;
                                     }
                                     else if (r2) {
-                                        total = new Object[arr2.length];
-                                        for (int i = 0; i < arr2.length; i++) {
+                                        total = new Object[x];
+                                        for (int i = 0; i < x; i++) {
                                             total[i] = (int)res1%(int)arr2[i];
                                         }
                                         return total;

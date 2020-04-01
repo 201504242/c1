@@ -8,6 +8,8 @@ package ast.instrucciones.funciones;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.nodoExp;
+import olc2.p1_201504242.JError;
+import olc2.p1_201504242.Ventana;
 
 /**
  *
@@ -35,6 +37,8 @@ import entorno.nodoExp;
         switch(e.getTipoAcceso()) // Modificar si es un vector lo que se tiene que asignar 
         {
             case m1:
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico", 0, 0,
+                                "Error no se puede asignar un vector a una casilla"));
                    System.err.println("Error no se puede asignar un vector a una casilla");
                    break;
             case m2:
@@ -98,8 +102,10 @@ import entorno.nodoExp;
     }
      catch(Exception error)
         {
+            Ventana.ggetVentana().listaError.add(new JError("Semantico", 0, 0,
+                                "Error en indices modificacion matriz "+error.getMessage()));
             System.err.println("Error en indices modificacion matriz");
-            System.err.println(error.getMessage());
+            //System.err.println(error.getMessage());
         }
     }
     

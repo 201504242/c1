@@ -10,6 +10,8 @@ import ast.instrucciones.Break;
 import ast.instrucciones.Continue;
 import ast.instrucciones.Funcion;
 import entorno.Entorno;
+import entorno.Simbolo;
+import entorno.Tipo;
 import java.util.LinkedList;
 import olc2.p1_201504242.JError;
 import olc2.p1_201504242.Ventana;
@@ -24,6 +26,7 @@ public class AST {
 
     public AST(LinkedList<NodoAST> instrucciones) {
         this.instrucciones = instrucciones;
+        llenarTablaFunciones();                
     }
 
     public Entorno getGlobal() {
@@ -38,8 +41,8 @@ public class AST {
             {
                 Funcion instacia = (Funcion)nodo;
                 if (Global.existeFuncion(instacia.getIdentificador())) {
-                    System.err.println("La funcion: "+instacia.getIdentificador()+" ya existe"+
-                            " Parametros: "+instacia.getParametrosFormales().size());
+                    //System.err.println("La funcion: "+instacia.getIdentificador()+" ya existe"+
+                      //      " Parametros: "+instacia.getParametrosFormales().size());
                     Ventana.ggetVentana().listaError.add(new JError("Semantico", instacia.linea(), instacia.columna(),
                 "La funcion: "+instacia.getIdentificador()+" ya existe"+
                             " Parametros: "+instacia.getParametrosFormales().size())); 
@@ -54,7 +57,7 @@ public class AST {
             if (nodo instanceof Instruccion && !(nodo instanceof Funcion)) {
                 Instruccion ins = (Instruccion)nodo;
                 Object result = ins.ejecutar(Global);
-                if (ins instanceof Break || result instanceof Break)
+                if (ins instanceof Break )
                 {
                     Ventana.ggetVentana().listaError.add(new JError("Semantico", ((Break)ins).linea(), ((Break)ins).columna(),
                 "BREAK en lugar inadecuado."));
@@ -101,6 +104,28 @@ public class AST {
         
         return builder.toString();
         //System.out.println(builder.toString());
+    }
+
+    private void llenarTablaFunciones() {
+        
+        Global.agregarFuncion("print_1",crearFun(Tipo.Tipos.VOID,"print_1"));
+        Global.agregarFuncion("typeof_1",crearFun(Tipo.Tipos.STRING,"typeof_1"));
+        Global.agregarFuncion("length_1",crearFun(Tipo.Tipos.INT,"length_1"));
+        Global.agregarFuncion("nCol_1",crearFun(Tipo.Tipos.INT,"nCol_1"));
+        Global.agregarFuncion("nRow_1",crearFun(Tipo.Tipos.INT,"nRow_1"));
+        Global.agregarFuncion("StringLength_1",crearFun(Tipo.Tipos.INT,"StringLength_1"));
+        Global.agregarFuncion("remove_2",crearFun(Tipo.Tipos.STRING,"remove_2"));
+        Global.agregarFuncion("toLowerCase_1",crearFun(Tipo.Tipos.STRING,"toLowerCase_1"));
+        Global.agregarFuncion("toUpperCase_1",crearFun(Tipo.Tipos.STRING,"toUpperrCase_1"));
+        Global.agregarFuncion("trunk_1",crearFun(Tipo.Tipos.INT,"trunk_1"));
+        Global.agregarFuncion("round_1",crearFun(Tipo.Tipos.INT,"round_1"));
+    }
+
+    private Simbolo crearFun(Tipo.Tipos tipos, String cad) {
+        Funcion f = null;
+        f= new Funcion(cad, Simbolo.Rol.FUNCION, new LinkedList(), null, 0, 0);
+        f.setTipo(new Tipo(tipos));
+        return f;
     }
     
 }

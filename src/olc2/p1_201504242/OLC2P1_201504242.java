@@ -18,8 +18,7 @@ public class OLC2P1_201504242 {
      */
     public static void main(String[] args) {
         // TODO code application logic here+
-
-
+ 
         ven = new Ventana();
         ven.setVisible(true);
         

@@ -676,7 +676,7 @@ class CUP$Sintactico$actions {
             {
               Object RESULT =null;
 		
-        System.out.println("**************** Se creo arbol - TERMINO GRAMATICA*********************");
+        System.out.println("**************** TERMINO cup GRAMATICA*********************");
     
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("S",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1173,8 +1173,11 @@ class CUP$Sintactico$actions {
           case 33: // instruccion ::= Tcontinue 
             {
               NodoAST RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		 
-            RESULT = new Continue();
+            RESULT = new Continue(aleft,aright);
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instruccion",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1238,8 +1241,11 @@ class CUP$Sintactico$actions {
           case 38: // instruccion ::= Tcontinue PTCOMA 
             {
               NodoAST RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
 		 
-            RESULT = new Continue();
+            RESULT = new Continue(aleft,aright);
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instruccion",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1370,7 +1376,8 @@ class CUP$Sintactico$actions {
 		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		LinkedList<NodoAST> b = (LinkedList<NodoAST>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		
-            RESULT = new If(b,a);
+            RESULT = new If(b,a,aleft);
+
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("SENTENCIA_IF",5, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1390,7 +1397,7 @@ class CUP$Sintactico$actions {
 		int cright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		LinkedList<NodoAST> c = (LinkedList<NodoAST>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		
-            RESULT = new If(b,a,c);
+            RESULT = new If(b,a,c,aleft);
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("SENTENCIA_IF",5, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1410,7 +1417,7 @@ class CUP$Sintactico$actions {
 		int cright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Instruccion c = (Instruccion)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		
-            RESULT = new If(b,a,c);
+            RESULT = new If(b,a,c,aleft);
         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("SENTENCIA_IF",5, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }

@@ -39,6 +39,7 @@ public class Identificador implements Expresion{
         this.linea = linea;
         this.col = col;
         this.isAssign = isAssign;
+        this.lista = null;
     }
 
     
@@ -85,13 +86,21 @@ public class Identificador implements Expresion{
                     else
                     {
                         // Es una matrix asignandose 
-                        if(sim.getRol() == Rol.MATRIZ || sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        if(sim.getRol() == Rol.MATRIZ)
                         {
                             try{
                                 if(lista.size()>0)
                                 {
                                     nodoExp nodoexpresion = lista.get(0);
-                                     
+                                    Expresion e1 = nodoexpresion.getExp1();
+                                    Expresion e2 = nodoexpresion.getExp2();
+                                    if (nodoexpresion.getTipoAcceso() == Acc.m1) {
+                                        if (e1 != null && e2 != null) {
+                                            nodoexpresion.setTipoAcceso(Simbolo.Acc.m1);
+                                        }else if(e1 != null && e2 == null){
+                                            nodoexpresion.setTipoAcceso(Simbolo.Acc.m2);
+                                        }
+                                    }
                                     return new ModificadorMatrix(nodoexpresion, (Object[][])sim.getValor(), ent , sim);
                                 }
                             }
@@ -155,12 +164,21 @@ public class Identificador implements Expresion{
                     else
                     {
                         // GET MATRIZ
-                        if(sim.getRol() == Rol.MATRIZ ||sim.getTipo().getTipoPrimitivo() == Tipo.Tipos.MATRIZ)
+                        if(sim.getRol() == Rol.MATRIZ)
                         {
                             try{
                                 if(lista.size()>0)
                                 {
                                     nodoExp nodoexpresion = lista.get(0);
+                                    Expresion e1 = nodoexpresion.getExp1();
+                                    Expresion e2 = nodoexpresion.getExp2();
+                                    if (nodoexpresion.getTipoAcceso() == Acc.m1) {
+                                        if (e1 != null && e2 != null) {
+                                            nodoexpresion.setTipoAcceso(Simbolo.Acc.m1);
+                                        }else if(e1 != null && e2 == null){
+                                            nodoexpresion.setTipoAcceso(Simbolo.Acc.m2);
+                                        }
+                                    }
                                     Object res =  FuncionMatrix.getValoresMatriz(nodoexpresion,(Object[][])sim.getValor(), ent);
                                     return res;
                                 }
@@ -238,7 +256,8 @@ public class Identificador implements Expresion{
         else
         {
             
-            Simbolo sim2 = new Simbolo(val, Rol.VECTOR);
+            //Simbolo sim2 = new Simbolo(val, Rol.VECTOR);
+            Simbolo sim2 = new Simbolo(val, Rol.VECTOR, "E1");
             ent.agregar(val, sim2);
             return sim2;
         }
@@ -390,9 +409,6 @@ public class Identificador implements Expresion{
             }
             else
             {
-//                System.err.println("Indentificador: "+val+" Indice fuera de rango "
-//                        + "Vector: 1 Acceso: "+numLista
-//                        + " lin: "+linea()+" Col: "+columna());  
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
                 "Indentificador: "+val+" Indice fuera de rango Vector: 1 Acceso: "+numLista)); 
                 return null;
@@ -422,9 +438,28 @@ public class Identificador implements Expresion{
                         aux.add(valor_vector[j]);
                     }
                 }
+                Tipo t = getTipo(ent);
                 for (int j = valor_vector.length; j < grande; j++) 
                 {
-                    aux.add(null);
+                    
+                    switch(t.getTipoPrimitivo()){
+                        case STRING:
+                            aux.add("NULL");
+                            continue;
+                        case INT:
+                            aux.add(0);
+                            continue;
+                        case DOUBLE:
+                            aux.add(0.0);
+                            continue;
+                        case BOOL:
+                            aux.add(false);
+                            continue;
+                        default:
+                            aux.add(null);
+                            continue;
+                    }
+                    
                 }
                 
             }

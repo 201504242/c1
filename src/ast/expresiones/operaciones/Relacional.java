@@ -55,13 +55,8 @@ public class Relacional extends Operacion{
     @Override
     public Object getValorImplicito(Entorno ent) {
         Object res1 = op1.getValorImplicito(ent);
-//        if (res1 instanceof Object[]) {
-//            res1 = ((Object[])res1)[0];
-//        }
         Object res2 = op2.getValorImplicito(ent);
-//        if (res2 instanceof Object[]) {
-//            res2 = ((Object[])res2)[0];
-//        }
+        
         Tipo t1 = op1.getTipo(ent);
         Tipo t2 = op2.getTipo(ent);
         Tipo tipoResultado = tipoDominante(t1, t2);
@@ -115,6 +110,11 @@ public class Relacional extends Operacion{
                     return null;
                 }
                 x = arr1.length > arr2.length ? arr1.length : arr2.length;
+            
+            }else if(rr1){
+                x = arr1.length;
+            }else if (rr2) {
+                x = arr2.length;
             }
         }
         
@@ -163,7 +163,7 @@ public class Relacional extends Operacion{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
                                 total = new Object[x];                            
-                                for (int i = 0; i < arr1.length; i++) {
+                                for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
                                         a= arr1[0].toString().compareTo(arr2[i].toString());
                                     }
@@ -178,16 +178,16 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= arr1[i].toString().compareTo(res2.toString());
                                     total[i] = a==0;
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= res1.toString().compareTo(arr2[i].toString());
                                     total[i] = a==0;
                                 }
@@ -236,7 +236,7 @@ public class Relacional extends Operacion{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
                                 total = new Object[x];                            
-                                for (int i = 0; i < arr1.length; i++) {
+                                for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
                                         a= arr1[0].toString().compareTo(arr2[i].toString());
                                     }
@@ -251,16 +251,16 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= arr1[i].toString().compareTo(res2.toString());
                                     total[i] = a!=0;
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= res1.toString().compareTo(arr2[i].toString());
                                     total[i] = a!=0;
                                 }
@@ -309,7 +309,7 @@ public class Relacional extends Operacion{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                         if (rr1 && rr2){
                             total = new Object[x];                            
-                            for (int i = 0; i < arr1.length; i++) {
+                            for (int i = 0; i < x; i++) {
                                 if (arr1.length == 1) {
                                     a= arr1[0].toString().compareTo(arr2[i].toString());
                                 }
@@ -324,16 +324,16 @@ public class Relacional extends Operacion{
                             return total;
                         }
                         else if (rr1) {
-                            total = new Object[arr1.length];
-                            for (int i = 0; i < arr1.length; i++) {
+                            total = new Object[x];
+                            for (int i = 0; i < x; i++) {
                                 a= arr1[i].toString().compareTo(res2.toString());
                                 total[i] = a>=0;
                             }
                             return total;
                         }
                         else if (rr2) {
-                            total = new Object[arr2.length];
-                            for (int i = 0; i < arr2.length; i++) {
+                            total = new Object[x];
+                            for (int i = 0; i < x; i++) {
                                 a= res1.toString().compareTo(arr2[i].toString());
                                 total[i] = a>=0;
                             }
@@ -382,7 +382,7 @@ public class Relacional extends Operacion{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
                                 total = new Object[x];                            
-                                for (int i = 0; i < arr1.length; i++) {
+                                for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
                                         a= arr1[0].toString().compareTo(arr2[i].toString());
                                     }
@@ -397,16 +397,16 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= arr1[i].toString().compareTo(res2.toString());
                                     total[i] = a<0;
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= res1.toString().compareTo(arr2[i].toString());
                                     total[i] = a<0;
                                 }
@@ -455,7 +455,7 @@ public class Relacional extends Operacion{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
                                 total = new Object[x];                            
-                                for (int i = 0; i < arr1.length; i++) {
+                                for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
                                         a= arr1[0].toString().compareTo(arr2[i].toString());
                                     }
@@ -470,16 +470,16 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= arr1[i].toString().compareTo(res2.toString());
                                     total[i] = a<=0;
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= res1.toString().compareTo(arr2[i].toString());
                                     total[i] = a<=0;
                                 }
@@ -528,7 +528,7 @@ public class Relacional extends Operacion{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
                                 total = new Object[x];                            
-                                for (int i = 0; i < arr1.length; i++) {
+                                for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
                                         a= arr1[0].toString().compareTo(arr2[i].toString());
                                     }
@@ -543,16 +543,16 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= arr1[i].toString().compareTo(res2.toString());
                                     total[i] = a>=0;
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     a= res1.toString().compareTo(arr2[i].toString());
                                     total[i] = a>=0;
                                 }
@@ -608,6 +608,8 @@ public class Relacional extends Operacion{
                         }else{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                                 if (rr1 && rr2){
+                                    arr1 = booltoInt(arr1);
+                                    arr2 = booltoInt(arr2);
                                     total = new Object[x];
                                     for (int i = 0; i < x; i++) {
                                         if (arr1.length == 1) {
@@ -623,15 +625,17 @@ public class Relacional extends Operacion{
                                     return total;
                                 }
                                 else if (rr1) {
-                                    total = new Object[arr1.length];
-                                    for (int i = 0; i < arr1.length; i++) {
+                                    arr1 = booltoInt(arr1);
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (boolean)(new Double(arr1[i].toString()) > new Double(res2.toString()));
                                     }
                                     return total;
                                 }
                                 else if (rr2) {
-                                    total = new Object[arr2.length];
-                                    for (int i = 0; i < arr2.length; i++) {
+                                    arr2 = booltoInt(arr2);
+                                    total = new Object[x];
+                                    for (int i = 0; i < x; i++) {
                                         total[i] = (boolean)(new Double(res1.toString()) > new Double(arr2[i].toString()));
                                     }
                                     return total;
@@ -674,6 +678,8 @@ public class Relacional extends Operacion{
                         }else{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
+                                arr1 = booltoInt(arr1);
+                                arr2 = booltoInt(arr2);
                                 total = new Object[x];
                                 for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
@@ -689,15 +695,17 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                arr1 = booltoInt(arr1);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(new Double(arr1[i].toString()) < new Double(res2.toString()));
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                arr2 = booltoInt(arr2);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(new Double(res1.toString()) < new Double(arr2[i].toString()));
                                 }
                                 return total;
@@ -740,6 +748,8 @@ public class Relacional extends Operacion{
                         }else{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
+                                arr1 = booltoInt(arr1);
+                                arr2 = booltoInt(arr2);
                                 total = new Object[x];
                                     for (int i = 0; i < x; i++) {
                                         if (arr1.length == 1) {
@@ -755,15 +765,17 @@ public class Relacional extends Operacion{
                                     return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                arr1 = booltoInt(arr1);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(new Double(arr1[i].toString()) >= new Double(res2.toString()));
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                arr2 = booltoInt(arr2);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(new Double(res1.toString()) >= new Double(arr2[i].toString()));
                                 }
                                 return total;
@@ -806,6 +818,8 @@ public class Relacional extends Operacion{
                         }else{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
+                                arr1 = booltoInt(arr1);
+                                arr2 = booltoInt(arr2);
                                 total = new Object[x];
                                     for (int i = 0; i < x; i++) {
                                         if (arr1.length == 1) {
@@ -821,15 +835,17 @@ public class Relacional extends Operacion{
                                     return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                arr1 = booltoInt(arr1);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(new Double(arr1[i].toString()) <= new Double(res2.toString()));
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                arr2 = booltoInt(arr2);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(new Double(res1.toString()) <= new Double(arr2[i].toString()));
                                 }
                                 return total;
@@ -873,6 +889,8 @@ public class Relacional extends Operacion{
                         }else{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
+                                arr1 = booltoInt(arr1);
+                                arr2 = booltoInt(arr2);
                                 total = new Object[x];
                                 for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
@@ -888,15 +906,17 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                arr1 = booltoInt(arr1);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(Objects.equals(new Double(arr1[i].toString()), new Double(res2.toString())));
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                arr2 = booltoInt(arr2);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(Objects.equals(new Double(res1.toString()),new Double(arr2[i].toString())));
                                 }
                                 return total;
@@ -939,31 +959,50 @@ public class Relacional extends Operacion{
                         }else{
                             // <editor-fold defaultstate="collapsed" desc="Vectores">
                             if (rr1 && rr2){
+                                arr1 = booltoInt(arr1);
+                                arr2 = booltoInt(arr2);
                                 total = new Object[x];
                                 for (int i = 0; i < x; i++) {
                                     if (arr1.length == 1) {
-                                        total[i] = (boolean)(Double.valueOf(arr1[0].toString()) !=  Double.valueOf(arr2[i].toString()));
+                                        double r1 = Double.valueOf(arr1[0].toString());
+                                        double r2 = Double.valueOf(arr2[i].toString());    
+                                        boolean res = r1 != r2;
+                                        total[i] = res;
                                     }
                                     else if (arr2.length == 1) {
-                                        total[i] = (boolean)(Double.valueOf(arr1[i].toString()) !=  Double.valueOf(arr2[0].toString()));
+                                        double r1 = Double.valueOf(arr1[i].toString());
+                                        double r2 = Double.valueOf(arr2[0].toString());    
+                                        boolean res = r1 != r2;
+                                        total[i] = res;
                                     }
                                     else{
-                                        total[i] = (boolean)(Double.valueOf(arr1[i].toString()) !=  Double.valueOf(arr2[i].toString()));
+                                        double r1 = Double.valueOf(arr1[i].toString());
+                                        double r2 = Double.valueOf(arr2[i].toString());    
+                                        boolean res = r1 != r2;
+                                        total[i] = res;
                                     }
                                 }
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
-                                    total[i] = (boolean)(Double.valueOf(arr1[i].toString()) !=  Double.valueOf(res2.toString()));
+                                arr1 = booltoInt(arr1);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {                                    
+                                    double r1 = Double.valueOf(arr1[i].toString());
+                                    double r2 = Double.valueOf(res2.toString());    
+                                    boolean res = r1 != r2;
+                                    total[i] = res;
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
-                                    total[i] = (boolean)(Double.valueOf(res1.toString()) !=  Double.valueOf(arr2[i].toString()));
+                                arr2 = booltoInt(arr2);
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
+                                    double r1 = Double.valueOf(res1.toString());
+                                    double r2 = Double.valueOf(arr2[i].toString());    
+                                    boolean res = r1 != r2;
+                                    total[i] = res;
                                 }
                                 return total;
                             }
@@ -1035,15 +1074,15 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(arr1[i]) ==  (boolean)(res2);
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(res1) ==  (boolean)(arr2[i]);
                                 }
                                 return total;
@@ -1101,15 +1140,15 @@ public class Relacional extends Operacion{
                                 return total;
                             }
                             else if (rr1) {
-                                total = new Object[arr1.length];
-                                for (int i = 0; i < arr1.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(arr1[i]) !=  (boolean)(res2);
                                 }
                                 return total;
                             }
                             else if (rr2) {
-                                total = new Object[arr2.length];
-                                for (int i = 0; i < arr2.length; i++) {
+                                total = new Object[x];
+                                for (int i = 0; i < x; i++) {
                                     total[i] = (boolean)(res1) !=  (boolean)(arr2[i]);
                                 }
                                 return total;
@@ -1125,7 +1164,7 @@ public class Relacional extends Operacion{
             }
             else{
                 Ventana.ggetVentana().listaError.add(new JError("Semantico", linea(), columna(),
-                        "Relacional: no se puede operar si no es numero: RELACIONAL" + res1 + " "+res2));
+                        "Relacional: no se puede operar si no es numero: RELACIONAL " + res1 + " "+res2));
                 return null;
             }
             
@@ -1148,6 +1187,22 @@ public class Relacional extends Operacion{
 
         cont = Integer.parseInt(op2.getNombre(builder, nodo, cont));
         return ""+cont;
+    }
+
+    private Object[] booltoInt(Object[] arr1) {
+        try {
+            Object [] t = new Object[arr1.length];
+            for (int i = 0; i < t.length; i++) {
+                if (arr1[i] instanceof Boolean) {
+                    t[i] = Boolean.compare((boolean) arr1[i], false); 
+                }else{
+                    t[i] = arr1[i];
+                }
+            }
+            return t;
+        } catch (Exception e) {
+           return  arr1;
+        }        
     }
     
 }

@@ -10,6 +10,7 @@ import ast.Instruccion;
 import ast.NodoAST;
 
 import entorno.Entorno;
+import entorno.Simbolo;
 import entorno.Tipo;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -44,7 +45,7 @@ public class Print implements Instruccion{
                 String cad = "";
                 for (int i = 0; i < s.size(); i++) {
                     if (s.get(i) instanceof Object[]) {
-                        cad = cad + Arrays.toString((Object[])s.get(i));
+                        cad = cad + Arrays.toString((Object[])s.get(i)) +"\n";
                     }
                     else{
                         cad = i ==0 ? ""+s.get(i) : cad + (","+s.get(i));
@@ -72,14 +73,20 @@ public class Print implements Instruccion{
                 
                // pp.agregarConsola(Arrays.toString(s));
                 Ventana.ggetVentana().agregarConsola(Arrays.toString(s));
-                //System.out.println(Arrays.toString(s));
+                System.out.println(Arrays.toString(s));
             }
            
             else if (o != null) {
                 //pp.agregarConsola(o.toString());
-                Ventana.ggetVentana().agregarConsola(o.toString());
-                
-             //  System.out.println(o.toString());
+                if (o instanceof Simbolo) {
+                    if (((Simbolo) o).getValor().toString().equals("E1") ) {
+                        Ventana.ggetVentana().listaError.add(new JError("Sintactico", linea(), columna(),"Dato: "+((Simbolo) o).getIdentificador()+" No Encontrada"));
+                    }
+                    
+                }else{
+                    Ventana.ggetVentana().agregarConsola(o.toString());
+                }
+               System.out.println(o.toString());
             }else{
                 Ventana.ggetVentana().agregarConsola("Null");
                 
