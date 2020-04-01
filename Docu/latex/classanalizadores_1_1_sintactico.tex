@@ -1,0 +1,227 @@
+\hypertarget{classanalizadores_1_1_sintactico}{}\section{analizadores.\+Sintactico Class Reference}
+\label{classanalizadores_1_1_sintactico}\index{analizadores.\+Sintactico@{analizadores.\+Sintactico}}
+Inheritance diagram for analizadores.\+Sintactico\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classanalizadores_1_1_sintactico}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries \$actions}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classanalizadores_1_1_sintactico_a671b368004366987a48baa73395922e9}\label{classanalizadores_1_1_sintactico_a671b368004366987a48baa73395922e9}} 
+final Class {\bfseries get\+Symbol\+Container} ()
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_sintactico_ab295e6867e9b03abb7a57ddafebbe17f}{Sintactico}} ()
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_sintactico_a63738da7ca20a8b766a502b495de2d8e}{Sintactico}} (java\+\_\+cup.\+runtime.\+Scanner s)
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_sintactico_a8c8242e3fad56503a7660fc6357e24be}{Sintactico}} (java\+\_\+cup.\+runtime.\+Scanner s, java\+\_\+cup.\+runtime.\+Symbol\+Factory sf)
+\item 
+short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_sintactico_af13ccb2e45c2aa9ee26199554287de22}{production\+\_\+table}} ()
+\item 
+short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_sintactico_a724ce0f5fa05d3b5d0f8e76ad5147291}{action\+\_\+table}} ()
+\item 
+short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_sintactico_ab7348bf43511bec56d16c3175978e430}{reduce\+\_\+table}} ()
+\item 
+java\+\_\+cup.\+runtime.\+Symbol \mbox{\hyperlink{classanalizadores_1_1_sintactico_a9ea61235703a2be2386a93bda9080615}{do\+\_\+action}} (int act\+\_\+num, java\+\_\+cup.\+runtime.\+lr\+\_\+parser parser, java.\+util.\+Stack stack, int top)  throws java.\+lang.\+Exception   
+\item 
+int \mbox{\hyperlink{classanalizadores_1_1_sintactico_ad915f32968af0be180255e9625f3e7d9}{start\+\_\+state}} ()
+\item 
+int \mbox{\hyperlink{classanalizadores_1_1_sintactico_aaef47009be0140b095a5f5a0a870cf7e}{start\+\_\+production}} ()
+\item 
+int \mbox{\hyperlink{classanalizadores_1_1_sintactico_a7a83735fb9a0ab07d70ada5f59a38be3}{E\+O\+F\+\_\+sym}} ()
+\item 
+int \mbox{\hyperlink{classanalizadores_1_1_sintactico_a37c5e2a2d218a76d6126a744e30808ac}{error\+\_\+sym}} ()
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_sintactico_a56ace143dc3b8419ad93e4f49e43bbf4}{syntax\+\_\+error}} (Symbol s)
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_sintactico_a46581bb7792311a4a08c08649fe185ce}{unrecovered\+\_\+syntax\+\_\+error}} (Symbol s)  throws java.\+lang.\+Exception
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classanalizadores_1_1_sintactico_ab89b63ffa29f7540b052d3b280410b1a}\label{classanalizadores_1_1_sintactico_ab89b63ffa29f7540b052d3b280410b1a}} 
+static \mbox{\hyperlink{classast_1_1_a_s_t}{A\+ST}} {\bfseries arbol}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_sintactico_a597096a94b0afea4458c5ed107e94fa4}{init\+\_\+actions}} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+C\+UP \$\mbox{\hyperlink{classanalizadores_1_1_sintactico}{Sintactico}} \$actions \mbox{\hyperlink{classanalizadores_1_1_sintactico_a7e14d36a24d6ed982b06e2b9ac181c4f}{action\+\_\+obj}}
+\end{DoxyCompactItemize}
+\subsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final short \mbox{\hyperlink{classanalizadores_1_1_sintactico_a52126500456048c148f0500de4ae22c2}{\+\_\+production\+\_\+table}} \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]}
+\item 
+static final short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_sintactico_aa0bda09b109ddbd0c36c756531879b0f}{\+\_\+action\+\_\+table}}
+\item 
+static final short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_sintactico_a96c2098df27363aea8d9d18a9c4fa469}{\+\_\+reduce\+\_\+table}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+C\+UP v0.\+11b 20160615 (G\+IT 4ac7450) generated parser. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_sintactico_ab295e6867e9b03abb7a57ddafebbe17f}\label{classanalizadores_1_1_sintactico_ab295e6867e9b03abb7a57ddafebbe17f}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!Sintactico@{Sintactico}}
+\index{Sintactico@{Sintactico}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{Sintactico()}{Sintactico()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily analizadores.\+Sintactico.\+Sintactico (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a63738da7ca20a8b766a502b495de2d8e}\label{classanalizadores_1_1_sintactico_a63738da7ca20a8b766a502b495de2d8e}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!Sintactico@{Sintactico}}
+\index{Sintactico@{Sintactico}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{Sintactico()}{Sintactico()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily analizadores.\+Sintactico.\+Sintactico (\begin{DoxyParamCaption}\item[{java\+\_\+cup.\+runtime.\+Scanner}]{s }\end{DoxyParamCaption})}
+
+Constructor which sets the default scanner. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a8c8242e3fad56503a7660fc6357e24be}\label{classanalizadores_1_1_sintactico_a8c8242e3fad56503a7660fc6357e24be}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!Sintactico@{Sintactico}}
+\index{Sintactico@{Sintactico}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{Sintactico()}{Sintactico()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily analizadores.\+Sintactico.\+Sintactico (\begin{DoxyParamCaption}\item[{java\+\_\+cup.\+runtime.\+Scanner}]{s,  }\item[{java\+\_\+cup.\+runtime.\+Symbol\+Factory}]{sf }\end{DoxyParamCaption})}
+
+Constructor which sets the default scanner. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_sintactico_a724ce0f5fa05d3b5d0f8e76ad5147291}\label{classanalizadores_1_1_sintactico_a724ce0f5fa05d3b5d0f8e76ad5147291}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!action\+\_\+table@{action\+\_\+table}}
+\index{action\+\_\+table@{action\+\_\+table}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{action\+\_\+table()}{action\_table()}}
+{\footnotesize\ttfamily short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} analizadores.\+Sintactico.\+action\+\_\+table (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Access to parse-\/action table. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a9ea61235703a2be2386a93bda9080615}\label{classanalizadores_1_1_sintactico_a9ea61235703a2be2386a93bda9080615}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!do\+\_\+action@{do\+\_\+action}}
+\index{do\+\_\+action@{do\+\_\+action}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{do\+\_\+action()}{do\_action()}}
+{\footnotesize\ttfamily java\+\_\+cup.\+runtime.\+Symbol analizadores.\+Sintactico.\+do\+\_\+action (\begin{DoxyParamCaption}\item[{int}]{act\+\_\+num,  }\item[{java\+\_\+cup.\+runtime.\+lr\+\_\+parser}]{parser,  }\item[{java.\+util.\+Stack}]{stack,  }\item[{int}]{top }\end{DoxyParamCaption}) throws java.\+lang.\+Exception}
+
+Invoke a user supplied parse action. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a7a83735fb9a0ab07d70ada5f59a38be3}\label{classanalizadores_1_1_sintactico_a7a83735fb9a0ab07d70ada5f59a38be3}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!E\+O\+F\+\_\+sym@{E\+O\+F\+\_\+sym}}
+\index{E\+O\+F\+\_\+sym@{E\+O\+F\+\_\+sym}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{E\+O\+F\+\_\+sym()}{EOF\_sym()}}
+{\footnotesize\ttfamily int analizadores.\+Sintactico.\+E\+O\+F\+\_\+sym (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+{\ttfamily E\+OF} Symbol index. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a37c5e2a2d218a76d6126a744e30808ac}\label{classanalizadores_1_1_sintactico_a37c5e2a2d218a76d6126a744e30808ac}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!error\+\_\+sym@{error\+\_\+sym}}
+\index{error\+\_\+sym@{error\+\_\+sym}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{error\+\_\+sym()}{error\_sym()}}
+{\footnotesize\ttfamily int analizadores.\+Sintactico.\+error\+\_\+sym (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+{\ttfamily error} Symbol index. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a597096a94b0afea4458c5ed107e94fa4}\label{classanalizadores_1_1_sintactico_a597096a94b0afea4458c5ed107e94fa4}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!init\+\_\+actions@{init\+\_\+actions}}
+\index{init\+\_\+actions@{init\+\_\+actions}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{init\+\_\+actions()}{init\_actions()}}
+{\footnotesize\ttfamily void analizadores.\+Sintactico.\+init\+\_\+actions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Action encapsulation object initializer. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_af13ccb2e45c2aa9ee26199554287de22}\label{classanalizadores_1_1_sintactico_af13ccb2e45c2aa9ee26199554287de22}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!production\+\_\+table@{production\+\_\+table}}
+\index{production\+\_\+table@{production\+\_\+table}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{production\+\_\+table()}{production\_table()}}
+{\footnotesize\ttfamily short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} analizadores.\+Sintactico.\+production\+\_\+table (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Access to production table. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_ab7348bf43511bec56d16c3175978e430}\label{classanalizadores_1_1_sintactico_ab7348bf43511bec56d16c3175978e430}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!reduce\+\_\+table@{reduce\+\_\+table}}
+\index{reduce\+\_\+table@{reduce\+\_\+table}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{reduce\+\_\+table()}{reduce\_table()}}
+{\footnotesize\ttfamily short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} analizadores.\+Sintactico.\+reduce\+\_\+table (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Access to {\ttfamily reduce\+\_\+goto} table. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_aaef47009be0140b095a5f5a0a870cf7e}\label{classanalizadores_1_1_sintactico_aaef47009be0140b095a5f5a0a870cf7e}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!start\+\_\+production@{start\+\_\+production}}
+\index{start\+\_\+production@{start\+\_\+production}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{start\+\_\+production()}{start\_production()}}
+{\footnotesize\ttfamily int analizadores.\+Sintactico.\+start\+\_\+production (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates start production. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_ad915f32968af0be180255e9625f3e7d9}\label{classanalizadores_1_1_sintactico_ad915f32968af0be180255e9625f3e7d9}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!start\+\_\+state@{start\+\_\+state}}
+\index{start\+\_\+state@{start\+\_\+state}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{start\+\_\+state()}{start\_state()}}
+{\footnotesize\ttfamily int analizadores.\+Sintactico.\+start\+\_\+state (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates start state. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a56ace143dc3b8419ad93e4f49e43bbf4}\label{classanalizadores_1_1_sintactico_a56ace143dc3b8419ad93e4f49e43bbf4}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!syntax\+\_\+error@{syntax\+\_\+error}}
+\index{syntax\+\_\+error@{syntax\+\_\+error}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{syntax\+\_\+error()}{syntax\_error()}}
+{\footnotesize\ttfamily void analizadores.\+Sintactico.\+syntax\+\_\+error (\begin{DoxyParamCaption}\item[{Symbol}]{s }\end{DoxyParamCaption})}
+
+Método al que se llama automáticamente ante algún error sintactico. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a46581bb7792311a4a08c08649fe185ce}\label{classanalizadores_1_1_sintactico_a46581bb7792311a4a08c08649fe185ce}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!unrecovered\+\_\+syntax\+\_\+error@{unrecovered\+\_\+syntax\+\_\+error}}
+\index{unrecovered\+\_\+syntax\+\_\+error@{unrecovered\+\_\+syntax\+\_\+error}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{unrecovered\+\_\+syntax\+\_\+error()}{unrecovered\_syntax\_error()}}
+{\footnotesize\ttfamily void analizadores.\+Sintactico.\+unrecovered\+\_\+syntax\+\_\+error (\begin{DoxyParamCaption}\item[{Symbol}]{s }\end{DoxyParamCaption}) throws java.\+lang.\+Exception}
+
+Método al que se llama automáticamente ante algún error sintáctico en el que ya no es posible una recuperación de errores. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_sintactico_aa0bda09b109ddbd0c36c756531879b0f}\label{classanalizadores_1_1_sintactico_aa0bda09b109ddbd0c36c756531879b0f}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!\+\_\+action\+\_\+table@{\+\_\+action\+\_\+table}}
+\index{\+\_\+action\+\_\+table@{\+\_\+action\+\_\+table}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{\+\_\+action\+\_\+table}{\_action\_table}}
+{\footnotesize\ttfamily final short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} analizadores.\+Sintactico.\+\_\+action\+\_\+table\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+Parse-\/action table. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a52126500456048c148f0500de4ae22c2}\label{classanalizadores_1_1_sintactico_a52126500456048c148f0500de4ae22c2}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!\+\_\+production\+\_\+table@{\+\_\+production\+\_\+table}}
+\index{\+\_\+production\+\_\+table@{\+\_\+production\+\_\+table}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{\+\_\+production\+\_\+table}{\_production\_table}}
+{\footnotesize\ttfamily final short analizadores.\+Sintactico.\+\_\+production\+\_\+table\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= 
+    unpackFromStrings(\textcolor{keyword}{new} String[] \{
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)125\(\backslash\)000\(\backslash\)002\(\backslash\)002\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)003\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)004\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)004\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)006\(\backslash\)005"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)006\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)016\(\backslash\)011\(\backslash\)000\(\backslash\)002\(\backslash\)016\(\backslash\)010\(\backslash\)000"} +
+    \textcolor{stringliteral}{"\(\backslash\)002\(\backslash\)024\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)024\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)025\(\backslash\)003\(\backslash\)000\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)025\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)020\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)020\(\backslash\)010\(\backslash\)000\(\backslash\)002\(\backslash\)020"} +
+    \textcolor{stringliteral}{"\(\backslash\)006\(\backslash\)000\(\backslash\)002\(\backslash\)020\(\backslash\)006\(\backslash\)000\(\backslash\)002\(\backslash\)020\(\backslash\)011\(\backslash\)000\(\backslash\)002\(\backslash\)020\(\backslash\)007"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)022\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)022\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)023\(\backslash\)005\(\backslash\)000"} +
+    \textcolor{stringliteral}{"\(\backslash\)002\(\backslash\)023\(\backslash\)007\(\backslash\)000\(\backslash\)002\(\backslash\)023\(\backslash\)007\(\backslash\)000\(\backslash\)002\(\backslash\)023\(\backslash\)006\(\backslash\)000\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)023\(\backslash\)006\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005"} +
+    \textcolor{stringliteral}{"\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000"} +
+    \textcolor{stringliteral}{"\(\backslash\)002\(\backslash\)005\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)004\(\backslash\)000\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)005\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)005\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)005"} +
+    \textcolor{stringliteral}{"\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)021\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)021\(\backslash\)006\(\backslash\)000\(\backslash\)002\(\backslash\)007\(\backslash\)007"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)007\(\backslash\)011\(\backslash\)000\(\backslash\)002\(\backslash\)007\(\backslash\)011\(\backslash\)000\(\backslash\)002\(\backslash\)010\(\backslash\)007\(\backslash\)000"} +
+    \textcolor{stringliteral}{"\(\backslash\)002\(\backslash\)012\(\backslash\)011\(\backslash\)000\(\backslash\)002\(\backslash\)011\(\backslash\)010\(\backslash\)000\(\backslash\)002\(\backslash\)013\(\backslash\)006\(\backslash\)000\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)013\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)014\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)014\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)017"} +
+    \textcolor{stringliteral}{"\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)017\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000"} +
+    \textcolor{stringliteral}{"\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015"} +
+    \textcolor{stringliteral}{"\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)007\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000"} +
+    \textcolor{stringliteral}{"\(\backslash\)002\(\backslash\)015\(\backslash\)005\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)006\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003\(\backslash\)000\(\backslash\)002"} +
+    \textcolor{stringliteral}{"\(\backslash\)015\(\backslash\)004\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)015"} +
+    \textcolor{stringliteral}{"\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003"} +
+    \textcolor{stringliteral}{"\(\backslash\)000\(\backslash\)002\(\backslash\)015\(\backslash\)003"} \})
+\end{DoxyCode}
+Production table. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a96c2098df27363aea8d9d18a9c4fa469}\label{classanalizadores_1_1_sintactico_a96c2098df27363aea8d9d18a9c4fa469}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!\+\_\+reduce\+\_\+table@{\+\_\+reduce\+\_\+table}}
+\index{\+\_\+reduce\+\_\+table@{\+\_\+reduce\+\_\+table}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{\+\_\+reduce\+\_\+table}{\_reduce\_table}}
+{\footnotesize\ttfamily final short \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} analizadores.\+Sintactico.\+\_\+reduce\+\_\+table\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+{\ttfamily reduce\+\_\+goto} table. \mbox{\Hypertarget{classanalizadores_1_1_sintactico_a7e14d36a24d6ed982b06e2b9ac181c4f}\label{classanalizadores_1_1_sintactico_a7e14d36a24d6ed982b06e2b9ac181c4f}} 
+\index{analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}!action\+\_\+obj@{action\+\_\+obj}}
+\index{action\+\_\+obj@{action\+\_\+obj}!analizadores\+::\+Sintactico@{analizadores\+::\+Sintactico}}
+\subsubsection{\texorpdfstring{action\+\_\+obj}{action\_obj}}
+{\footnotesize\ttfamily C\+UP \$\mbox{\hyperlink{classanalizadores_1_1_sintactico}{Sintactico}} \$actions analizadores.\+Sintactico.\+action\+\_\+obj\hspace{0.3cm}{\ttfamily [protected]}}
+
+Instance of action encapsulation class. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/analizadores/Sintactico.\+java\end{DoxyCompactItemize}

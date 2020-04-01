@@ -1,0 +1,119 @@
+\hypertarget{classanalizadores_1_1_parse_exception}{}\section{analizadores.\+Parse\+Exception Class Reference}
+\label{classanalizadores_1_1_parse_exception}\index{analizadores.\+Parse\+Exception@{analizadores.\+Parse\+Exception}}
+Inheritance diagram for analizadores.\+Parse\+Exception\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classanalizadores_1_1_parse_exception}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_parse_exception_ac9289cbed3fc5347a25e1727070311e9}{Parse\+Exception}} (\mbox{\hyperlink{classanalizadores_1_1_token}{Token}} current\+Token\+Val, int\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} expected\+Token\+Sequences\+Val, String\mbox{[}$\,$\mbox{]} token\+Image\+Val)
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_parse_exception_ad2caa939d34e9a1a6f550e795468bac9}{Parse\+Exception}} ()
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_parse_exception_ad521e60f04650096c71062ec8bf0c0a4}{Parse\+Exception}} (String message)
+\item 
+String \mbox{\hyperlink{classanalizadores_1_1_parse_exception_a6b54780b5e7d3ca5f905cef4a218eff6}{get\+Message}} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_token}{Token}} \mbox{\hyperlink{classanalizadores_1_1_parse_exception_a5e7dae6899708a852cc7410e52d090f2}{current\+Token}}
+\item 
+int \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_parse_exception_aef57ab03c5f063e50c0eaa6b0e525946}{expected\+Token\+Sequences}}
+\item 
+String \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_parse_exception_a8d39ada57041e6c5b993d2b6fd66d6cc}{token\+Image}}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classanalizadores_1_1_parse_exception_ad9fe07877080d0a28daa4d139860d110}{add\+\_\+escapes}} (String str)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{classanalizadores_1_1_parse_exception_a24ccd87a4ef257c9e62418a4009bc5cd}{special\+Constructor}}
+\item 
+String \mbox{\hyperlink{classanalizadores_1_1_parse_exception_a6dceb2e8353ece2d7d2e2b86a8c7147d}{eol}} = System.\+get\+Property(\char`\"{}line.\+separator\char`\"{}, \char`\"{}\textbackslash{}n\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This exception is thrown when parse errors are encountered. You can explicitly create objects of this exception type by calling the method generate\+Parse\+Exception in the generated parser.
+
+You can modify this class to customize your error reporting mechanisms so long as you retain the public fields. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_parse_exception_ac9289cbed3fc5347a25e1727070311e9}\label{classanalizadores_1_1_parse_exception_ac9289cbed3fc5347a25e1727070311e9}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!Parse\+Exception@{Parse\+Exception}}
+\index{Parse\+Exception@{Parse\+Exception}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{Parse\+Exception()}{ParseException()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily analizadores.\+Parse\+Exception.\+Parse\+Exception (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classanalizadores_1_1_token}{Token}}}]{current\+Token\+Val,  }\item[{int}]{expected\+Token\+Sequences\+Val\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]},  }\item[{String \mbox{[}$\,$\mbox{]}}]{token\+Image\+Val }\end{DoxyParamCaption})}
+
+This constructor is used by the method \char`\"{}generate\+Parse\+Exception\char`\"{} in the generated parser. Calling this constructor generates a new object of this type with the fields \char`\"{}current\+Token\char`\"{}, \char`\"{}expected\+Token\+Sequences\char`\"{}, and \char`\"{}token\+Image\char`\"{} set. The boolean flag \char`\"{}special\+Constructor\char`\"{} is also set to true to indicate that this constructor was used to create this object. This constructor calls its super class with the empty string to force the \char`\"{}to\+String\char`\"{} method of parent class \char`\"{}\+Throwable\char`\"{} to print the error message in the form\+: \mbox{\hyperlink{classanalizadores_1_1_parse_exception}{Parse\+Exception}}\+: $<$result of=\char`\"{}\char`\"{} getmessage$>$=\char`\"{}\char`\"{}$>$ \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_ad2caa939d34e9a1a6f550e795468bac9}\label{classanalizadores_1_1_parse_exception_ad2caa939d34e9a1a6f550e795468bac9}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!Parse\+Exception@{Parse\+Exception}}
+\index{Parse\+Exception@{Parse\+Exception}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{Parse\+Exception()}{ParseException()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily analizadores.\+Parse\+Exception.\+Parse\+Exception (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+The following constructors are for use by you for whatever purpose you can think of. Constructing the exception in this manner makes the exception behave in the normal way -\/ i.\+e., as documented in the class \char`\"{}\+Throwable\char`\"{}. The fields \char`\"{}error\+Token\char`\"{}, \char`\"{}expected\+Token\+Sequences\char`\"{}, and \char`\"{}token\+Image\char`\"{} do not contain relevant information. The Java\+CC generated code does not use these constructors. \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_ad521e60f04650096c71062ec8bf0c0a4}\label{classanalizadores_1_1_parse_exception_ad521e60f04650096c71062ec8bf0c0a4}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!Parse\+Exception@{Parse\+Exception}}
+\index{Parse\+Exception@{Parse\+Exception}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{Parse\+Exception()}{ParseException()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily analizadores.\+Parse\+Exception.\+Parse\+Exception (\begin{DoxyParamCaption}\item[{String}]{message }\end{DoxyParamCaption})}
+
+Constructor with message. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_parse_exception_ad9fe07877080d0a28daa4d139860d110}\label{classanalizadores_1_1_parse_exception_ad9fe07877080d0a28daa4d139860d110}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!add\+\_\+escapes@{add\+\_\+escapes}}
+\index{add\+\_\+escapes@{add\+\_\+escapes}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{add\+\_\+escapes()}{add\_escapes()}}
+{\footnotesize\ttfamily String analizadores.\+Parse\+Exception.\+add\+\_\+escapes (\begin{DoxyParamCaption}\item[{String}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Used to convert raw characters to their escaped version when these raw version cannot be used as part of an A\+S\+C\+II string literal. \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_a6b54780b5e7d3ca5f905cef4a218eff6}\label{classanalizadores_1_1_parse_exception_a6b54780b5e7d3ca5f905cef4a218eff6}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!get\+Message@{get\+Message}}
+\index{get\+Message@{get\+Message}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{get\+Message()}{getMessage()}}
+{\footnotesize\ttfamily String analizadores.\+Parse\+Exception.\+get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This method has the standard behavior when this object has been created using the standard constructors. Otherwise, it uses \char`\"{}current\+Token\char`\"{} and \char`\"{}expected\+Token\+Sequences\char`\"{} to generate a parse error message and returns it. If this object has been created due to a parse error, and you do not catch it (it gets thrown from the parser), then this method is called during the printing of the final stack trace, and hence the correct error message gets displayed. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_parse_exception_a5e7dae6899708a852cc7410e52d090f2}\label{classanalizadores_1_1_parse_exception_a5e7dae6899708a852cc7410e52d090f2}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!current\+Token@{current\+Token}}
+\index{current\+Token@{current\+Token}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{current\+Token}{currentToken}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classanalizadores_1_1_token}{Token}} analizadores.\+Parse\+Exception.\+current\+Token}
+
+This is the last token that has been consumed successfully. If this object has been created due to a parse error, the token followng this token will (therefore) be the first error token. \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_a6dceb2e8353ece2d7d2e2b86a8c7147d}\label{classanalizadores_1_1_parse_exception_a6dceb2e8353ece2d7d2e2b86a8c7147d}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!eol@{eol}}
+\index{eol@{eol}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{eol}{eol}}
+{\footnotesize\ttfamily String analizadores.\+Parse\+Exception.\+eol = System.\+get\+Property(\char`\"{}line.\+separator\char`\"{}, \char`\"{}\textbackslash{}n\char`\"{})\hspace{0.3cm}{\ttfamily [protected]}}
+
+The end of line string for this machine. \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_aef57ab03c5f063e50c0eaa6b0e525946}\label{classanalizadores_1_1_parse_exception_aef57ab03c5f063e50c0eaa6b0e525946}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!expected\+Token\+Sequences@{expected\+Token\+Sequences}}
+\index{expected\+Token\+Sequences@{expected\+Token\+Sequences}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{expected\+Token\+Sequences}{expectedTokenSequences}}
+{\footnotesize\ttfamily int \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} analizadores.\+Parse\+Exception.\+expected\+Token\+Sequences}
+
+Each entry in this array is an array of integers. Each array of integers represents a sequence of tokens (by their ordinal values) that is expected at this point of the parse. \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_a24ccd87a4ef257c9e62418a4009bc5cd}\label{classanalizadores_1_1_parse_exception_a24ccd87a4ef257c9e62418a4009bc5cd}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!special\+Constructor@{special\+Constructor}}
+\index{special\+Constructor@{special\+Constructor}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{special\+Constructor}{specialConstructor}}
+{\footnotesize\ttfamily boolean analizadores.\+Parse\+Exception.\+special\+Constructor\hspace{0.3cm}{\ttfamily [protected]}}
+
+This variable determines which constructor was used to create this object and thereby affects the semantics of the \char`\"{}get\+Message\char`\"{} method (see below). \mbox{\Hypertarget{classanalizadores_1_1_parse_exception_a8d39ada57041e6c5b993d2b6fd66d6cc}\label{classanalizadores_1_1_parse_exception_a8d39ada57041e6c5b993d2b6fd66d6cc}} 
+\index{analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}!token\+Image@{token\+Image}}
+\index{token\+Image@{token\+Image}!analizadores\+::\+Parse\+Exception@{analizadores\+::\+Parse\+Exception}}
+\subsubsection{\texorpdfstring{token\+Image}{tokenImage}}
+{\footnotesize\ttfamily String \mbox{[}$\,$\mbox{]} analizadores.\+Parse\+Exception.\+token\+Image}
+
+This is a reference to the \char`\"{}token\+Image\char`\"{} array of the generated parser within which the parse error occurred. This array is defined in the generated ...Constants interface. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/analizadores/Parse\+Exception.\+java\end{DoxyCompactItemize}

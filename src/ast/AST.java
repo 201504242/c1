@@ -6,6 +6,7 @@
 package ast;
 
 import ast.expresiones.Llama;
+import ast.expresiones.Return;
 import ast.instrucciones.Break;
 import ast.instrucciones.Continue;
 import ast.instrucciones.Funcion;
@@ -65,12 +66,15 @@ public class AST {
                 if (ins instanceof Continue || result instanceof Continue) 
                 {
                     Ventana.ggetVentana().listaError.add(new JError("Semantico", ((Continue)ins).linea(), ((Continue)ins).columna(),
-                "Continue en lugar inadecuado."));
+                "CONTINUE en lugar inadecuado."));
                 }                
-            }
-            else if (nodo instanceof Llama) {
+            }else if (nodo instanceof Llama) {
                 Expresion expe = (Expresion)nodo;
-                expe.getValorImplicito(Global);
+                expe.getValorImplicito(Global);                
+            }else if (nodo instanceof Return ){
+                    Ventana.ggetVentana().listaError.add(new JError("Semantico", ((Return)nodo).linea(), ((Return)nodo).columna(),
+                "RETURN en lugar inadecuado."));
+                
             }
         }
         //Global.Mostrar();

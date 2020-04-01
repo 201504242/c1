@@ -43,6 +43,22 @@ public class Asignacion implements Instruccion{
         this.col = col;
         this.id = "Var";
     }
+
+    public Expresion getVariable() {
+        return variable;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public void setLinea(int linea) {
+        this.linea = linea;
+    }
+    
+    
+    
+    
     
     
     @Override

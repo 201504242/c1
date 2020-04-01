@@ -41,8 +41,10 @@ PARSER_END(Gramatica)
 //PALABRAS RESERVADAS
 TOKEN :{
     <MIENTRAS: "while">
-    | <FUNCION: "Funcion">
+    | <DO: "Do">
+    | <FUNCION: "function">
     | <RETORNO: "Return">
+    | <FOR: "for">
     | <BREAK: "Break">
     | <CONTINUE: "continue">
     | <SI: "if">
@@ -50,6 +52,7 @@ TOKEN :{
     | <TRUE: "true">
     | <FALSE: "false">
     | <NULL: "null">
+    | <IN: "in">
     | <DEFA: "default">
 
 }
@@ -81,8 +84,8 @@ TOKEN: {
     | <MAYORIGUAL: ">=">
     | <IGUALACION: "==">
     | <DIFERENCIACION: "!=">
-    | <AND: "&&">
-    | <OR: "||">
+    | <AND: "&">
+    | <OR: "|">
     | <NOT: "!" >
 }
 
@@ -90,8 +93,6 @@ TOKEN: {
 TOKEN : {
        <NUMERO: (["0"-"9"])+>
     | <DECIMAL: (["0"-"9"])+"."(["0"-"9"])+>
-    | <ENTERO: "Numero">
-    | <CADENA: "Cadena">
     | <ID: ["a"-"z","A"-"Z", "_","."] ( ["a"-"z","A"-"Z", "_","."] | ["0"-"9"] )* > {System.out.println(image);}
 }
 
@@ -149,14 +150,107 @@ NodoAST Instruccion() :
     LOOKAHEAD(2)nodo = Llamada() {return nodo;}
     |
     ins = Asignacion() {return ins;}
+    //|
+    //ins = Funcion() {return ins;}
     |
     ins = Si() {return ins;}
     |
     ins = Mientras() {return ins;}
     |
+    ins = DoMientras() {return ins;}
+    |
+    ins = For() {return ins;}
+    |
     ins=detener() {return ins;}
     |
     ins=Continue() {return ins;}
+    |
+    nodo=Retorno() {return nodo;}
+}
+
+Instruccion Funcion() :
+{ Token id; LinkedList<Simbolo> simbolos; LinkedList<NodoAST> insBloque;}
+{
+    id=<ID> <IGUAL> <FUNCION> <PARENI> simbolos=Lista_Parametros() <PAREND> insBloque=Bloque()
+    {return new Funcion(id.image+"_"+simbolos.size(),Rol.FUNCION, simbolos, insBloque, token.beginLine, token.beginColumn);}
+}
+
+LinkedList<Simbolo>  Lista_Parametros() :
+{LinkedList<Simbolo>lista = new LinkedList(); Simbolo p; Token id;}
+{
+    (
+        p=Parametro() {lista.add(p);}
+        (
+            <COMA> p=Parametro() {lista.add(p);}
+        )*
+    )?
+    {return lista;}
+}
+
+Simbolo Parametro():
+{Token id;Expresion e=null;}
+{
+    id=<ID>
+    (
+        <IGUAL> e=E()
+    )?
+    {return new Simbolo(id.image,Rol.VECTOR,e); }
+}
+/** Asignacion ->   id = expresion;
+                    |id DIM = EXP
+ */
+Instruccion Asignacion():
+{ Token id;Instruccion ins;}
+{
+    id=<ID> ins=Asignacion2()
+    {
+        if(ins instanceof Funcion){
+            Funcion f = (Funcion)ins;
+            f.setIdentificador(id.image.toLowerCase()+"_"+f.getParametrosFormales().size());
+        }else if(ins instanceof Asignacion){
+            Asignacion aa = (Asignacion)ins;
+            Identificador ident = (Identificador)aa.getVariable();
+            ident.setVal(id.image.toLowerCase()); 
+            ident.setCol(id.beginLine);
+            ident.setLinea(id.beginColumn);
+
+        }
+        return ins;
+    }
+}
+Instruccion Asignacion2():
+{Expresion e; LinkedList<nodoExp> ld=null;LinkedList<Simbolo> simbolos; LinkedList<NodoAST> insBloque;}
+{
+    LOOKAHEAD(2)
+    <IGUAL> <FUNCION> <PARENI> simbolos=Lista_Parametros() <PAREND> insBloque=Bloque()
+    {
+        //String nom = id.image+"_"+simbolos.size();
+        return new Funcion("",Rol.FUNCION, simbolos, insBloque, token.beginLine, token.beginColumn);
+    }
+    |
+    LOOKAHEAD(2)
+    <IGUAL> e=E() (<PCOMA>)? 
+    {
+        //Identificador ident = new Identificador(id.image.toLowerCase(),id.beginLine,id.beginColumn,true)
+        Identificador ident = new Identificador("",0,0,true);
+        return new Asignacion(ident,e,token.beginLine,token.beginColumn);
+    }
+    |
+    ld=Dimensiones() <IGUAL> e=E() (<PCOMA>)?
+    {
+        //Identificador ident = new Identificador(t.image.toLowerCase(),ld,true,t.beginLine,t.beginColumn);
+        Identificador ident = new Identificador("",ld,true,0,0);
+        return new Asignacion(ident,e,token.beginLine,token.beginColumn);
+    }
+    
+}
+
+Expresion Retorno() :
+{Expresion e;}
+{
+    LOOKAHEAD(2)<RETORNO> <PARENI> e=E() <PAREND> (<PCOMA>)? {return new Return(e, token.beginLine, token.beginColumn);}
+    | 
+    <RETORNO> (<PCOMA>)?{return new Return(token.beginLine, token.beginColumn);}
 }
 
 Instruccion detener() :
@@ -177,6 +271,24 @@ Instruccion Mientras() :
     {return new While(ins,e,token.beginLine, token.beginColumn);}
 }
 
+Instruccion DoMientras() :
+{Expresion e; LinkedList<NodoAST> ins;}
+{
+    <DO> ins=Bloque() <MIENTRAS> <PARENI> e=E() <PAREND> (<PCOMA>)?  
+    {return new DoWhile(ins,e,token.beginLine, token.beginColumn);}
+}
+
+Instruccion For() :
+{Expresion e; LinkedList<NodoAST> ins;Token idd;}
+{
+    <FOR> <PARENI> idd=<ID> <IN> e=E() <PAREND> ins=Bloque() 
+    {
+        Identificador id = new Identificador(idd.image.toLowerCase(),idd.beginLine,idd.beginColumn,false);
+        return new For(id,ins,e,token.beginLine, token.beginColumn);
+    }
+}
+
+
 Instruccion Si() :
 {Expresion e; Instruccion If; LinkedList<NodoAST> insIf, insElse = new LinkedList();}
 {
@@ -195,25 +307,6 @@ LinkedList<NodoAST> Bloque() :
 {
   <LLAVEI> (e=Instruccion() {insBloque.add(e);})* <LLAVED> {return insBloque;}
 }
-/** Asignacion ->   id = expresion;
-                    |id DIM = EXP
- */
-Instruccion Asignacion():
-{Expresion e; Token id; Token t; LinkedList<nodoExp> ld=null;}
-{
-    LOOKAHEAD(2)
-    id=<ID> <IGUAL> e=E() (<PCOMA>)? 
-    {
-        return new Asignacion(new Identificador(id.image.toLowerCase(),id.beginLine,id.beginColumn,true),e,token.beginLine,token.beginColumn);
-    }
-    |
-    t=<ID> ld=Dimensiones() <IGUAL> e=E() (<PCOMA>)?
-    {
-        Identificador ident = new Identificador(t.image.toLowerCase(),ld,true,t.beginLine,t.beginColumn);
-        return new Asignacion(ident,e,token.beginLine,token.beginColumn);
-    }
-}
-
 
 LinkedList<nodoExp> Dimensiones():
 {nodoExp exp; LinkedList<nodoExp> lista = new LinkedList();}

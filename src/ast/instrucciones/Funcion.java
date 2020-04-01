@@ -41,7 +41,12 @@ public class Funcion extends Simbolo implements Instruccion{
         this.parametrosFormales = new LinkedList();
     }
 
-    
+    @Override
+    public void setIdentificador(String identificador) {
+        super.setIdentificador(identificador); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
     
     @Override
     public Object ejecutar(Entorno ent) {

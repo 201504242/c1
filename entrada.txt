@@ -1,81 +1,93 @@
-#Archivo mio
-Vec1 = c(1,2,3,4) 
-AAA = matrix(vec1, 2, 1)
-print(AAA);
-
-typeof = function(valor){
-    print("NO "+varlor);
+if("hol" > "hola"){
+    print("s");
 }
-    B = matrix(c(1, 2, 3, 4), 5, 4)
-Print(B)
+else{
+    print("n");
+}
 
+prueba = true;
+print("uno: "+prueba)
+prueba = 10
+print("dos: "+prueba)
+if(prueba == 10){
+    prueba = 20
+    print("tres "+ prueba)
+}
+print("cuatro"+prueba)
+prueba = false;
+prueba = c(true,false,true)
+if(prueba == prueba){
+    print("bien");
+}
+
+if(5 == 5.0)
+{
+	print("si");
+}else {
+	print("no")
+}
+print(5>2 ? "sacaste 100" : "sacaste 0")
+
+if(3>4){
+	print("cagadales");
+}else{
+	print("codgio pelado");
+}
+
+if(3>4){
+	print("nel");
+}else if(4<2){
+	print("nel x2");
+}else if(9>4){
+	print("codigo pelado");
+}else{
+	print("nel x3");
+}
+
+If( 3 > 4) { 
+    print(1) 
+} else if (2 > 5){ 
+    print(2) 
+} else { 
+    print(3)
+}
+
+If(FALSE){ 
+    print("imp:"+true) 
+}
+ELSE{
+    print("imp:"+FALSE)
+}
+
+
+PRINT(1+1-1*1+1+1-(5^2));
+print(5>2 ? "sacaste 100" : "sacaste 0")
+d=2
+print(d)
+a=3;
+print(a);
+v = c(10,20,30,41,58);
+print(v);
+v[10] = 20;
+print(v);
+hola(5);
+hola();
+break
 print("------- prueba grafica-----");
 x = c(19, 26, 55)
 labels =  c("Residential", "Non-Residential", "Utility")
-#pie (x, labels, "ACA TITULO");          #1
-x = c(19, 26, 55,65,20,89)
-#pie (x, labels, "ACA TITULO2");         #2
-
-H = c("primaria","basicos","secundaria");
-names.arg = c(600,2500,1200,100);
-xlab = "Nivel Educativo"
-ylab = "Frecuencia"
-main = "Grafica de Educacion"
-barplot( H, xlab, ylab, main, names.arg)    #3
+pie (x, labels, "ACA TITULO");          
 
 xlab = "Meses"
 ylab = "Milimetros"
 v = C(40,20,80,110,120,40,80,125,32,160,55,21);
 main = c("Grafica Lineas")
-plot(v,"p",xlab,ylab,main);         #4
-plot(v,"i",xlab,ylab,main);         #5
-plot(v,c("o"),xlab,ylab,main);      #6
+#plot(v,"p",xlab,ylab,main);         #4
+#plot(v,"i",xlab,ylab,main);         #5
+#plot(v,c("o"),xlab,ylab,main);      #6
 
-plot(matrix(c(10,20,30),3,3),c("o"),xlab,ylab,main);    #7
-
-v = c(10,15,5,8,7,4,11,18,27,14,12);        
-main = "Grafica Histograma"
-xlab = "Datos"
-hist(v, main, xlab)                 #8
-
-main = "Grafica Dispersion"
-xlab = "x Lab"
-ylab = "y Lab"
-ylim = c(11,20);
-plot(matrix(c(10,20,30,40,50,60,70,10,56,9),5,5),main,xlab,ylab,ylim);    #9
-
-print("------- Pruebas typeof -----");
-li = 26665;
-print(li +" -> " + typeof(li));  #int
-li = list("hola",156);
-print(li +" -> " + typeof(li))  #list
-li = c(1222232,6,5,5);
-print(li +" -> " + typeof(li))  #int
-li = matrix(C("a","b"),2,2);
-print(li +" -> " + typeof(li))  #string
-print("------- Pruebas length -----");
-li = "asdfasdf";
-print(li +" -> " + length(li))  #8
-li = c(20,52,6,8);
-print(li +" -> " + length(li)); #4
-li = list("hola",156);
-print(li +" -> " + length(li))  #2
-li = matrix(c(10,2),2,2);
-print(li +" -> " + length(li))  #2
-print("------- Pruebas nMatrix -----");
-Mat1 = matrix(c(5,4,3), 3,5,FALSE)
-print(ncol(mat1)); #5
-print(nrow(mat1))  #3
-print("------- Pruebas Fstring -----");
-cant = StringLength(c("Cadena")) # cant toma el valor de 6
-print(cant);
-cant = tolowercase("CAdeNaA");
-print(cant);
-cant = toUpperCase(cant);
-print(cant);
-cant = remove(cant,"CNA");
-print(cant);
-
+#plot(matrix(c(10,20,30),3,3),c("o"),xlab,ylab,main);
+continue
 val = trunk (5.8) #val toma el valor de 5
 print(val);
 val = round(5.8) #val tome el valor de 6 
@@ -84,41 +96,6 @@ val = round(5.5) #val tome el valor de 6
 print(val);
 val = round(5.4) #val tome el valor de 5
 print(val);
-
-Vector = c(12,13,15,16,24,15,17,19,17,15)
-mean = mean(Vector)
-print(mean);               # 16.3
-mean = mean(Vector,14)
-print(mean);                #17.25
-median = Median(Vector);
-print(median);              #15.5
-median = Median(Vector,14)
-print(median);              #16.5
-moda = mode(Vector);        
-print(moda)                 #15
-moda = mode(Vector,14);        
-print(moda)                 #15
-
-
-
-print("------- Operacion MATRIX-----");
-mat1 = matrix(c(1,2,3,4), 3, 4)
-mat2 = matrix(c(4,3,2,1), 3, 4)
-matmat = mat1 + mat2;
-print(matmat);
-mat1 = mat1 + 5;
-print(mat1)
-mat1 = 5 + mat2;
-print(mat1);
-mat1 = -mat1
-print(mat1);
-print(mat1 == -7);
-
-m1= matrix(c(true,true,false), 3,3 )
-m2= matrix(c(false,false,true), 3,3 )
-m1 = m1 & m2
-print(m1); #todo false
-
 
 print("------- Pruebas Matrix -----");
 AdA = matrix(c(1, 2, 3, 4, 5), 5, 4)
@@ -136,15 +113,15 @@ mayor = matrix(c(1,2.5,3,4,5),2,2)
 print(mayor);
 ejemplo = matrix(c(1, "2", 3, 4), 3, 4)
 print("------- Accesos Matrix -----");
-prinT(ejemplo);
+accesos = ejemplo[5]
+print(accesos)      #1
 accesos = ejemplo[2,2]
 print(accesos)      #"1"
-accesos = ejemplo[2,]
-print(accesos)      #"2,1,4,2"
 accesos = ejemplo[,3]
 print(accesos)      #"3,4,1"
-accesos = ejemplo[5]
-print(accesos)      #5
+accesos = ejemplo[2,]
+print(accesos)      #"2,1,4,3"
+
 ejemplo = matrix(c(1, "2", 3, 4), 3, 4)
 print("------- Modificacion Matrix -----");
 prinT(ejemplo);
@@ -162,34 +139,21 @@ print(ejemplo);
 ejemplo[7] = 0
 print(ejemplo);
 
-
-
-
-print("------- Preuebas For-----");
-for(i in 3){ 
-    print(i) 
-}
-
-for(i in c(1,2,3,4,5,6)){ 
-    print(i) 
-}
-
 print("------- Modificacion listas -----");
 L1 = list("hola");
 
 L1[[4]] = "45"
-print(l1);                  #L1 -> [“hola”, NULL, NULL, “45”]
+print(l1);                  #L1 -> ["hola", NULL, NULL, "45"]
 L1[[3]] = "cambio"          
-print(l1);                  #L1 -> [“hola”, NULL, "cambio”, “45”]
+print(l1);                  #L1 -> ["hola", NULL, "cambio", "45"]
 L1 = c(L1, "nuevo")
-print(L1)                   #L1 -> [“hola”, NULL, "cambio”, “45”, “nuevo”]
+print(L1)                   #L1 -> ["hola", NULL, "cambio", "45", "nuevo"]
 L2 = list("hola");
 L2[4] = c("45", "adios")    #error porque l2[4] = list["hola"]
 print(L2[4])
 L2[4] = list(c("45", "adiós"))
 
-print(L2);                  #L2 -> [“hola”, NULL, NULL, (“45”, “adios”)]
-
+print(L2);                  #L2 -> ["hola", NULL, NULL, ("45", "adios")]
 
 
 print("------- Creando listas -----");
@@ -206,9 +170,9 @@ print(Lista1);          #[hola mundo]
 print(Lista2);          #[hola mundo 43, TRUE, 32.3]
 
 Lista3 = c(Lista1, Lista2)          
-print(Lista3);                              #Lista3 -> [“hola mundo”, “hola mundo”, 43, TRUE, 32.3]
+print(Lista3);                              #Lista3 -> ["hola mundo", "hola mundo", 43, TRUE, 32.3]
 Lista4 = c(List(1,2,3), 4, "hola mundo")
-print(lista4);                          # Contenido de Lista4 -> [1,2,3,4, “hola mundo”]
+print(lista4);                          # Contenido de Lista4 -> [1,2,3,4, "hola mundo"]
 
 print("------- 1) Acceso listas -----");
 
@@ -217,10 +181,11 @@ print(aa[2])                 # Te devuelve list[2]
 print(aa[[2]])               # Te devuelve 2
 
 aa =  list(1,list(2,3),4)
-print("aa: "+aa);           #[1,[2,3],4]
+print(aa);           #[1,[2,3],4]
 print(aa[2])               # Te devuelve list[list[2,3]]
 print(aa[[2]])             # Te devuelve list[2,3]
 print(aa[[2]][[1]])        # Te devuelve 2
+
 
 print("------- 2) Acceso listas -----");
 
@@ -238,101 +203,23 @@ print(Vector1)              # (5,6)
 Print(Lista3[[5]][2])       #6
 Print(Lista3[5][[1]][1])    #5
 
-print("------- Operaciones Vectores -----");
-A = c(1, 2, 3, 4, 5) 
-J = C(3);
-j = a + j;
-print(j);
-
-B = c(5, -2, 1, 2, 8)
-A = (5*3-2)+A
-print(a)
-
-A = A + A + A   
-print(a);
-A = c(1, 2, 3, 4, 5)
-print(a);
-A = A - 5
-print(a);
-A = A - A - A
-print(a);
-A = A * - 1;
-print (A)
-a = c(10);
-a = a + c(20)
-print(a)
-
-A = c(1, 2, 3, 4, 5)
-C= A < 3        #C -> [true, true, false, false, false]
-print(C);
-C= A < B        #C -> [true, false, false, false, true]
-print(C);
-D = c(true, false, false, false, false)
-print(D);
-B = D | true    #B -> [true, true, true, true, true]
-print(B);
-A = B & D
-print(A);       # A-> [true,false,false,false,true]
-
-print("------- Modificacion Vectores -----");
-vecp = c(1,2,3,4);
-prinT(vecp)     #[1,2,3,4]
-
-vecp[2]=10
-print(vecp)     #[1,10,3,4]
-s = vecp[23] + 15;
-prinT(s)        #NULL
-vecp[10] = 10;  
-print(vecp)     #[1,10,3,4,null,null,null,null,null,10]
-vecp[6]=6;
-print(vecp);    #[1,10,3,4,null,6,null,null,null,10]
-vecp[8]= c("8")
-print(vecp)     #todoString
-
-Vector1 = "hola"; # Se crea un nuevo vector de tamaño 1
-
-Vector1[1] = 1 # Contenido del vector Vector1 -> [1]
-print(Vector1);
-
-s = Vector1[4] + 10;
-prinT(s);
-
-Vector1 = "hola";
-print(vector1);
-
-Vector1[4] = "45" # Contenido del vector Vector1 -> [“hola”, NULL, NULL, “45”]
-print(Vector1)
-
-Vector1[3] = "cambio"
-print(Vector1);
-
-Vector1 = c(Vector1, "nuevo")
-print(Vector1);
-
-Vector1[3] = c(4,"cambio")
-print(vector1);
-
-Vector1[3] = c("otro valor")
-print(vector1)
-
-
 
 print("------ Prueba Vectores ------")\
 Perro = "Perro"
 Gato = "Gato" 
-Animales = c(Perro, Gato) # Contenido del vector animales -> [“Perro”, “Gato”] 
+Animales = c(Perro, Gato) # Contenido del vector animales -> [Perro", Gato"] 
 print(animales);
 # Acceso vector0
-Aux = Animales[1] # Recordar que el índice inicia en 1, contenido del vector Aux -> [“Perro”] 
+Aux = Animales[1] # Recordar que el índice inicia en 1, contenido del vector Aux -> [Perro"] 
 print(aux);
 # Creando otro vector 
-Animales = c(Aux, Animales) # Contenido del vector animales -> [“Perro”, “Perro”, “Gato”]
+Animales = c(Aux, Animales) # Contenido del vector animales -> [Perro", Perro", Gato"]
 print(animales);
 # Creando otro vector 
-Animales = c(Animales[3], Animales) # Contenido del vector animales -> [“Gato”, “Perro”, “Perro”, “Gato”]
+Animales = c(Animales[3], Animales) # Contenido del vector animales -> [Gato", Perro", Perro", Gato"]
 print(animales);
 
-Aux = Animales[5][1][1][1][1] # Recordar que el índice inicia e  n 1, contenido del vector Aux -> [“Perro”]
+Aux = Animales[5][1][1][1][1] # Recordar que el índice inicia e  n 1, contenido del vector Aux -> [Perro"]
 
 print(Aux)'
 
@@ -340,12 +227,12 @@ VectorN = NULL # Vector de tipo String
 prinT(VectorN);
 
 a = "a"
-PRINT("*****A "+a);
+PRINT(a);
 
 b = a[1][1];
-print("*****B "+b[1]);
+print(b[1]);
 c = b;
-print("*****C "+c)    
+print(c)    
 
 Vec1 = c(1,2,true, "HOLA", 4.5);
 Vec2 = c(1,2,true, 5, 4.5);
@@ -368,7 +255,20 @@ print(v3[3]);
 print(v3[4]);
 print(v3[5]);
 
-
+print("------ Prueba Cuadrado con While ------");
+contador = 1;
+cuadro = 5*2-2^2;
+while (contador <= cuadro){
+    contador2 = 1;
+    cad = "";
+    while (contador2 <= cuadro)
+    {
+        cad = cad + ("*");
+        contador2 = contador2 + 1;
+    } 
+    print(cad);
+    contador = contador + 1;
+}
 
 print("------ Prueba break ------");
 i = 0; 
@@ -394,8 +294,15 @@ while (i < 10) {
 }  
 print(cad);
 
-A = 3 > 5 ? "hola" : "adios" #comentaro
-print(A);
+print("------- Preuebas For-----");
+for(i in 3){ 
+    print(i) 
+}
+
+for(i in c(1,2,3,4,5,6)){ 
+    print(i) 
+}
+
 print("------ Conteo de digitos ------");
 numero = 455788819;
 digitos = 0;
@@ -404,100 +311,10 @@ do {
     digitos = digitos +1;
 }while ( numero > 0 );
 print("No digitos: "+digitos);
-
-print("------ Prueba return vacio ------");
-print(factorial2(default));
-
-factorial2 = (n="nada") => { 
-    print("entro pero no retorno "+n);
-    Return 
-}
-
-F1(default, default, default); # error porque param2 no tiene default
-F1(default, 34, 5); # imprime: 3, 34, 5
-F1(default, 34, default); # imprime: 3, 34, 4
-
-
-print("----- Seccion de recursi?n -----")
-print("Analizando factorial de un numero")
-if (479001600 == factorial(12)){
-    print("Done."+factorial(12))
-}else{
-    print("RIP.")
-}
-if (362880 == fcc(9)){
-    print("Done."+fcc(9))
-}else{
-    print("RIP.")
-}
-
-print("Analizando potencia")
-if (64 == potencia(2, 6)){
-    print("Done."+potencia(2, 6))
-}else{
-    print("RIP.")
-}
-
-print("Analizando inversion de un numero")
-if (321 == reverse(123, 3)){
-    print("Done."+reverse(123, 3))
-}else{
-    print("RIP.")
-}
-
-print("Analizando MCD")
-if (25 == mcd(25, 75)){
-    print("Done."+mcd(25, 75))
-}else{
-    print("RIP.")
-}
-
-print("Analizando Fibonacci")
-if (55 == fibonacci(10)){
-    print("Done."+fibonacci(10))
-}else{
-    print("RIP.")
-}
-
-print("Analizando Hanoi")
-Hanoi(3,1,2,3)
-
-print("Analizando Hofstadter")
-if (8 == hofstaderMasculino(15)){
-    print("Done."+hofstaderMasculino(15))
-}else{
-   print("RIP.")
-}
-
-print("Analizando Par")
-if (1 == paR(1500)){
-    print("Done.")
-}else{
-    print("RIP.")
-    }
-
-#print("Analizando Ackerman")
-#if (253 == ackermann(3, 5)){
-#    print("Done.")
-#}else{
-#    print("RIP.")
-#}
-#print(ackermann(3,7));
-
-print("----- Seccion de pruebas mias -----")
-if("hola" >= "hola"){
-    print("s");
-}
-else{
-    print("n");
-}
-
-if("hol" > "hola"){
-    print("s");
-}
-else{
-    print("n");
-}
+return (1+2)
+return (1+2);
+return
+return;
 
 a = 3;
 print(f1());
@@ -506,87 +323,14 @@ f1 = function(){
        print(a);
        return(89);
 }
-print(a)
-#salida
-#5
-#89
 
 aritmeticas_basicas()
 aritmeticas_avanzadas()
 operaciones_relacionales_basicas()
 operaciones_relacionales_avanzadas()
 operaciones_logicas_basicas()
-operaciones_logicas_avanzadas()
+operaciones_logicas_avanzadas();
 operaciones_conjuntas()
-
-prueba = true;
-print("uno"+prueba)
-prueba = 10
-print("dos"+prueba)
-if(prueba == 10){
-    prueba = 20
-    print("tres"+20)
-}
-print("cuatro"+prueba)
-prueba = false;
-prueba = c(true,false,true)
-if(prueba == prueba){
-    print("bien");
-}
-
-
-
-a = 10+2;
-print(a);
-
-b = c(65+5,"k",a);
-print(b);
-
-c = c(a,b);
-
-ver = 10 + a
-gt = 1+1
-print(ver);
-
-print(5/2);
-
-print(10*10*-1);
-
-print(-55-10);
-
-print(55+"k");
-
-print(5^5);
-
-If( 3 > 4) { 
-    print(1) 
-} else if (2 > 5){ 
-    print(2) 
-} else { 
-    print(3)
-}
-
-If(FALSE){ 
-    print("imp:"+true) 
-}
-ELSE{
-    print("imp:"+FALSE)
-}
-print("------ Prueba Cuadrado con While ------");
-contador = 1;
-cuadro = 4;
-while (contador <= cuadro)
-{
-    contador2 = 1;
-    cad = "";
-    while (contador2 <= cuadro)
-    {
-        cad = cad + ("*");
-        contador2 = contador2 + 1;
-    } 
-    print(cad);
-    contador = contador + 1;
-}
 
 aritmeticas_basicas = function(){
     print("1) Operaciones Aritmeticas Basicas")
@@ -706,6 +450,7 @@ aritmeticas_basicas = ()=>{
     print ("no")
 }
 
+
 factorial = function(n){
     if (n == 0) {
         return(1);
@@ -815,161 +560,82 @@ F1 = (param1=3, param2, param3 = 4) => {
     PRINT(param1+", "+param2+", "+param3); 
 }
 
-print("Archivo Fredy");
+print("------ Prueba return vacio ------");
+print(factorial2(default));
 
-if(5 > 5.0)
-{
-	print("si");
-}else {
-	print("no")
+factorial2 = (n="nada") => { 
+    print("entro pero no retorno "+n);
+    Return 
 }
-print(5>2 ? "sacaste 100" : "sacaste 0")
-if(3>4){
-	print("cagadales");
+
+F1(default, default, default); # error porque param2 no tiene default
+F1(default, 34, 5); # imprime: 3, 34, 5
+F1(default, 34, default); # imprime: 3, 34, 4
+
+
+print("----- Seccion de recursi?n -----")
+print("Analizando factorial de un numero")
+if (479001600 == factorial(12)){
+    print("Done."+factorial(12))
 }else{
-	print("codgio pelado");
+    print("RIP.")
 }
-
-if(3>4){
-	print("nel");
-}else if(4<2){
-	print("nel x2");
-}else if(9>4){
-	print("codigo pelado");
+if (362880 == fcc(9)){
+    print("Done."+fcc(9))
 }else{
-	print("nel x3");
-}
-a = 5;
-b=1;
-while(a<8){
-print("Iteracion: " + b);
-a = a +1;
-b = b + 1;	
+    print("RIP.")
 }
 
-quickSort =(arreglo, bajo,  alto) => {
-        if (bajo < alto) {
-            pi = particion(arreglo, bajo, alto);
-            quickSort(arreglo, bajo, pi - 1);
-            quickSort(arreglo, pi + 1, alto);
-        }
+print("Analizando potencia")
+if (64 == potencia(2, 6)){
+    print("Done."+potencia(2, 6))
+}else{
+    print("RIP.")
+}
+
+print("Analizando inversion de un numero")
+if (321 == reverse(123, 3)){
+    print("Done."+reverse(123, 3))
+}else{
+    print("RIP.")
+}
+
+print("Analizando MCD")
+if (25 == mcd(25, 75)){
+    print("Done."+mcd(25, 75))
+}else{
+    print("RIP.")
+}
+
+print("Analizando Fibonacci")
+if (55 == fibonacci(10)){
+    print("Done."+fibonacci(10))
+}else{
+    print("RIP.")
+}
+
+print("Analizando Hanoi")
+Hanoi(3,1,2,3)
+
+print("Analizando Hofstadter")
+if (8 == hofstaderMasculino(15)){
+    print("Done."+hofstaderMasculino(15))
+}else{
+   print("RIP.")
+}
+
+print("Analizando Par")
+if (1 == paR(1500)){
+    print("Done.")
+}else{
+    print("RIP.")
     }
 
-getVectorEstudiante = function(carnet, inicial, nombre, apellido, seccion, nota) {
-    return(c(carnet, inicial, nombre, apellido, seccion, nota));
-}
+#print("Analizando Ackerman")
+#if (253 == ackermann(3, 5)){
+#    print("Done.")
+#}else{
+#    print("RIP.")
+#}
+#print(ackermann(3,7));
 
-initList = function(est){
-    return(list(est)); 
-}
-
-addNode = function(list, est) {
-    list = c(list, list(est));
-    return(list)
-}
-
-printList = function(list){
-    counter = 0;
-    for(i in list){
-        if(counter == 0){
-            counter = counter + 1;
-        } else{
-            print(i)
-        }
-    }
-}
-
-listaGlobal = initList(getVectorEstudiante("201503611", "P", "Pavel", "Vasquez", "B-", 0));
-
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201610673", "Y","Yaiza", "Pineda", "B-", 100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201612272", "A","Andres", "Carvajal", "B+",100));
-
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201408486", "S","Sharolin", "Lacunza", "A",100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201612139", "A","Alejandra", "De Leon", "B-",97));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201603029", "L","Luis", "Aguilar", "C",100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201602420", "I","Ingrid", "Perez", "B+",100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201602744", "O","Omar", "Enriquez", "B+",100));
-
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201700314", "C","Carlos", "Estrada", "B+",100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201503712", "O","Oscar", "Cuellar", "C", 54));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201213177", "M","Marvin", "Calderon", "B-", 60));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201403767", "P","Pablo", "Ramirez", "B-",100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201504002", "I","Inti", "Samayoa", "B+",100));
-
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("200412765", "E","Enrique", "Archer", "A",100));
-listaGlobal = addNode(listaGlobal, getVectorEstudiante("201503953", "Z","Zergio", "Leal", "B-", -1));
-
-print("------------------------------------------------------------------")
-print("IMPRIMIENDO ESTA LISTA CON CIERTO MENSAJE");
-print("------------------------------------------------------------------")
-
-printList(listaGlobal);
-print("------------------------------------------------------------------")
-
-print("******************************************************************");
-print("LISTADO DE ESTUDIANTES DE LA SECCIÓN B-")
-print("******************************************************************");
-seccionBMenos = initList(getVectorEstudiante(1, 789012, 201503611, "B-", "Pavel Alexander Vasquez Flores", "alexanderpavelv32@gmail.com"));
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(1,  789012, 200310165, "B-", "José Abraham Navarro De León", "joseabrahamnavarro@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(2,  789012, 200313243, "B-", "Randy Mauricio Orozco Reyes", "mauricioor@hotmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(3,  789012, 200511819, "B-", "Pablo Gerardo García Perusina", "200511819@ingenieria.usac.edu.gt"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(4,  789012, 200915147, "B-", "Rene Adrian Ramos Guzman", "xdrixnrxmos@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(5,  789012, 201010425, "B-", "Andrés Ricardo Ismael Guzmán", "a.ricardoguzman@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(6,  789012, 201020331, "B-", "Cristian Alexander Azurdia Ajú", "1983964490101@ingenieria.usac.edu.gt"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(7,  789012, 201020831, "B-", "Marco Antonio Fidencio Chávez Fuentes", "catalantt@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(8,  789012, 201020917, "B-", "Luis Carlos Mendez Rodas", "luiiscmr@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(9,  789012, 201021245, "B-", "Erin Leonel Flores", "erikfl.01@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(10, 789012, 201113875, "B-", "Peter Alexander Samuels", "Franco	peterinho14@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(11, 789012, 201114573, "B-", "Diego Javier Tejeda Wannam", "diegotejeda93@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(12, 789012, 201212945, "B-", "Elmer Edgardo Alay Yupe", "alayelmer1993@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(13, 789012, 201213059, "B-", "Kevin Ariel Cruz Ortiz", "kevincoma555@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(14, 789012, 201213123, "B-", "Kevin Madriel Juarez Cetino", "kevinm.3316@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(15, 789012, 201213177, "B-", "Marvin José Calderón García", "marvin93.0@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(16, 789012, 201313713, "B-", "Daniel Alejandro Herrera Hernández", "usac.daniel@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(17, 789012, 201313889, "B-", "Hilbert Josué Perucho Ramírez", "hilbert.perucho@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(18, 789012, 201313997, "B-", "Luis Noe Martinez Rivera", "luis56009@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(19, 789012, 201314059, "B-", "Salvador de Jesus López Bautista", "lobje17@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(20, 789012, 201314177, "B-", "Roberto Eduardo Caseros Reynoso", "robert.caseros@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(21, 789012, 201314241, "B-", "Andrea Lissette Flores Aguilar", "andreaflores2501@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(22, 789012, 201314571, "B-", "Wilson Yuviny Guerra Díaz", "yuvinygd@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(23, 789012, 201314697, "B-", "Katherine Mishelle Serrano del Cid", "michikatrins@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(24, 789012, 201325559, "B-", "Luis Alfonso Mencos Salazar", "lams0211@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(25, 789012, 201325657, "B-", "Selvin Estuardo Icu Son", "estuardo.icu@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(26, 789012, 201403767, "B-", "Pablo David Ramirez Fernandez", "pabloramirez.11294@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(27, 789012, 201403793, "B-", "Kevin Nicolas Garcia Martinez", "kg49954@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(28, 789012, 201403819, "B-", "Yoselin Annelice Lemus López", "annelice119@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(29, 789012, 201403841, "B-", "Huriel Uvaldo Gómez Gómez", "hurieluv2g2d93@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(30, 789012, 201403997, "B-", "Gary Stephen Giron Molina", "gsteph393@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(31, 789012, 201404215, "B-", "Jorge Luis Salazar Peralta", "jorsala01@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(32, 789012, 201404387, "B-", "Kevin Eduardo Estrada Martínez", "pex089@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(33, 789012, 201404423, "B-", "Jairo Pablo Hernandez Guzman", "Jairophg.lalala2014@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(34, 789012, 201408489, "B-", "Paul Steve Contreras Herrera", "stevcont96@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(35, 789012, 201408549, "B-", "Elba María Alvarez Domínguez", "elba1995@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(36, 789012, 201408603, "B-", "Berny Andree Cardona Ramos", "andreecr96@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(37, 789012, 201442819, "B-", "Jerson Eduardo Villatoro Nova", "jerduar.usac@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(38, 789012, 201503577, "B-", "Henry Francisco León Hernández", "henriscoh1995@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(39, 789012, 201503595, "B-", "Claudia Paola Casiano Sipac", "p.casiano33@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(40, 789012, 201503793, "B-", "Diana Maribel Jimenez Alonzo", "dianajimalon@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(41, 789012, 201503893, "B-", "Brandon Javier Soto Castañeda", "sotobrandon198@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(42, 789012, 201503911, "B-", "Juan Pablo Osuna De Leon", "juanpabloosuna1997@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(43, 789012, 201503925, "B-", "Sergio Geovany Guoz Tubac", "sergioguoz1@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(44, 789012, 201503935, "B-", "Douglas Daniel Aguilar Cuque", "ddaguilar017@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(45, 789012, 201503953, "B-", "Sergio Geovany Leal Cardona", "sgleal97@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(46, 789012, 201504231, "B-", "Jose Carlos Bautista Mazariegos", "jcbautista95@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(47, 789012, 201504427, "B-", "Carlos Eduardo Cordón Hernández", "carlos.edu.cordon@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(48, 789012, 201504475, "B-", "Luis Felipe González Orellana", "luisfe.go.03@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(49, 789012, 201602421, "B-", "Diego Alejandro Vásquez", "totodiego1897@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(50, 789012, 201602517, "B-", "Marvin Saúl Guzmán García", "marvin_saul@hotmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(51, 789012, 201602909, "B-", "Edward Danilo Gómez Hernández", "edgomher95@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(52, 789012, 201612113, "B-", "Raul Alexander Xiloj Lopez", "raulxiloj98@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(53, 789012, 201612139, "B-", "Jeralmy Alejandra De León Samayoa", "jeralmy0598@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(54, 789012, 201612383, "B-", "Javier Antonio Alvarez Gonzalez", "javier3448.ja@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(55, 789012, 201612419, "B-", "Edvin Miguel Castro Ajiatas", "emca9610@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(56, 789012, 201700327, "B-", "Marco Antonio López Grajeda", "juniorlograjeda@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(57, 789012, 201700345, "B-", "Luis Gerardo Chay Grijalva", "gerardo15.chay97@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(58, 789012, 201700465, "B-", "Max Leonel Florian Curtidor", "maxgt734@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(59, 789012, 201700473, "B-", "Javier Alejandro Golon Lopez", "javiagl98@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(60, 789012, 201700727, "B-", "Alberto Kanec Ixchop Ordoñez", "albertokanecixchop@gmail.com"))
-seccionBMenos = addNode(seccionBMenos, getVectorEstudiante(61, 789012, 201700801, "B-", "Erwin Alejandro Garcia Barrera", "alejandro76.gb@gmail.com"))
-printList(seccionBMenos)
-print("******************************************************************");

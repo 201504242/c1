@@ -14,89 +14,91 @@ public interface GramaticaConstants {
   /** RegularExpression Id. */
   int MIENTRAS = 1;
   /** RegularExpression Id. */
-  int FUNCION = 2;
+  int DO = 2;
   /** RegularExpression Id. */
-  int RETORNO = 3;
+  int FUNCION = 3;
   /** RegularExpression Id. */
-  int BREAK = 4;
+  int RETORNO = 4;
   /** RegularExpression Id. */
-  int CONTINUE = 5;
+  int FOR = 5;
   /** RegularExpression Id. */
-  int SI = 6;
+  int BREAK = 6;
   /** RegularExpression Id. */
-  int SINO = 7;
+  int CONTINUE = 7;
   /** RegularExpression Id. */
-  int TRUE = 8;
+  int SI = 8;
   /** RegularExpression Id. */
-  int FALSE = 9;
+  int SINO = 9;
   /** RegularExpression Id. */
-  int NULL = 10;
+  int TRUE = 10;
   /** RegularExpression Id. */
-  int DEFA = 11;
+  int FALSE = 11;
   /** RegularExpression Id. */
-  int PCOMA = 12;
+  int NULL = 12;
   /** RegularExpression Id. */
-  int COMA = 13;
+  int IN = 13;
   /** RegularExpression Id. */
-  int PARENI = 14;
+  int DEFA = 14;
   /** RegularExpression Id. */
-  int PAREND = 15;
+  int PCOMA = 15;
   /** RegularExpression Id. */
-  int CORI = 16;
+  int COMA = 16;
   /** RegularExpression Id. */
-  int CORD = 17;
+  int PARENI = 17;
   /** RegularExpression Id. */
-  int LLAVEI = 18;
+  int PAREND = 18;
   /** RegularExpression Id. */
-  int LLAVED = 19;
+  int CORI = 19;
   /** RegularExpression Id. */
-  int TERNARIO = 20;
+  int CORD = 20;
   /** RegularExpression Id. */
-  int DOSPUNTOS = 21;
+  int LLAVEI = 21;
   /** RegularExpression Id. */
-  int MAS = 22;
+  int LLAVED = 22;
   /** RegularExpression Id. */
-  int MENOS = 23;
+  int TERNARIO = 23;
   /** RegularExpression Id. */
-  int POR = 24;
+  int DOSPUNTOS = 24;
   /** RegularExpression Id. */
-  int MODULO = 25;
+  int MAS = 25;
   /** RegularExpression Id. */
-  int DIV = 26;
+  int MENOS = 26;
   /** RegularExpression Id. */
-  int POTENCIA = 27;
+  int POR = 27;
   /** RegularExpression Id. */
-  int IGUAL = 28;
+  int MODULO = 28;
   /** RegularExpression Id. */
-  int MENORQUE = 29;
+  int DIV = 29;
   /** RegularExpression Id. */
-  int MAYORQUE = 30;
+  int POTENCIA = 30;
   /** RegularExpression Id. */
-  int MENORIGUAL = 31;
+  int IGUAL = 31;
   /** RegularExpression Id. */
-  int MAYORIGUAL = 32;
+  int MENORQUE = 32;
   /** RegularExpression Id. */
-  int IGUALACION = 33;
+  int MAYORQUE = 33;
   /** RegularExpression Id. */
-  int DIFERENCIACION = 34;
+  int MENORIGUAL = 34;
   /** RegularExpression Id. */
-  int AND = 35;
+  int MAYORIGUAL = 35;
   /** RegularExpression Id. */
-  int OR = 36;
+  int IGUALACION = 36;
   /** RegularExpression Id. */
-  int NOT = 37;
+  int DIFERENCIACION = 37;
   /** RegularExpression Id. */
-  int NUMERO = 38;
+  int AND = 38;
   /** RegularExpression Id. */
-  int DECIMAL = 39;
+  int OR = 39;
   /** RegularExpression Id. */
-  int ENTERO = 40;
+  int NOT = 40;
   /** RegularExpression Id. */
-  int CADENA = 41;
+  int NUMERO = 41;
   /** RegularExpression Id. */
-  int ID = 42;
+  int DECIMAL = 42;
   /** RegularExpression Id. */
-  int STRING = 52;
+  int ID = 43;
+  /** RegularExpression Id. */
+  int STRING = 53;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -107,8 +109,10 @@ public interface GramaticaConstants {
   String[] tokenImage = {
     "<EOF>",
     "\"while\"",
-    "\"Funcion\"",
+    "\"Do\"",
+    "\"function\"",
     "\"Return\"",
+    "\"for\"",
     "\"Break\"",
     "\"continue\"",
     "\"if\"",
@@ -116,6 +120,7 @@ public interface GramaticaConstants {
     "\"true\"",
     "\"false\"",
     "\"null\"",
+    "\"in\"",
     "\"default\"",
     "\";\"",
     "\",\"",
@@ -140,23 +145,21 @@ public interface GramaticaConstants {
     "\">=\"",
     "\"==\"",
     "\"!=\"",
-    "\"&&\"",
-    "\"||\"",
+    "\"&\"",
+    "\"|\"",
     "\"!\"",
     "<NUMERO>",
     "<DECIMAL>",
-    "\"Numero\"",
-    "\"Cadena\"",
     "<ID>",
     "\"\\\"\"",
     "\" \"",
     "\"\\t\"",
     "\"\\r\"",
     "\"\\n\"",
-    "<token of kind 48>",
     "<token of kind 49>",
     "<token of kind 50>",
     "<token of kind 51>",
+    "<token of kind 52>",
     "\"\\\"\"",
   };
 

@@ -8,13 +8,12 @@ import analizadores.Gramatica;
 import analizadores.ParseException;
 import analizadores.TokenMgrError;
 import ast.AST;
-import ast.Expresion;
-import ast.Instruccion;
 import ast.NodoAST;
 import ast.instrucciones.funciones.ListVar;
 import entorno.Entorno;
 import entorno.Simbolo;
 import entorno.Tipo;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,22 +24,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-//import olc2.p1_201504242.OLC2P1_201504242;
-
-
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  *
@@ -54,7 +49,9 @@ public class Ventana extends javax.swing.JFrame {
     String cad;
     public LinkedList<JError> listaError = new LinkedList();
     Entorno Global = null;
-
+    int pes = 0;
+    String path = null;
+    
     /**
      * Creates new form Ventana
      */
@@ -66,7 +63,10 @@ public class Ventana extends javax.swing.JFrame {
     public static Ventana ggetVentana() {
         return olc2.p1_201504242.OLC2P1_201504242.ven;
     }
-
+    
+    public void agregarLabel(String cad){
+        Jlabel.setText(Consola.getText()+""+ cad + "\n");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,13 +76,13 @@ public class Ventana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Entrada = new javax.swing.JTextArea();
         AnalizarBTN = new javax.swing.JButton();
         analizarJavacc = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Consola = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        Jlabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MenuAbrir = new javax.swing.JMenuItem();
@@ -94,12 +94,11 @@ public class Ventana extends javax.swing.JFrame {
         MenuTS = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         MenuAST = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        NuevaPesta = new javax.swing.JMenuItem();
+        CerrarPesta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        Entrada.setColumns(20);
-        Entrada.setRows(5);
-        jScrollPane1.setViewportView(Entrada);
 
         AnalizarBTN.setText("Cup y Flex");
         AnalizarBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -125,18 +124,35 @@ public class Ventana extends javax.swing.JFrame {
 
         jLabel1.setText(".");
 
+        Jlabel.setText("status");
+
         jMenu1.setText("Archivo");
 
         MenuAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         MenuAbrir.setText("Abrir");
+        MenuAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuAbrirActionPerformed(evt);
+            }
+        });
         jMenu1.add(MenuAbrir);
 
         MenuGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         MenuGuardar.setText("Guardar");
+        MenuGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuGuardarActionPerformed(evt);
+            }
+        });
         jMenu1.add(MenuGuardar);
 
         MenuGuardarComo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         MenuGuardarComo.setText("Guardar Como");
+        MenuGuardarComo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuGuardarComoActionPerformed(evt);
+            }
+        });
         jMenu1.add(MenuGuardarComo);
 
         jMenuBar1.add(jMenu1);
@@ -183,43 +199,64 @@ public class Ventana extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu4.setText("Pestañas");
+
+        NuevaPesta.setText("Nueva");
+        NuevaPesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NuevaPestaActionPerformed(evt);
+            }
+        });
+        jMenu4.add(NuevaPesta);
+
+        CerrarPesta.setText("Cerrar");
+        CerrarPesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarPestaActionPerformed(evt);
+            }
+        });
+        jMenu4.add(CerrarPesta);
+
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 866, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(AnalizarBTN)
+                        .addGap(141, 141, 141))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 762, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(analizarJavacc)
-                            .addComponent(AnalizarBTN))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Jlabel))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(AnalizarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(analizarJavacc)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(Jlabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(AnalizarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(analizarJavacc))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -227,12 +264,12 @@ public class Ventana extends javax.swing.JFrame {
 
     private void AnalizarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizarBTNActionPerformed
         limpiar();
-        String entra = "entrada.txt";
-        archivo(entra);         
+        String textoEntrada = (((Editor)jTabbedPane1.getSelectedComponent()).getCodigo() );
+        archivo(textoEntrada);         
         tipo = true;    
         try {
             analizadores.Sintactico pars;           
-            pars = new analizadores.Sintactico(new analizadores.Lexico(new FileInputStream("c:/"+entra)));
+            pars = new analizadores.Sintactico(new analizadores.Lexico(new FileInputStream("c:/entrada.txt")));
             pars.parse();  
             arbol = pars.arbol;
             if (arbol != null) 
@@ -264,6 +301,7 @@ public class Ventana extends javax.swing.JFrame {
             LinkedList<NodoAST> instruccionsCC = parser.Analizar();
             arbolJavaCC = new AST(instruccionsCC);
             arbolJavaCC.ejecutar();
+            Global = arbolJavaCC.getGlobal();
             
         } catch (ParseException ex) {
             Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
@@ -290,11 +328,22 @@ public class Ventana extends javax.swing.JFrame {
 
     private void MenuTSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuTSActionPerformed
         // TODO add your handling code here:
-        if (Global != null) {
-            generarTS();            
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Entorno VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+        //CUP y FLEX
+        if (tipo) {
+            if (Global != null) {
+                generarTS();            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Entorno CUP VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+            }
+        //JAVACC
+        }else{
+            if (Global != null) {
+                generarTS();            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Entorno JAVACC VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_MenuTSActionPerformed
 
@@ -329,13 +378,121 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        if (Global != null) {
-            generarTSFun();            
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Entorno VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+        if (tipo) {
+            if (Global != null) {
+                generarTSFun();            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Funciones CUP VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            if (Global != null) {
+                generarTSFun();            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Funciones JAVACC VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void NuevaPestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevaPestaActionPerformed
+        // TODO add your handling code here:
+        Editor editor;
+        try {
+            editor = new Editor(new RSyntaxTextArea());
+            this.jTabbedPane1.add("Nueva"+pes,editor);
+            pes++;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "No se puede Agregar Mas. "+ex.getMessage(), "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_NuevaPestaActionPerformed
+
+    private void CerrarPestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarPestaActionPerformed
+        // TODO add your handling code here:
+        Component selected = jTabbedPane1.getSelectedComponent(); 
+        if (selected != null) { 
+
+         jTabbedPane1.remove(selected);
+        }
+    }//GEN-LAST:event_CerrarPestaActionPerformed
+
+    private void MenuAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuAbrirActionPerformed
+        // TODO add your handling code here:
+    try 
+    {
+        JFileChooser selectorArchivos = new JFileChooser();
+        selectorArchivos.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        int resultado = selectorArchivos.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION)
+        {
+            File archivo = selectorArchivos.getSelectedFile();
+            path = archivo.getAbsolutePath();
+            Editor editor = new Editor(archivo,new RSyntaxTextArea());
+            this.jTabbedPane1.add(""+archivo.getName(),editor);
+        }        
+
+    }catch(Exception ex )
+    {
+        JOptionPane.showMessageDialog(null, "No se puede Abrir: "+ex.getMessage(), "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_MenuAbrirActionPerformed
+
+    private void MenuGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuGuardarActionPerformed
+        // TODO add your handling code here:
+        if (path != null) {
+            FileWriter fichero = null;
+            PrintWriter pw = null;
+            File archivo = new File(path);
+            try 
+            {
+                String fr = (((Editor)jTabbedPane1.getSelectedComponent()).getCodigo() ); 
+                
+                fichero = new FileWriter(archivo);
+                pw = new PrintWriter(fichero);
+                pw.print(fr);         
+                fichero.close();   
+                pw.close();
+                JOptionPane.showMessageDialog(null, "Guadardado en: "+this.path, "Guardado", JOptionPane.INFORMATION_MESSAGE);
+
+            }catch(IOException ex ){
+                JOptionPane.showMessageDialog(null, "No se puede Guadar: "+ex.getMessage(), "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+            }finally{
+                try{                    
+                    if( null != pw ){   
+                        pw.close();
+                        fichero.close(); 
+                    }                  
+                }catch (IOException e2){ 
+                    e2.printStackTrace();
+                }
+            }    
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede Guadar, no tiene ninguna ruta abierta", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_MenuGuardarActionPerformed
+
+    private void MenuGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuGuardarComoActionPerformed
+        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+        chooser.setApproveButtonText("Guardar Como");
+        chooser.showOpenDialog(null);
+        File archivo=chooser.getSelectedFile();
+
+        try{
+            String fr = (((Editor)jTabbedPane1.getSelectedComponent()).getCodigo() ); 
+            String text=fr;
+            java.io.FileWriter fileWriter=new java.io.FileWriter(archivo.getAbsoluteFile());
+            java.io.BufferedWriter br = new java.io.BufferedWriter(fileWriter);
+            br.write(text);
+            br.close();
+            JOptionPane.showMessageDialog(null, "Guadardado en: "+archivo.getAbsoluteFile(), "Guardado", JOptionPane.INFORMATION_MESSAGE);
+        }catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No se puede Guadar Como", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
+        }
+            
+        
+    }//GEN-LAST:event_MenuGuardarComoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,23 +536,26 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AnalizarBTN;
+    private javax.swing.JMenuItem CerrarPesta;
     private javax.swing.JTextArea Consola;
-    private javax.swing.JTextArea Entrada;
+    private javax.swing.JLabel Jlabel;
     private javax.swing.JMenuItem MenuAST;
     private javax.swing.JMenuItem MenuAbrir;
     private javax.swing.JMenuItem MenuCup;
     private javax.swing.JMenuItem MenuGuardar;
     private javax.swing.JMenuItem MenuGuardarComo;
     private javax.swing.JMenuItem MenuTS;
+    private javax.swing.JMenuItem NuevaPesta;
     private javax.swing.JButton analizarJavacc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 
     private void Graficar(String arbol, String nombreArchivo) {
@@ -506,7 +666,6 @@ public class Ventana extends javax.swing.JFrame {
         }
     }
 
-    
      private void generarTSFun() {
          
         FileWriter filewriter = null;
@@ -661,8 +820,7 @@ public class Ventana extends javax.swing.JFrame {
         return null;
     }
 
-    private void archivo(String entra) {
-        File entrada = null;
+    private void archivo(String texto) {
         File salida = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -670,12 +828,11 @@ public class Ventana extends javax.swing.JFrame {
         FileWriter fichero = null;
         PrintWriter pw = null;
         try {
-            entrada = new File (entra);
-            salida = new File("c:/"+entra);
+            salida = new File("c:/entrada.txt");
             
             BufferedWriter bw = null;
             
-            fr = new FileReader (entrada);
+            fr = new FileReader (texto);
             br = new BufferedReader(fr);
             String linea;
             
@@ -684,7 +841,7 @@ public class Ventana extends javax.swing.JFrame {
                 bw.write("#Archivo");
             }
             
-            fichero = new FileWriter("c:/"+entra);
+            fichero = new FileWriter("c:/entrada.txt");
             pw = new PrintWriter(fichero);
 
             while((linea=br.readLine())!=null) {
@@ -720,6 +877,4 @@ public class Ventana extends javax.swing.JFrame {
         }
     }
     
-    
-
 }

@@ -1,0 +1,161 @@
+\hypertarget{classanalizadores_1_1_gramatica_token_manager}{}\section{analizadores.\+Gramatica\+Token\+Manager Class Reference}
+\label{classanalizadores_1_1_gramatica_token_manager}\index{analizadores.\+Gramatica\+Token\+Manager@{analizadores.\+Gramatica\+Token\+Manager}}
+Inheritance diagram for analizadores.\+Gramatica\+Token\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classanalizadores_1_1_gramatica_token_manager}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a4dd7de62a7a2539af8844d147a128e74}{set\+Debug\+Stream}} (java.\+io.\+Print\+Stream ds)
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a6f39567296f646a754c87ca62cb7d78a}{Gramatica\+Token\+Manager}} (\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}} stream)
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a40bcd4b1673f1a37f1fac721ae154049}{Gramatica\+Token\+Manager}} (\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}} stream, int lex\+State)
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a921966cc3d3430d9556f04cc4eddca0f}{Re\+Init}} (\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}} stream)
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_af95f8e720b5ee73b721aa490314ca933}{Re\+Init}} (\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}} stream, int lex\+State)
+\item 
+void \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a8b938e445d55a0175957f9fce191581f}{Switch\+To}} (int lex\+State)
+\item 
+\mbox{\hyperlink{classanalizadores_1_1_token}{Token}} \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a590a26d78e526ad8fa116390c45b7010}{get\+Next\+Token}} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+java.\+io.\+Print\+Stream \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a2ec8c23d9151cea8cd5b1af72785fcb3}{debug\+Stream}} = System.\+out
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final String \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_ae1c9e207113b8eb7137f51e9f536da24}{jjstr\+Literal\+Images}}
+\item 
+static final String \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_ab71dac104a1e700d4a241947012f31f4}{lex\+State\+Names}}
+\item 
+static final int \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classanalizadores_1_1_gramatica_token_manager_a2baa7049af1afa94f630c069005226db}{jjnew\+Lex\+State}}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a66aa4d07660f6f1222bc56b2c95a5b07}\label{classanalizadores_1_1_gramatica_token_manager_a66aa4d07660f6f1222bc56b2c95a5b07}} 
+\mbox{\hyperlink{classanalizadores_1_1_token}{Token}} {\bfseries jj\+Fill\+Token} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a599b2d374e33804e39ed44aeed378991}\label{classanalizadores_1_1_gramatica_token_manager_a599b2d374e33804e39ed44aeed378991}} 
+\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}} {\bfseries input\+\_\+stream}
+\item 
+\mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a146b9520c114189d732e4c0891b511be}\label{classanalizadores_1_1_gramatica_token_manager_a146b9520c114189d732e4c0891b511be}} 
+char {\bfseries cur\+Char}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\mbox{\hyperlink{classanalizadores_1_1_token}{Token}} Manager. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a6f39567296f646a754c87ca62cb7d78a}\label{classanalizadores_1_1_gramatica_token_manager_a6f39567296f646a754c87ca62cb7d78a}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!Gramatica\+Token\+Manager@{Gramatica\+Token\+Manager}}
+\index{Gramatica\+Token\+Manager@{Gramatica\+Token\+Manager}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{Gramatica\+Token\+Manager()}{GramaticaTokenManager()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily analizadores.\+Gramatica\+Token\+Manager.\+Gramatica\+Token\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}}}]{stream }\end{DoxyParamCaption})}
+
+Constructor. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a40bcd4b1673f1a37f1fac721ae154049}\label{classanalizadores_1_1_gramatica_token_manager_a40bcd4b1673f1a37f1fac721ae154049}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!Gramatica\+Token\+Manager@{Gramatica\+Token\+Manager}}
+\index{Gramatica\+Token\+Manager@{Gramatica\+Token\+Manager}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{Gramatica\+Token\+Manager()}{GramaticaTokenManager()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily analizadores.\+Gramatica\+Token\+Manager.\+Gramatica\+Token\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}}}]{stream,  }\item[{int}]{lex\+State }\end{DoxyParamCaption})}
+
+Constructor. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a590a26d78e526ad8fa116390c45b7010}\label{classanalizadores_1_1_gramatica_token_manager_a590a26d78e526ad8fa116390c45b7010}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!get\+Next\+Token@{get\+Next\+Token}}
+\index{get\+Next\+Token@{get\+Next\+Token}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{get\+Next\+Token()}{getNextToken()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classanalizadores_1_1_token}{Token}} analizadores.\+Gramatica\+Token\+Manager.\+get\+Next\+Token (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get the next \mbox{\hyperlink{classanalizadores_1_1_token}{Token}}. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a921966cc3d3430d9556f04cc4eddca0f}\label{classanalizadores_1_1_gramatica_token_manager_a921966cc3d3430d9556f04cc4eddca0f}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!Re\+Init@{Re\+Init}}
+\index{Re\+Init@{Re\+Init}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{Re\+Init()}{ReInit()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void analizadores.\+Gramatica\+Token\+Manager.\+Re\+Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}}}]{stream }\end{DoxyParamCaption})}
+
+Reinitialise parser. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_af95f8e720b5ee73b721aa490314ca933}\label{classanalizadores_1_1_gramatica_token_manager_af95f8e720b5ee73b721aa490314ca933}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!Re\+Init@{Re\+Init}}
+\index{Re\+Init@{Re\+Init}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{Re\+Init()}{ReInit()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void analizadores.\+Gramatica\+Token\+Manager.\+Re\+Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classanalizadores_1_1_simple_char_stream}{Simple\+Char\+Stream}}}]{stream,  }\item[{int}]{lex\+State }\end{DoxyParamCaption})}
+
+Reinitialise parser. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a4dd7de62a7a2539af8844d147a128e74}\label{classanalizadores_1_1_gramatica_token_manager_a4dd7de62a7a2539af8844d147a128e74}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!set\+Debug\+Stream@{set\+Debug\+Stream}}
+\index{set\+Debug\+Stream@{set\+Debug\+Stream}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{set\+Debug\+Stream()}{setDebugStream()}}
+{\footnotesize\ttfamily void analizadores.\+Gramatica\+Token\+Manager.\+set\+Debug\+Stream (\begin{DoxyParamCaption}\item[{java.\+io.\+Print\+Stream}]{ds }\end{DoxyParamCaption})}
+
+Set debug output. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a8b938e445d55a0175957f9fce191581f}\label{classanalizadores_1_1_gramatica_token_manager_a8b938e445d55a0175957f9fce191581f}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!Switch\+To@{Switch\+To}}
+\index{Switch\+To@{Switch\+To}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{Switch\+To()}{SwitchTo()}}
+{\footnotesize\ttfamily void analizadores.\+Gramatica\+Token\+Manager.\+Switch\+To (\begin{DoxyParamCaption}\item[{int}]{lex\+State }\end{DoxyParamCaption})}
+
+Switch to specified lex state. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a2ec8c23d9151cea8cd5b1af72785fcb3}\label{classanalizadores_1_1_gramatica_token_manager_a2ec8c23d9151cea8cd5b1af72785fcb3}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!debug\+Stream@{debug\+Stream}}
+\index{debug\+Stream@{debug\+Stream}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{debug\+Stream}{debugStream}}
+{\footnotesize\ttfamily java.\+io.\+Print\+Stream analizadores.\+Gramatica\+Token\+Manager.\+debug\+Stream = System.\+out}
+
+Debug output. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_a2baa7049af1afa94f630c069005226db}\label{classanalizadores_1_1_gramatica_token_manager_a2baa7049af1afa94f630c069005226db}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!jjnew\+Lex\+State@{jjnew\+Lex\+State}}
+\index{jjnew\+Lex\+State@{jjnew\+Lex\+State}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{jjnew\+Lex\+State}{jjnewLexState}}
+{\footnotesize\ttfamily final int \mbox{[}$\,$\mbox{]} analizadores.\+Gramatica\+Token\+Manager.\+jjnew\+Lex\+State\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 
+   -1, -1, -1, 0, 
+\}
+\end{DoxyCode}
+Lex State array. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_ae1c9e207113b8eb7137f51e9f536da24}\label{classanalizadores_1_1_gramatica_token_manager_ae1c9e207113b8eb7137f51e9f536da24}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!jjstr\+Literal\+Images@{jjstr\+Literal\+Images}}
+\index{jjstr\+Literal\+Images@{jjstr\+Literal\+Images}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{jjstr\+Literal\+Images}{jjstrLiteralImages}}
+{\footnotesize\ttfamily final String \mbox{[}$\,$\mbox{]} analizadores.\+Gramatica\+Token\+Manager.\+jjstr\+Literal\+Images\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+\textcolor{stringliteral}{""}, null, null, null, null, null, null, null, null, null, null, null, null, 
+null, null, \textcolor{stringliteral}{"\(\backslash\)73"}, \textcolor{stringliteral}{"\(\backslash\)54"}, \textcolor{stringliteral}{"\(\backslash\)50"}, \textcolor{stringliteral}{"\(\backslash\)51"}, \textcolor{stringliteral}{"\(\backslash\)133"}, \textcolor{stringliteral}{"\(\backslash\)135"}, \textcolor{stringliteral}{"\(\backslash\)173"}, \textcolor{stringliteral}{"\(\backslash\)175"}, \textcolor{stringliteral}{"\(\backslash\)77"}, 
+\textcolor{stringliteral}{"\(\backslash\)72"}, \textcolor{stringliteral}{"\(\backslash\)53"}, \textcolor{stringliteral}{"\(\backslash\)55"}, \textcolor{stringliteral}{"\(\backslash\)52"}, \textcolor{stringliteral}{"\(\backslash\)45\(\backslash\)45"}, \textcolor{stringliteral}{"\(\backslash\)57"}, \textcolor{stringliteral}{"\(\backslash\)136"}, \textcolor{stringliteral}{"\(\backslash\)75"}, \textcolor{stringliteral}{"\(\backslash\)74"}, \textcolor{stringliteral}{"\(\backslash\)76"}, \textcolor{stringliteral}{"\(\backslash\)74\(\backslash\)75"}, 
+\textcolor{stringliteral}{"\(\backslash\)76\(\backslash\)75"}, \textcolor{stringliteral}{"\(\backslash\)75\(\backslash\)75"}, \textcolor{stringliteral}{"\(\backslash\)41\(\backslash\)75"}, \textcolor{stringliteral}{"\(\backslash\)46"}, \textcolor{stringliteral}{"\(\backslash\)174"}, \textcolor{stringliteral}{"\(\backslash\)41"}, null, null, null, null, null, null, 
+null, null, null, null, null, null, null, \}
+\end{DoxyCode}
+\mbox{\hyperlink{classanalizadores_1_1_token}{Token}} literal values. \mbox{\Hypertarget{classanalizadores_1_1_gramatica_token_manager_ab71dac104a1e700d4a241947012f31f4}\label{classanalizadores_1_1_gramatica_token_manager_ab71dac104a1e700d4a241947012f31f4}} 
+\index{analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}!lex\+State\+Names@{lex\+State\+Names}}
+\index{lex\+State\+Names@{lex\+State\+Names}!analizadores\+::\+Gramatica\+Token\+Manager@{analizadores\+::\+Gramatica\+Token\+Manager}}
+\subsubsection{\texorpdfstring{lex\+State\+Names}{lexStateNames}}
+{\footnotesize\ttfamily final String \mbox{[}$\,$\mbox{]} analizadores.\+Gramatica\+Token\+Manager.\+lex\+State\+Names\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+   \textcolor{stringliteral}{"DEFAULT"}, 
+   \textcolor{stringliteral}{"STRING\_STATE"}, 
+\}
+\end{DoxyCode}
+Lexer state names. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/analizadores/Gramatica\+Token\+Manager.\+java\end{DoxyCompactItemize}
