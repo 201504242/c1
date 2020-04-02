@@ -122,7 +122,7 @@ public class grafBarras implements Instruccion{
         FileWriter filewriter = null;
         PrintWriter printw = null;
         try{
-            filewriter = new FileWriter("Graficas\\"+archivo+".html");//declarar el archivo
+            filewriter = new FileWriter(archivo+".html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<head>");
@@ -135,13 +135,13 @@ public class grafBarras implements Instruccion{
             
             printw.println("<script>");
             printw.println("var data = [{");
-            printw.print("y:[");            
+            printw.print("x:[");            
             for (int i = 0; i < datos.length; i++) {
                 String cad = i != datos.length-1 ? "'"+datos[i]+"',":"'"+datos[i]+"'";
                 printw.print(cad);
             }
             printw.println("],");
-            printw.print("x:[");     
+            printw.print("y:[");     
             for (int i = 0; i < datos.length; i++) {
                 String cad;
                 if (i < titulos.length) {
@@ -179,7 +179,7 @@ public class grafBarras implements Instruccion{
 
     private void abrirGrafica(String nombre){
         try {
-            File objetofile = new File ("Graficas\\"+nombre+".html");
+            File objetofile = new File (nombre+".html");
             Desktop.getDesktop().open(objetofile);
         } catch (IOException exx) {
             JOptionPane.showMessageDialog(null, "No existe "+nombre);

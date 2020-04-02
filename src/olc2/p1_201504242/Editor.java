@@ -12,6 +12,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.Caret;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -24,6 +27,8 @@ public class Editor extends RTextScrollPane {
     private RSyntaxTextArea textArea;
     private  File archivo = null;
     private  RTextScrollPane sp;
+    private Caret care = null;
+    
     public Editor ( File archivo , RSyntaxTextArea text) throws FileNotFoundException, IOException
     {
         super(text);
@@ -41,10 +46,11 @@ public class Editor extends RTextScrollPane {
              total += linea + "\r\n";
             textArea.setText(total);
          }
+        
         textArea.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent ce) {
-                 int linenum = 1;
+                int linenum = 1;
                 int columnnum = 1;
                 try {
                     int caretpos = textArea.getCaretPosition();
@@ -108,4 +114,8 @@ public class Editor extends RTextScrollPane {
     {
         textArea.setText(codigo);
     }     
+
+    Caret getCaret() {
+        return (Caret) this.care;
+    }
 }

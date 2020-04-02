@@ -172,7 +172,7 @@ Instruccion Funcion() :
 { Token id; LinkedList<Simbolo> simbolos; LinkedList<NodoAST> insBloque;}
 {
     id=<ID> <IGUAL> <FUNCION> <PARENI> simbolos=Lista_Parametros() <PAREND> insBloque=Bloque()
-    {return new Funcion(id.image+"_"+simbolos.size(),Rol.FUNCION, simbolos, insBloque, token.beginLine, token.beginColumn);}
+    {return new Funcion(id.image.toLowerCase()+"_"+simbolos.size(),Rol.FUNCION, simbolos, insBloque, token.beginLine, token.beginColumn);}
 }
 
 LinkedList<Simbolo>  Lista_Parametros() :
@@ -194,7 +194,7 @@ Simbolo Parametro():
     (
         <IGUAL> e=E()
     )?
-    {return new Simbolo(id.image,Rol.VECTOR,e); }
+    {return new Simbolo(id.image.toLowerCase(),Rol.VECTOR,e); }
 }
 /** Asignacion ->   id = expresion;
                     |id DIM = EXP
@@ -385,7 +385,7 @@ NodoAST Llamada():
             }else if(a.equalsIgnoreCase("plot")){
                 return new grafLineas(expres,t.beginLine,t.beginColumn);                 
             }else{
-                return new Llama(t.image,expres,t.beginLine,t.beginColumn);
+                return new Llama(t.image.toLowerCase(),expres,t.beginLine,t.beginColumn);
             }
         }
 }
@@ -403,24 +403,22 @@ LinkedList<NodoAST> Lista_Expresiones():
     {return lista;}
 }
 
-
-Expresion E():
-{ Expresion e,e1; }
+Expresion E() :
+{Expresion e, e1,e2;}
 {
-    e=CondicionTernaria() 
+    e=CondicionOr() 
     (
-        <OR> e1=CondicionTernaria() {e = new Logica(e, e1, Operador.OR, token.beginLine, token.beginColumn);}
+        <TERNARIO> e1=CondicionOr() <DOSPUNTOS> e2=CondicionOr() {e = new Ternaria(e, e1,e2,token.beginLine, token.beginColumn);}
     )*
     {return e;}
-    //exp=Primitivo() {return exp;}
 }
 
-Expresion CondicionTernaria() :
-{Expresion e, e1,e2;}
+Expresion CondicionOr():
+{ Expresion e,e1; }
 {
     e=CondicionAnd() 
     (
-        <TERNARIO> e1=CondicionAnd() <DOSPUNTOS> e2=CondicionAnd() {e = new Ternaria(e, e1,e2,token.beginLine, token.beginColumn);}
+        <OR> e1=CondicionAnd() {e = new Logica(e, e1, Operador.OR, token.beginLine, token.beginColumn);}
     )*
     {return e;}
 }
@@ -573,7 +571,7 @@ Expresion Primitivo() :
                         }else if(a.equalsIgnoreCase("mode")){
                             return new Fnum(5,expres,t.beginLine,t.beginColumn);
                         }else{
-                            return new Llama(t.image,expres,t.beginLine,t.beginColumn);
+                            return new Llama(t.image.toLowerCase(),expres,t.beginLine,t.beginColumn);
                         }
                     }
                 )?

@@ -187,7 +187,15 @@ public class Llama implements Expresion{
                 exp_aux = (Expresion)valores.get(i);
             }
             valor = exp_aux.getValorImplicito(ent); 
-            tipoPar_aux = colocarTipo(valor).getTipoPrimitivo();
+            //vecotor 
+            if (valor instanceof Object[]) 
+            {
+                tipoPar_aux = colocarTipoVec((Object[])valor).getTipoPrimitivo();
+            }
+            else{
+                tipoPar_aux = colocarTipo(valor).getTipoPrimitivo();
+            }
+            
             
             //ACA TIENE QUE MODIFICARSE CUANDO YA HAYAN VECTORES 
             //EL ROL Y LAS DIMENSIONES CAMBIARAN
@@ -218,7 +226,7 @@ public class Llama implements Expresion{
         
     }
     
-     private Tipo colocarTipo(Object[] r) {
+     private Tipo colocarTipoVec(Object[] r) {
        Tipo []tp = new Tipo[r.length];
         int c = 0;
         for (Object nodo : r) 

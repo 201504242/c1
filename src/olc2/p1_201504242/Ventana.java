@@ -15,26 +15,26 @@ import entorno.Simbolo;
 import entorno.Tipo;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.text.Caret;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
@@ -65,7 +65,7 @@ public class Ventana extends javax.swing.JFrame {
     }
     
     public void agregarLabel(String cad){
-        Jlabel.setText(Consola.getText()+""+ cad + "\n");
+        filCol.setText(""+ cad + "\n");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,7 +82,7 @@ public class Ventana extends javax.swing.JFrame {
         Consola = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        Jlabel = new javax.swing.JLabel();
+        filCol = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MenuAbrir = new javax.swing.JMenuItem();
@@ -100,14 +100,14 @@ public class Ventana extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        AnalizarBTN.setText("Cup y Flex");
+        AnalizarBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ima/cup.jpg"))); // NOI18N
         AnalizarBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AnalizarBTNActionPerformed(evt);
             }
         });
 
-        analizarJavacc.setText("JavaCC");
+        analizarJavacc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ima/javacc.png"))); // NOI18N
         analizarJavacc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 analizarJavaccActionPerformed(evt);
@@ -122,9 +122,11 @@ public class Ventana extends javax.swing.JFrame {
         Consola.setRows(5);
         jScrollPane2.setViewportView(Consola);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel1.setText(".");
 
-        Jlabel.setText("status");
+        filCol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        filCol.setText("Line: 0 Col:0");
 
         jMenu1.setText("Archivo");
 
@@ -225,95 +227,101 @@ public class Ventana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 866, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AnalizarBTN)
-                        .addGap(141, 141, 141))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 929, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(analizarJavacc)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Jlabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addComponent(jTabbedPane1)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(filCol)
+                            .addComponent(analizarJavacc, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AnalizarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 209, Short.MAX_VALUE))))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(Jlabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTabbedPane1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(filCol)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(AnalizarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(analizarJavacc))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(analizarJavacc, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(AnalizarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void AnalizarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizarBTNActionPerformed
-        limpiar();
-        String textoEntrada = (((Editor)jTabbedPane1.getSelectedComponent()).getCodigo() );
-        archivo(textoEntrada);         
-        tipo = true;    
-        try {
-            analizadores.Sintactico pars;           
-            pars = new analizadores.Sintactico(new analizadores.Lexico(new FileInputStream("c:/entrada.txt")));
-            pars.parse();  
-            arbol = pars.arbol;
-            if (arbol != null) 
-            {
-                arbol.ejecutar();
-                Global = arbol.getGlobal();
+        if (jTabbedPane1.getSelectedComponent() != null) {
+            limpiar();
+            String textoEntrada = (((Editor)jTabbedPane1.getSelectedComponent()).getCodigo() );
+            archivo(textoEntrada);      
+            tipo = true;    
+            try {
+                analizadores.Sintactico pars;           
+                pars = new analizadores.Sintactico(new analizadores.Lexico(new FileInputStream("C:\\Users\\p_ab1\\Desktop\\Archivos\\entrada.txt")));
+                pars.parse();  
+                arbol = pars.arbol;
+                if (arbol != null) 
+                {
+                    arbol.ejecutar();
+                    Global = arbol.getGlobal();
+                }
+            } catch (FileNotFoundException ex) {            
+                JOptionPane.showMessageDialog(null, "No encontro Archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "No encontro Archivo", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("FileNotFoundException de entrada.");
-            System.out.println("Causa: "+ex.getCause());
-        } catch (Exception ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error fatal en compilación de entrada.");
-            System.out.println("Causa: "+ex.getCause());
+            jLabel1.setText("Errores CUP: "+listaError.size());
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione Tab", "Error", JOptionPane.ERROR_MESSAGE);
+
         }
-        jLabel1.setText("Errores CUP: "+listaError.size());
     }//GEN-LAST:event_AnalizarBTNActionPerformed
 
     private void analizarJavaccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarJavaccActionPerformed
-        Gramatica parser = null;
-        limpiar();
-        String entra = "entradaJavaCC.txt";
-        archivo(entra); 
-        tipo = false;
-        try {
-            InputStream inputstream = new FileInputStream("c:/"+entra);
-            parser = new Gramatica(inputstream,"utf-8");
-            LinkedList<NodoAST> instruccionsCC = parser.Analizar();
-            arbolJavaCC = new AST(instruccionsCC);
-            arbolJavaCC.ejecutar();
-            Global = arbolJavaCC.getGlobal();
-            
-        } catch (ParseException ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-        } catch(TokenMgrError e){
-            System.err.println(e.getMessage());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+        if (jTabbedPane1.getSelectedComponent() != null) {
+            Gramatica parser = null;
+            limpiar();
+            String textoEntrada = (((Editor)jTabbedPane1.getSelectedComponent()).getCodigo() );
+            archivo(textoEntrada); 
+            tipo = false;
+            try {
+                InputStream inputstream = new FileInputStream("C:\\Users\\p_ab1\\Desktop\\Archivos\\entrada.txt");
+                parser = new Gramatica(inputstream,"utf-8");
+                LinkedList<NodoAST> instruccionsCC = parser.Analizar();
+                arbolJavaCC = new AST(instruccionsCC);
+                if (arbolJavaCC != null) {
+                    arbolJavaCC.ejecutar();
+                    Global = arbolJavaCC.getGlobal();
+                }
+            } catch (ParseException ex) {
+                Ventana.ggetVentana().listaError.add(new JError("Ejecucion",0,0,"Mensaje: "+ex.getMessage()));
+                //Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            } catch(TokenMgrError e){
+                Ventana.ggetVentana().listaError.add(new JError("Ejecucion",0,0,"Mensaje: "+e.getMessage()));
+                System.err.println(e.getMessage());
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "No encontro Archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "No encontro Archivo IO", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            jLabel1.setText("Errores JAVACC: "+listaError.size());
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione TAB: JAVACC", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        jLabel1.setText("Errores JAVACC: "+listaError.size());
-
     }//GEN-LAST:event_analizarJavaccActionPerformed
 
     private void MenuCupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCupActionPerformed
@@ -322,8 +330,7 @@ public class Ventana extends javax.swing.JFrame {
             generarErrores();
         }else{
             JOptionPane.showMessageDialog(null, "Lista Error VACIO", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);            
-        }
-        
+        }        
     }//GEN-LAST:event_MenuCupActionPerformed
 
     private void MenuTSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuTSActionPerformed
@@ -411,8 +418,7 @@ public class Ventana extends javax.swing.JFrame {
         // TODO add your handling code here:
         Component selected = jTabbedPane1.getSelectedComponent(); 
         if (selected != null) { 
-
-         jTabbedPane1.remove(selected);
+            jTabbedPane1.remove(selected);
         }
     }//GEN-LAST:event_CerrarPestaActionPerformed
 
@@ -486,7 +492,7 @@ public class Ventana extends javax.swing.JFrame {
             java.io.BufferedWriter br = new java.io.BufferedWriter(fileWriter);
             br.write(text);
             br.close();
-            JOptionPane.showMessageDialog(null, "Guadardado en: "+archivo.getAbsoluteFile(), "Guardado", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Guadardado Como en: "+archivo.getAbsoluteFile(), "Guardado", JOptionPane.INFORMATION_MESSAGE);
         }catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "No se puede Guadar Como", "Ocurrion un Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -538,7 +544,6 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton AnalizarBTN;
     private javax.swing.JMenuItem CerrarPesta;
     private javax.swing.JTextArea Consola;
-    private javax.swing.JLabel Jlabel;
     private javax.swing.JMenuItem MenuAST;
     private javax.swing.JMenuItem MenuAbrir;
     private javax.swing.JMenuItem MenuCup;
@@ -547,6 +552,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuTS;
     private javax.swing.JMenuItem NuevaPesta;
     private javax.swing.JButton analizarJavacc;
+    private javax.swing.JLabel filCol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -591,7 +597,7 @@ public class Ventana extends javax.swing.JFrame {
             Runtime rt = Runtime.getRuntime();
             rt.exec( cmd );
             
-            File objetofile = new File ("AST.jpg");
+            File objetofile = new File ("‪AST.jpg");
             Desktop.getDesktop().open(objetofile);
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
@@ -610,7 +616,7 @@ public class Ventana extends javax.swing.JFrame {
         FileWriter filewriter = null;
         PrintWriter printw = null;
         try{
-            filewriter = new FileWriter("TS.html");//declarar el archivo
+            filewriter = new FileWriter("‪TS.html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<html>");
@@ -659,7 +665,7 @@ public class Ventana extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR al generar archivo de errores");        
         }
         try {
-            File objetofile = new File ("TS.html");
+            File objetofile = new File ("‪TS.html");
             Desktop.getDesktop().open(objetofile);
         } catch (IOException exx) {
             JOptionPane.showMessageDialog(null, "No existe errores.html");
@@ -671,7 +677,7 @@ public class Ventana extends javax.swing.JFrame {
         FileWriter filewriter = null;
         PrintWriter printw = null;
         try{
-            filewriter = new FileWriter("TS.html");//declarar el archivo
+            filewriter = new FileWriter("‪TS.html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<html>");
@@ -719,7 +725,7 @@ public class Ventana extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR al generar archivo de errores");        
         }
         try {
-            File objetofile = new File ("TS.html");
+            File objetofile = new File ("‪TS.html");
             Desktop.getDesktop().open(objetofile);
         } catch (IOException exx) {
             JOptionPane.showMessageDialog(null, "No existe errores.html");
@@ -730,8 +736,19 @@ public class Ventana extends javax.swing.JFrame {
     private void generarErrores() {
         FileWriter filewriter = null;
         PrintWriter printw = null;
+        File salida = null;
+        
+        BufferedReader br = null;
+        StringReader fr = null;
+        BufferedWriter bw = null;
+        
         try{
-            filewriter = new FileWriter("errores.html");//declarar el archivo
+            salida = new File("errores.html");    
+            if (!salida.exists()) {
+                bw = new BufferedWriter(new FileWriter(salida));
+                bw.write("#Archivo");
+            }
+            filewriter = new FileWriter("‪errores.html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<html>");
@@ -770,9 +787,20 @@ public class Ventana extends javax.swing.JFrame {
 
         }   catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "ERROR al generar archivo de errores");        
+        }finally{
+            try{                    
+                if( null != fr ){   
+                    fr.close();  
+                }           
+                if (bw != null) {
+                    bw.close();
+                }
+            }catch (IOException e2){ 
+                e2.printStackTrace();
+            }
         }
         try {
-            File objetofile = new File ("errores.html");
+            File objetofile = new File ("‪errores.html");
             Desktop.getDesktop().open(objetofile);
         } catch (IOException exx) {
             JOptionPane.showMessageDialog(null, "No existe errores.html");
@@ -822,28 +850,24 @@ public class Ventana extends javax.swing.JFrame {
 
     private void archivo(String texto) {
         File salida = null;
-        FileReader fr = null;
         BufferedReader br = null;
-        
+        StringReader fr = null;
         FileWriter fichero = null;
         PrintWriter pw = null;
+        BufferedWriter bw = null;
         try {
-            salida = new File("c:/entrada.txt");
-            
-            BufferedWriter bw = null;
-            
-            fr = new FileReader (texto);
+            salida = new File("C:\\Users\\p_ab1\\Desktop\\Archivos\\entrada.txt");            
+                        
+            fr = new StringReader(texto);
             br = new BufferedReader(fr);
-            String linea;
-            
+            String linea;            
             if (!salida.exists()) {
                 bw = new BufferedWriter(new FileWriter(salida));
                 bw.write("#Archivo");
-            }
-            
-            fichero = new FileWriter("c:/entrada.txt");
+            }            
+            fichero = new FileWriter("C:\\Users\\p_ab1\\Desktop\\Archivos\\entrada.txt");
             pw = new PrintWriter(fichero);
-
+            
             while((linea=br.readLine())!=null) {
                 if (linea.contains("=>")) {
                     int intIndex = linea.indexOf("(");
@@ -860,8 +884,7 @@ public class Ventana extends javax.swing.JFrame {
                     }                    
                 }else{
                     pw.println(linea);
-                }
-                
+                }                
             }      
         }catch(IOException e){
             e.printStackTrace();
@@ -869,8 +892,19 @@ public class Ventana extends javax.swing.JFrame {
             try{                    
                 if( null != fr ){   
                     fr.close();  
+                }                
+                if (fichero != null) {                    
                     fichero.close();
-                }                  
+                }
+                if (br != null) {
+                    br.close();
+                }
+                if (pw != null) {
+                    pw.close();     
+                }
+                if (bw != null) {
+                    bw.close();
+                }
             }catch (IOException e2){ 
                 e2.printStackTrace();
             }

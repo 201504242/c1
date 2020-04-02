@@ -31,7 +31,7 @@ public class Tipo {
             VOID,
             DEFAULT,
             LIST,
-            MATRIZ
+            ARRAY
     }
  
     public boolean isNumeric(){

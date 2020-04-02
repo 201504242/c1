@@ -96,7 +96,7 @@ return this.col;
         FileWriter filewriter = null;
         PrintWriter printw = null;
         try{
-            filewriter = new FileWriter("Graficas\\"+archivo+".html");//declarar el archivo
+            filewriter = new FileWriter("‪C:\\Users\\p_ab1\\Desktop\\Archivos\\"+archivo+".html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<head>");
@@ -162,7 +162,7 @@ return this.col;
 
     private void abrirGrafica(String nombre){
         try {
-            File objetofile = new File ("Graficas\\"+nombre+".html");
+            File objetofile = new File (nombre+".html");
             Desktop.getDesktop().open(objetofile);
         } catch (IOException exx) {
             JOptionPane.showMessageDialog(null, "No existe "+nombre);
@@ -293,7 +293,7 @@ return this.col;
         FileWriter filewriter = null;
         PrintWriter printw = null;
         try{
-            filewriter = new FileWriter("Graficas\\"+archivo+".html");//declarar el archivo
+            filewriter = new FileWriter(archivo+".html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<head>");

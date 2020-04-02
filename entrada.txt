@@ -639,3 +639,16 @@ if (1 == paR(1500)){
 #}
 #print(ackermann(3,7));
 
+sw = 3;
+switch (sw) { 
+    case 3: 
+        print(3);
+        break; 
+    case 5: 
+        print(5)
+        break; 
+    case 7: 
+        print(7);
+    default: 
+        print("defautl")
+}

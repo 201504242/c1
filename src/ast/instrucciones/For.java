@@ -38,13 +38,11 @@ public class For extends Condicion implements Instruccion{
         Entorno local = new Entorno(ent);
         try {
             //VALOR IZQUIERDO
-            if (ent.existe(id.getVal())) 
+            if (ent.existeEnActual(id.getVal())) 
             {
                 Simbolo sim = ent.get(id.getVal());
                 
-            }
-            else
-            {
+            }else{
                 local.agregar(id.getVal(), new Simbolo(id.getVal(), Simbolo.Rol.VECTOR));
             }
             //VAROR DERECHO
@@ -85,6 +83,7 @@ public class For extends Condicion implements Instruccion{
                     String variable = id.getVal();
                     Simbolo s = entFor.get(variable);
                     s.setValor(c);
+                    s.setTipo(tipo(c));
                     entFor.agregar(variable, s);
                     for (NodoAST in : getIns()) 
                     {

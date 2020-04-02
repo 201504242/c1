@@ -78,10 +78,13 @@ non terminal LinkedList<NodoAST> instrucciones;
 non terminal NodoAST instruccion;
 non terminal LinkedList<NodoAST> BLOQUE_SENT;
 non terminal Instruccion SENTENCIA_IF;
+non terminal Instruccion SENTENCIA_SWITCH;
 non terminal Instruccion SENTENCIA_WHILE;
 non terminal Instruccion SENTENCIA_DOWHILE;
 non terminal Instruccion SENTENCIA_FOR;
 non terminal Expresion SENTENCIA_RETURN;
+non terminal Instruccion CASO;
+non terminal LinkedList<Instruccion> LISTACASO;
 
 non terminal LinkedList<NodoAST> LISTA_EXP;
 non terminal Expresion EXP;
@@ -260,7 +263,11 @@ instruccion ::=
     |SENTENCIA_WHILE:ins
     {:
         RESULT = ins;
-    :}    
+    :} 
+    |SENTENCIA_SWITCH:ins
+    {:
+        RESULT = ins;
+    :} 
     
     |SENTENCIA_FOR:ins
     {:
@@ -366,6 +373,36 @@ SENTENCIA_LLAMADA ::=
         }
     :}
 ;
+SENTENCIA_SWITCH::= 
+    Tswitch PARIZQ EXP:a PARDER LLAIZQ LISTACASO:b LLADER
+    {:
+        RESULT = new Switch(a,b,aleft,aright);
+    :}
+;
+
+LISTACASO ::= 
+    LISTACASO:a CASO:b
+    {:
+        RESULT = a;
+        RESULT.addLast(b);
+    :}
+    |CASO:a
+    {:
+        RESULT = new LinkedList();
+        RESULT.addLast(a);
+    :}
+;
+
+CASO ::= 
+        Tcase EXP:e1 dospuntos instrucciones:l
+        {:
+            RESULT = new Caso(e1,l,e1left,e1right);
+        :}
+        |tdefault dospuntos instrucciones:l
+        {:
+            RESULT = new casoDefecto(l,lleft,lright);
+        :}
+;                     
 
 SENTENCIA_IF ::= 
     Tif PARIZQ EXP:a PARDER BLOQUE_SENT:b
